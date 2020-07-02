@@ -5,8 +5,9 @@ interface AuthState {
   isSignout: boolean;
   userToken: string | null;
 }
+type Action = 'RESTORE_TOKEN' | 'SIGN_IN' | 'SIGN_OUT';
 interface AuthActionType {
-  type: 'RESTORE_TOKEN' | 'SIGN_IN' | 'SIGN_OUT';
+  type: Action;
   token: string | null;
 }
 
