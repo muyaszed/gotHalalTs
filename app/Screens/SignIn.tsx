@@ -22,7 +22,7 @@ const SignIn = () => {
 
   return (
     <Container>
-      <Content>
+      <Content padder>
         <Form>
           <Item inlineLabel>
             <Label>Email</Label>
@@ -43,7 +43,7 @@ const SignIn = () => {
             />
           </Item>
           <Button
-            full
+            block
             bordered
             onPress={() => {
               if (signIn) {

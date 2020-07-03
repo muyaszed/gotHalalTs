@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Api, {Credential} from './app/Services/api';
 import SignInScreen from './app/Screens/SignIn';
 import SignUpScreen from './app/Screens/Signup';
+import LandingScreen from './app/Screens/Landing';
 import HomeScreen from './app/Screens/Home';
 import {AuthContext} from './app/Authentication/context';
 
@@ -61,6 +62,7 @@ const App = () => {
         <Stack.Navigator>
           {state.userToken == null ? (
             <>
+              <Stack.Screen name="Welcome" component={LandingScreen} />
               <Stack.Screen name="Sign In" component={SignInScreen} />
               <Stack.Screen name="Sign Up" component={SignUpScreen} />
             </>
