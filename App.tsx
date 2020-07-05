@@ -1,76 +1,52 @@
 import 'react-native-gesture-handler';
 import React from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import AuthReducer from './app/Authentication/reducer';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import AsyncStorage from '@react-native-community/async-storage';
-import Api, {Credential} from './app/Services/api';
 import SignInScreen from './app/Screens/SignIn';
 import SignUpScreen from './app/Screens/Signup';
 import LandingScreen from './app/Screens/Landing';
 import HomeScreen from './app/Screens/Home';
-import {AuthContext} from './app/Authentication/context';
+import {RootState} from './app/Store/reducers';
+import {restoreToken} from './app/Authentication/action';
 
 const App = () => {
-  const [state, dispatch] = React.useReducer(AuthReducer, {
-    isLoading: true,
-    isSignout: true,
-    userToken: null,
-  });
-
+  const dispatch = useDispatch();
+  const authState = useSelector((state: RootState) => state.auth);
   React.useEffect(() => {
     const bootstrapAsync = async () => {
-      let userToken = null;
+      let userTokenStorage = null;
       try {
-        userToken = await AsyncStorage.getItem('userToken');
-      } catch (e) {}
-
-      dispatch({type: 'RESTORE_TOKEN', token: userToken});
+        userTokenStorage = await AsyncStorage.getItem('userToken');
+        if (userTokenStorage) {
+          dispatch(restoreToken(userTokenStorage));
+        }
+      } catch (e) {
+        console.log(e);
+      }
     };
 
     bootstrapAsync();
   }, []);
 
-  const authContext = React.useMemo(
-    () => ({
-      signIn: async (credential: Credential) => {
-        const apiCall = await Api.Post.userLogin(credential);
-        const token = apiCall.data.auth_token;
-        try {
-          await AsyncStorage.setItem('userToken', token);
-        } catch (error) {}
-        dispatch({type: 'SIGN_IN', token: token});
-      },
-      signOut: () => {
-        AsyncStorage.removeItem('userToken');
-        dispatch({type: 'SIGN_OUT', token: null});
-      },
-      signUp: async (credential: Credential) => {
-        const apiCall = await Api.Post.userSignup(credential);
-        const token = apiCall.data.auth_token;
-        dispatch({type: 'SIGN_IN', token: token});
-      },
-    }),
-    [],
-  );
-
   const Stack = createStackNavigator();
+  const Tab = createBottomTabNavigator();
 
   return (
     <NavigationContainer>
-      <AuthContext.Provider value={authContext}>
+      {authState.userToken == null ? (
         <Stack.Navigator>
-          {state.userToken == null ? (
-            <>
-              <Stack.Screen name="Welcome" component={LandingScreen} />
-              <Stack.Screen name="Sign In" component={SignInScreen} />
-              <Stack.Screen name="Sign Up" component={SignUpScreen} />
-            </>
-          ) : (
-            <Stack.Screen name="Home" component={HomeScreen} />
-          )}
+          <Stack.Screen name="Welcome" component={LandingScreen} />
+          <Stack.Screen name="Sign In" component={SignInScreen} />
+          <Stack.Screen name="Sign Up" component={SignUpScreen} />
         </Stack.Navigator>
-      </AuthContext.Provider>
+      ) : (
+        <Tab.Navigator>
+          <Tab.Screen name="Home" component={HomeScreen} />
+        </Tab.Navigator>
+      )}
     </NavigationContainer>
   );
 };

@@ -9,17 +9,20 @@ import {
   Button,
   Text,
 } from 'native-base';
-import {AuthContext} from '../Authentication/context';
+// import {AuthContext} from '../Authentication/context';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {userSignIn} from '../Authentication/action';
 
 const Signup = () => {
   const navigation = useNavigation();
-  const {signUp} = React.useContext(AuthContext);
+  const dispatch = useDispatch();
+  // const {signUp} = React.useContext(AuthContext);
   const [credential, onChangeText] = React.useState({
     email: '',
     password: '',
   });
-  const [confirmation, setConfirmation] = React.useState();
+  const [confirmation] = React.useState();
   const [disableBtn, setBtn] = React.useState(true);
 
   return (
@@ -57,9 +60,7 @@ const Signup = () => {
             block
             bordered
             onPress={() => {
-              if (signUp) {
-                signUp(credential);
-              }
+              dispatch(userSignIn(credential));
             }}
             disabled={disableBtn}>
             <Text>SIGN IN</Text>

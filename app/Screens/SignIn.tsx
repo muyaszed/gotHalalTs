@@ -9,12 +9,15 @@ import {
   Button,
   Text,
 } from 'native-base';
-import {AuthContext} from '../Authentication/context';
+// import {AuthContext} from '../Authentication/context';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {userSignIn} from '../Authentication/action';
 
 const SignIn = () => {
   const navigation = useNavigation();
-  const {signIn} = React.useContext(AuthContext);
+  const dispatch = useDispatch();
+  // const {signIn} = React.useContext(AuthContext);
   const [credential, onChangeText] = React.useState({
     email: '',
     password: '',
@@ -46,9 +49,7 @@ const SignIn = () => {
             block
             bordered
             onPress={() => {
-              if (signIn) {
-                signIn(credential);
-              }
+              dispatch(userSignIn(credential));
             }}>
             <Text>SIGN IN</Text>
           </Button>

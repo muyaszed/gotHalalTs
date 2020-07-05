@@ -1,37 +1,38 @@
-import {ReducerWithoutAction} from 'react';
+import types, {Actions} from '../Store/actions';
 
-interface AuthState {
+export interface AuthState {
   isLoading: boolean;
   isSignout: boolean;
   userToken: string | null;
 }
-type Action = 'RESTORE_TOKEN' | 'SIGN_IN' | 'SIGN_OUT';
-interface AuthActionType {
-  type: Action;
-  token: string | null;
-}
 
-const AuthReducer = (state: AuthState, action: AuthActionType) => {
+export const authInitialState = {
+  isLoading: true,
+  isSignout: true,
+  userToken: null,
+};
+
+export const authReducer = (state = authInitialState, action: Actions) => {
   switch (action.type) {
-    case 'RESTORE_TOKEN':
+    case types.USER_SIGN_IN:
       return {
         ...state,
-        userToken: action.token,
+        userToken: action.payload,
         isLoading: false,
       };
-    case 'SIGN_IN':
+    case types.RESTORE_TOKEN:
       return {
         ...state,
         isSignout: false,
-        userToken: action.token,
+        userToken: action.payload,
       };
-    case 'SIGN_OUT':
+    case types.USER_SIGN_OUT:
       return {
         ...state,
         isSignout: true,
         userToken: null,
       };
+    default:
+      return state;
   }
 };
-
-export default AuthReducer;
