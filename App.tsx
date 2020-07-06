@@ -44,7 +44,16 @@ const App = () => {
         </Stack.Navigator>
       ) : (
         <Tab.Navigator>
-          <Tab.Screen name="Home" component={HomeScreen} />
+          <Tab.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{tabBarLabel: 'Home'}}
+          />
+          <Tab.Screen
+            name="Profile"
+            component={HomeScreen}
+            options={{tabBarLabel: 'Profile'}}
+          />
         </Tab.Navigator>
       )}
     </NavigationContainer>

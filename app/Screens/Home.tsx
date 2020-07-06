@@ -1,33 +1,29 @@
-import React, {useContext} from 'react';
-import {View, Text, Button, SafeAreaView} from 'react-native';
-import {useDispatch} from 'react-redux';
-import {userSignOut} from '../Authentication/action';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {getAllRestaurants} from '../Restaurant/action';
+import {RootState} from '../Store/reducers';
+import {createStackNavigator} from '@react-navigation/stack';
+import Restaurants from './Restaurants';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const [restaurants, setRestaurants] = React.useState([]);
+  const userToken = useSelector((state: RootState) => state.auth.userToken);
 
-  // React.useEffect(() => {
-  //   const fetchList = async (userToken: string) => {
-  //     const restaurantList = await Api.Get.restaurants(userToken);
-  //     setRestaurants(restaurantList.data);
-  //   };
-  //   console.log('The user token: ', authState.userToken);
-  //   if (authState.userToken) {
-  //     fetchList(authState.userToken);
-  //   }
-  // }, []);
+  React.useEffect(() => {
+    if (userToken) {
+      dispatch(getAllRestaurants(userToken));
+    }
+  }, []);
+
+  const Stack = createStackNavigator();
 
   return (
-    <SafeAreaView>
-      <Text>This is Home in screen</Text>
-      <Button
-        title="Sign Out"
-        onPress={() => {
-          dispatch(userSignOut());
-        }}
-      />
-    </SafeAreaView>
+    <Stack.Navigator>
+      <>
+        <Stack.Screen name={'Listing'} component={Restaurants} />
+      </>
+    </Stack.Navigator>
   );
 };
 
