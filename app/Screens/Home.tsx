@@ -5,6 +5,7 @@ import {getAllRestaurants} from '../Restaurant/action';
 import {RootState} from '../Store/reducers';
 import {createStackNavigator} from '@react-navigation/stack';
 import Restaurants from './Restaurants';
+import Restaurant from './Restaurant';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const Home = () => {
     <Stack.Navigator>
       <>
         <Stack.Screen name={'Listing'} component={Restaurants} />
+        <Stack.Screen name={'The Place'} component={Restaurant} />
       </>
     </Stack.Navigator>
   );

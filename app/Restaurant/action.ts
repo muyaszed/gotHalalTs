@@ -6,7 +6,8 @@ import {RestaurantModel} from './reducer';
 export type RestaurantAction =
   | ReturnType<typeof gettingAllRestaurants>
   | ReturnType<typeof gettingAllRestaurantsSuccess>
-  | ReturnType<typeof gettingAllRestaurantsFailed>;
+  | ReturnType<typeof gettingAllRestaurantsFailed>
+  | ReturnType<typeof setSelectedRestaurant>;
 
 const gettingAllRestaurants = () => ({
   type: types.GETTING_ALL_RESTAURANTS,
@@ -31,4 +32,11 @@ export const getAllRestaurants = (userToken: string) => async (
   } catch (error) {
     dispatch(gettingAllRestaurantsFailed(error));
   }
+};
+
+export const setSelectedRestaurant = (restaurantId: number) => {
+  return {
+    type: types.SET_SELECTED_RESTAURANT,
+    payload: restaurantId,
+  };
 };

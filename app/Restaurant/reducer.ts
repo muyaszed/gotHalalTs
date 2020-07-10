@@ -40,12 +40,14 @@ export interface RestaurantModel {
 export interface RestaurantState {
   list: RestaurantModel[];
   isLoading: boolean;
+  selectedRestaurantId: number;
   error: string;
 }
 
 export const restaurantInitialState = {
   list: [],
   isLoading: false,
+  selectedRestaurantId: null,
   error: '',
 };
 
@@ -69,6 +71,11 @@ export const restaurantReducer = (
       return {
         ...state,
         error: action.payload,
+      };
+    case types.SET_SELECTED_RESTAURANT:
+      return {
+        ...state,
+        selectedRestaurantId: action.payload,
       };
     default:
       return state;
