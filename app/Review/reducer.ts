@@ -7,7 +7,7 @@ interface ReviewUser {
   avatar: string;
 }
 
-interface ReviewModel {
+export interface ReviewModel {
   id: number | null;
   comment: string;
   user: ReviewUser;

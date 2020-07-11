@@ -12,7 +12,7 @@ import {
 import {FlatList} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../Store/reducers';
-import {userSignOut} from '../Authentication/action';
+import {signOut} from '../Authentication/action';
 import {useNavigation} from '@react-navigation/native';
 import ListCard from '../Components/listCard';
 import {setSelectedRestaurant} from '../Restaurant/action';
@@ -54,7 +54,7 @@ const Restaurants = () => {
   return (
     <Container>
       <Content>
-        <Button onPress={() => dispatch(userSignOut())}>
+        <Button onPress={() => dispatch(signOut())}>
           <Text>Logout</Text>
         </Button>
 

@@ -1,8 +1,13 @@
 import {AuthAction} from '../Authentication/action';
 import {RestaurantAction} from '../Restaurant/action';
 import {ReviewAction} from '../Review/action';
+import {ProfileAction} from '../Profile/action';
 
-export type Actions = AuthAction | RestaurantAction | ReviewAction;
+export type Actions =
+  | AuthAction
+  | RestaurantAction
+  | ReviewAction
+  | ProfileAction;
 
 export default {
   USER_SIGN_IN: 'USER_SIGN_IN' as const,
@@ -15,4 +20,5 @@ export default {
   GETTING_ALL_REVIEWS: 'GETTING_ALL_REVIEWS' as const,
   GETTING_ALL_REVIEWS_SUCCESS: 'GETTING_ALL_REVIEWS_SUCCESS' as const,
   GETTING_ALL_REVIEWS_FAILED: 'GETTING_ALL_REVIEWS_FAILED' as const,
+  SAVE_PROFILE: 'SAVE_PROFILE' as const,
 };
