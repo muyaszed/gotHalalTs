@@ -22,6 +22,7 @@ import {
 } from '@codler/native-base';
 import {loadReviews} from '../Review/action';
 import ListCard from '../Components/listCard';
+import {RestaurantModel} from 'app/Restaurant/reducer';
 
 const styles = StyleSheet.create({
   title: {
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const renderAboveReviews = (restaurant) => {
+const renderAboveReviews = (restaurant: RestaurantModel) => {
   return (
     <Container>
       <H1 style={styles.title}>{restaurant.name.toUpperCase()}</H1>

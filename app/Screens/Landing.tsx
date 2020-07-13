@@ -27,6 +27,9 @@ const styles = StyleSheet.create({
     position: 'relative',
     top: 25,
   },
+  logo: {
+    fontSize: 100,
+  },
 });
 
 const Landing = () => {
@@ -35,7 +38,7 @@ const Landing = () => {
   return (
     <Container style={styles.container}>
       <Content contentContainerStyle={styles.main} padder>
-        <Icon type="Entypo" name="bowl" style={{fontSize: 100}} />
+        <Icon type="Entypo" name="bowl" style={styles.logo} />
         <Text>GotHalal?</Text>
         <Button block light onPress={() => navigation.navigate('Sign Up')}>
           <Text>Create free account</Text>

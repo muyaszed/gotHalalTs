@@ -1,18 +1,8 @@
 import React from 'react';
-import {
-  Container,
-  Content,
-  Text,
-  Button,
-  CardItem,
-  Left,
-  Icon,
-  Right,
-} from '@codler/native-base';
+import {Text, Button, CardItem, Left, Icon, Right} from '@codler/native-base';
 import {FlatList} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../Store/reducers';
-import {signOut} from '../Authentication/action';
 import {useNavigation} from '@react-navigation/native';
 import ListCard from '../Components/listCard';
 import {setSelectedRestaurant} from '../Restaurant/action';
@@ -52,10 +42,6 @@ const Restaurants = () => {
   const navigation = useNavigation();
   const restaurants = useSelector((state: RootState) => state.restaurants.list);
   return (
-    // <Button onPress={() => dispatch(signOut())}>
-    //   <Text>Logout</Text>
-    // </Button>
-
     <FlatList
       data={restaurants}
       renderItem={({item}) => (
