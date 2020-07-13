@@ -3,7 +3,16 @@ import {ReviewModel} from '../Review/reducer';
 import types, {Actions} from '../Store/actions';
 
 interface UserReview extends ReviewModel {
-  restaurantName: string;
+  restaurant_name: string;
+}
+
+interface CheckIn {
+  id: number;
+}
+
+interface CheckIns {
+  checkin: CheckIn;
+  detail: RestaurantModel;
 }
 
 export interface UserProfile {
@@ -12,8 +21,9 @@ export interface UserProfile {
   lastName: string | null;
   avatarUri: string | null;
   restaurantPosted: RestaurantModel[];
-  reviews: UserReview | [];
+  reviews: UserReview[];
   bookmark: RestaurantModel[];
+  checkIns: CheckIns[];
 }
 
 export const initialProfileState = {
@@ -24,6 +34,7 @@ export const initialProfileState = {
   restaurantPosted: [],
   reviews: [],
   bookmark: [],
+  checkIns: [],
 };
 
 export const profileReducer = (

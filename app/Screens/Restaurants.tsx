@@ -1,5 +1,13 @@
 import React from 'react';
-import {Text, Button, CardItem, Left, Icon, Right} from '@codler/native-base';
+import {
+  Text,
+  Button,
+  CardItem,
+  Left,
+  Icon,
+  Right,
+  Content,
+} from '@codler/native-base';
 import {FlatList} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../Store/reducers';
@@ -45,17 +53,19 @@ const Restaurants = () => {
     <FlatList
       data={restaurants}
       renderItem={({item}) => (
-        <ListCard
-          name={item.name}
-          description={item.desc}
-          mainImageUri={item.cover_uri}
-          avatarUri={item.cover_uri}
-          footerChild={footerChildComponent(item)}
-          onPress={() => {
-            dispatch(setSelectedRestaurant(item.id));
-            navigation.navigate('The Place', {restaurant: item.id});
-          }}
-        />
+        <Content padder>
+          <ListCard
+            name={item.name}
+            description={item.desc}
+            mainImageUri={item.cover_uri}
+            avatarUri={item.cover_uri}
+            footerChild={footerChildComponent(item)}
+            onPress={() => {
+              dispatch(setSelectedRestaurant(item.id));
+              navigation.navigate('The Place', {restaurant: item.id});
+            }}
+          />
+        </Content>
       )}
       keyExtractor={(item) => item.id.toString()}
     />

@@ -170,13 +170,15 @@ const Restaurant = () => {
     <FlatList
       data={reviews}
       renderItem={({item}) => (
-        <ListCard
-          name={`${item.user.firtName} ${item.user.lastName}`}
-          avatarUri={item.user.avatar}
-          mainImage={false}
-          mainText={item.comment}
-          footer={false}
-        />
+        <Content padder>
+          <ListCard
+            name={`${item.user.firtName} ${item.user.lastName}`}
+            avatarUri={item.user.avatar}
+            mainImage={false}
+            mainText={item.comment}
+            footer={false}
+          />
+        </Content>
       )}
       keyExtractor={(item) => item.id!.toString()}
       ListHeaderComponent={renderAboveReviews(restaurant)}

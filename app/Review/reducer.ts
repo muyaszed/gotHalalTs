@@ -8,7 +8,7 @@ interface ReviewUser {
 }
 
 export interface ReviewModel {
-  id: number | null;
+  id: number;
   comment: string;
   user: ReviewUser;
 }

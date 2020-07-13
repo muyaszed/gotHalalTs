@@ -49,6 +49,7 @@ export const userSignIn = (credential: Credential) => async (
       restaurantPosted: apiCall.data.user.restaurants,
       reviews: apiCall.data.user.reviews,
       bookmark: apiCall.data.user.bookmarked_restaurant,
+      checkIns: apiCall.data.user.checkinlist,
     }),
   );
 };

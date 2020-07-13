@@ -8,7 +8,7 @@ import {
   Label,
   Button,
   Text,
-} from 'native-base';
+} from '@codler/native-base';
 // import {AuthContext} from '../Authentication/context';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
