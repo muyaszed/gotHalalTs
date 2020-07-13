@@ -9,7 +9,7 @@ import {
   Text,
   Body,
   Content,
-} from 'native-base';
+} from '@codler/native-base';
 
 const styles = StyleSheet.create({
   mainImageIcon: {

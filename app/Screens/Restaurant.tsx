@@ -19,7 +19,7 @@ import {
   Textarea,
   Toast,
   Icon,
-} from 'native-base';
+} from '@codler/native-base';
 import {loadReviews} from '../Review/action';
 import ListCard from '../Components/listCard';
 
@@ -48,23 +48,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Restaurant = () => {
-  const route = useRoute();
-  const restaurant = useSelector(
-    (state: RootState) =>
-      state.restaurants.list.filter(
-        (item) => item.id === parseInt(route.params.restaurant, 10),
-      )[0],
-  );
-  const userToken = useSelector((state: RootState) => state.auth.userToken);
-  const dispatch = useDispatch();
-  const reviews = useSelector((state: RootState) => state.reviews.list);
-  React.useEffect(() => {
-    if (userToken) {
-      dispatch(loadReviews(userToken));
-    }
-  }, []);
-
+const renderAboveReviews = (restaurant) => {
   return (
     <Container>
       <H1 style={styles.title}>{restaurant.name.toUpperCase()}</H1>
@@ -159,23 +143,43 @@ const Restaurant = () => {
             </Button>
           </Form>
         </Content>
-        <Content padder>
-          <FlatList
-            data={reviews}
-            renderItem={({item}) => (
-              <ListCard
-                name={`${item.user.firtName} ${item.user.lastName}`}
-                avatarUri={item.user.avatar}
-                mainImage={false}
-                mainText={item.comment}
-                footer={false}
-              />
-            )}
-            keyExtractor={(item) => item.id!.toString()}
-          />
-        </Content>
       </Content>
     </Container>
+  );
+};
+
+const Restaurant = () => {
+  const route = useRoute();
+  const restaurant = useSelector(
+    (state: RootState) =>
+      state.restaurants.list.filter(
+        (item) => item.id === parseInt(route.params.restaurant, 10),
+      )[0],
+  );
+  const userToken = useSelector((state: RootState) => state.auth.userToken);
+  const dispatch = useDispatch();
+  const reviews = useSelector((state: RootState) => state.reviews.list);
+  React.useEffect(() => {
+    if (userToken) {
+      dispatch(loadReviews(userToken));
+    }
+  }, []);
+
+  return (
+    <FlatList
+      data={reviews}
+      renderItem={({item}) => (
+        <ListCard
+          name={`${item.user.firtName} ${item.user.lastName}`}
+          avatarUri={item.user.avatar}
+          mainImage={false}
+          mainText={item.comment}
+          footer={false}
+        />
+      )}
+      keyExtractor={(item) => item.id!.toString()}
+      ListHeaderComponent={renderAboveReviews(restaurant)}
+    />
   );
 };
 

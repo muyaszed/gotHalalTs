@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Content, Button, Text, Icon} from 'native-base';
+import {Container, Content, Button, Text, Icon} from '@codler/native-base';
 import {useNavigation} from '@react-navigation/native';
 import {StyleSheet} from 'react-native';
 

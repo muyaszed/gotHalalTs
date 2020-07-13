@@ -8,7 +8,7 @@ import {
   Left,
   Icon,
   Right,
-} from 'native-base';
+} from '@codler/native-base';
 import {FlatList} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../Store/reducers';
@@ -52,31 +52,27 @@ const Restaurants = () => {
   const navigation = useNavigation();
   const restaurants = useSelector((state: RootState) => state.restaurants.list);
   return (
-    <Container>
-      <Content>
-        <Button onPress={() => dispatch(signOut())}>
-          <Text>Logout</Text>
-        </Button>
+    // <Button onPress={() => dispatch(signOut())}>
+    //   <Text>Logout</Text>
+    // </Button>
 
-        <FlatList
-          data={restaurants}
-          renderItem={({item}) => (
-            <ListCard
-              name={item.name}
-              description={item.desc}
-              mainImageUri={item.cover_uri}
-              avatarUri={item.cover_uri}
-              footerChild={footerChildComponent(item)}
-              onPress={() => {
-                dispatch(setSelectedRestaurant(item.id));
-                navigation.navigate('The Place', {restaurant: item.id});
-              }}
-            />
-          )}
-          keyExtractor={(item) => item.id.toString()}
+    <FlatList
+      data={restaurants}
+      renderItem={({item}) => (
+        <ListCard
+          name={item.name}
+          description={item.desc}
+          mainImageUri={item.cover_uri}
+          avatarUri={item.cover_uri}
+          footerChild={footerChildComponent(item)}
+          onPress={() => {
+            dispatch(setSelectedRestaurant(item.id));
+            navigation.navigate('The Place', {restaurant: item.id});
+          }}
         />
-      </Content>
-    </Container>
+      )}
+      keyExtractor={(item) => item.id.toString()}
+    />
   );
 };
 
