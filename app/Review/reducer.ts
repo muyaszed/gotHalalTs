@@ -15,10 +15,12 @@ export interface ReviewModel {
 
 export interface ReviewState {
   list: ReviewModel[];
+  currentReview: string;
 }
 
 export const reviewInitialState = {
   list: [],
+  currentReview: '',
 };
 
 const saveReviewList = (data: any) => {
@@ -42,6 +44,16 @@ export const reviewReducer = (state = reviewInitialState, action: Actions) => {
       return {
         ...state,
         list: saveReviewList(action.payload),
+      };
+    case types.SET_REVIEW_TEXT:
+      return {
+        ...state,
+        currentReview: action.payload,
+      };
+    case types.RESET_REVIEW_TEXT:
+      return {
+        ...state,
+        currentReview: '',
       };
     default:
       return state;

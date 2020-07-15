@@ -24,6 +24,18 @@ export default {
         data: JSON.stringify(credential),
       });
     },
+    reviews: (token: string, comment: {comment: string}, id: number) => {
+      return axios({
+        method: 'post',
+        url: `${Config.API_ADDRESS_DEV}/restaurants/${id}/reviews`,
+        headers: {
+          Accept: 'application/vnd.halaldir.v1+json',
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+        data: JSON.stringify(comment),
+      });
+    },
   },
   Get: {
     restaurants: (userToken: string) => {

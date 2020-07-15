@@ -20,9 +20,10 @@ import {
   Toast,
   Icon,
 } from '@codler/native-base';
-import {loadReviews} from '../Review/action';
+import {loadReviews, setNewReview, setReviewText} from '../Review/action';
 import ListCard from '../Components/listCard';
-import {RestaurantModel} from 'app/Restaurant/reducer';
+import {RestaurantModel} from '../Restaurant/reducer';
+import {Dispatch} from 'redux';
 
 const styles = StyleSheet.create({
   title: {
@@ -47,9 +48,17 @@ const styles = StyleSheet.create({
     width: '45%',
     textAlign: 'center',
   },
+  reviewTextArea: {
+    marginBottom: 20,
+  },
 });
 
-const renderAboveReviews = (restaurant: RestaurantModel) => {
+const renderAboveReviews = (
+  restaurant: RestaurantModel,
+  dispatch: Dispatch<any>,
+  userToken: string,
+  currentReviewText: string,
+) => {
   return (
     <Container>
       <H1 style={styles.title}>{restaurant.name.toUpperCase()}</H1>
@@ -138,8 +147,19 @@ const renderAboveReviews = (restaurant: RestaurantModel) => {
         <Content padder>
           <Text>Reviews</Text>
           <Form>
-            <Textarea underline rowSpan={5} bordered placeholder="........" />
-            <Button bordered block onPress={() => {}}>
+            <Textarea
+              style={styles.reviewTextArea}
+              underline
+              rowSpan={5}
+              bordered
+              placeholder="........"
+              onChangeText={(text) => dispatch(setReviewText(text))}
+              value={currentReviewText}
+            />
+            <Button
+              bordered
+              block
+              onPress={() => dispatch(setNewReview(userToken))}>
               <Text>Submit</Text>
             </Button>
           </Form>
@@ -148,6 +168,16 @@ const renderAboveReviews = (restaurant: RestaurantModel) => {
     </Container>
   );
 };
+
+// const useCurrentReviewText = () => {
+//   const [newReview, setNewReviewText] = useState({comment: ''});
+//   const currentReviewText = useSelector(
+//     (state: RootState) => state.reviews.currentReview,
+//   );
+//   setNewReviewText({comment: currentReviewText});
+
+//   return newReview;
+// };
 
 const Restaurant = () => {
   const route = useRoute();
@@ -160,6 +190,9 @@ const Restaurant = () => {
   const userToken = useSelector((state: RootState) => state.auth.userToken);
   const dispatch = useDispatch();
   const reviews = useSelector((state: RootState) => state.reviews.list);
+  const currentReviewText = useSelector(
+    (state: RootState) => state.reviews.currentReview,
+  );
   React.useEffect(() => {
     if (userToken) {
       dispatch(loadReviews(userToken));
@@ -181,7 +214,12 @@ const Restaurant = () => {
         </Content>
       )}
       keyExtractor={(item) => item.id!.toString()}
-      ListHeaderComponent={renderAboveReviews(restaurant)}
+      ListHeaderComponent={renderAboveReviews(
+        restaurant,
+        dispatch,
+        userToken!,
+        currentReviewText,
+      )}
     />
   );
 };

@@ -5,7 +5,7 @@ import {name as appName} from './app.json';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import configureStore from './app/Store/store';
-import {Root} from 'native-base';
+// import {Root} from 'native-base';
 
 const {store, persistor} = configureStore();
 
@@ -13,9 +13,7 @@ const Main = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <Root>
-          <App />
-        </Root>
+        <App />
       </PersistGate>
     </Provider>
   );

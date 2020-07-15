@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import 'react-native-gesture-handler';
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
@@ -12,6 +13,7 @@ import HomeScreen from './app/Screens/Home';
 import UserProfile from './app/Screens/UserProfile';
 import {RootState} from './app/Store/reducers';
 import {restoreToken} from './app/Authentication/action';
+import {Root} from '@codler/native-base';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -36,28 +38,30 @@ const App = () => {
   const Tab = createBottomTabNavigator();
 
   return (
-    <NavigationContainer>
-      {authState.userToken == null ? (
-        <Stack.Navigator>
-          <Stack.Screen name="Welcome" component={LandingScreen} />
-          <Stack.Screen name="Sign In" component={SignInScreen} />
-          <Stack.Screen name="Sign Up" component={SignUpScreen} />
-        </Stack.Navigator>
-      ) : (
-        <Tab.Navigator>
-          <Tab.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{tabBarLabel: 'Home'}}
-          />
-          <Tab.Screen
-            name="Profile"
-            component={UserProfile}
-            options={{tabBarLabel: 'Profile'}}
-          />
-        </Tab.Navigator>
-      )}
-    </NavigationContainer>
+    <Root>
+      <NavigationContainer>
+        {authState.userToken == null ? (
+          <Stack.Navigator>
+            <Stack.Screen name="Welcome" component={LandingScreen} />
+            <Stack.Screen name="Sign In" component={SignInScreen} />
+            <Stack.Screen name="Sign Up" component={SignUpScreen} />
+          </Stack.Navigator>
+        ) : (
+          <Tab.Navigator>
+            <Tab.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{tabBarLabel: 'Home'}}
+            />
+            <Tab.Screen
+              name="Profile"
+              component={UserProfile}
+              options={{tabBarLabel: 'Profile'}}
+            />
+          </Tab.Navigator>
+        )}
+      </NavigationContainer>
+    </Root>
   );
 };
 
