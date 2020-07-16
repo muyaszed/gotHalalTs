@@ -3,7 +3,6 @@ import Api from '../Services/api';
 import {RootState} from 'app/Store/reducers';
 import types from '../Store/actions';
 import {showToast} from '../Services/helper';
-
 export type ReviewAction =
   | ReturnType<typeof loadReviewsSuccess>
   | ReturnType<typeof loadReviewsFailed>
@@ -71,13 +70,8 @@ export const setNewReview = (userToken: string) => async (
     const response = await Api.Get.reviews(userToken.toString(), restaurantId);
     const data = response.data;
     dispatch(loadReviewsSuccess(data));
-    showToast({
-      text: 'Review successfully submited',
-      buttonText: 'OK',
-      position: 'top',
-      duration: 3000,
-    });
     dispatch(resetReviewText());
+    showToast('Review successfully added');
   } catch (error) {
     dispatch(setNewReviewFailed(error));
   }

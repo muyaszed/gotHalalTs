@@ -1,19 +1,9 @@
-import {Toast} from '@codler/native-base';
+import Toast from 'react-native-simple-toast';
 
-type toastPosition = 'top' | 'bottom' | 'center' | undefined;
-
-interface showToastConfig {
+export interface ShowToastConfig {
   text: string;
-  buttonText: string;
-  position: toastPosition;
-  duration: number;
 }
 
-export const showToast = (config: showToastConfig) => {
-  Toast.show({
-    text: config.text,
-    buttonText: config.buttonText,
-    position: config.position,
-    duration: config.duration,
-  });
+export const showToast = (text: string) => {
+  Toast.show(text);
 };

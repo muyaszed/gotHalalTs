@@ -2,8 +2,8 @@
 import React from 'react';
 import {Image, StyleSheet, FlatList, View} from 'react-native';
 import {useRoute} from '@react-navigation/native';
-import {RootState} from '../Store/reducers';
 import {useSelector, useDispatch} from 'react-redux';
+import {Dispatch} from 'redux';
 import {
   Left,
   Text,
@@ -17,13 +17,13 @@ import {
   ListItem,
   Form,
   Textarea,
-  Toast,
   Icon,
 } from '@codler/native-base';
+import Toast from 'react-native-simple-toast';
+import {RootState} from '../Store/reducers';
 import {loadReviews, setNewReview, setReviewText} from '../Review/action';
 import ListCard from '../Components/listCard';
 import {RestaurantModel} from '../Restaurant/reducer';
-import {Dispatch} from 'redux';
 
 const styles = StyleSheet.create({
   title: {
@@ -115,32 +115,12 @@ const renderAboveReviews = (
             iconLeft
             bordered
             block
-            onPress={() =>
-              Toast.show({
-                text: 'Wrong password!',
-                buttonText: 'Okay',
-                position: 'top',
-                duration: 3000,
-              })
-            }>
+            onPress={() => Toast.show('This is a toast.')}>
             <Icon active type="FontAwesome5" name="calendar-check" />
             <Text>Check-In Here</Text>
           </Button>
-          <Button
-            style={styles.groupBtn}
-            iconLeft
-            bordered
-            block
-            onPress={() =>
-              Toast.show({
-                text: 'Wrong password!',
-                buttonText: 'Okay',
-                position: 'top',
-                duration: 3000,
-              })
-            }>
+          <Button style={styles.groupBtn} iconLeft bordered block>
             <Icon active type="Foundation" name="book-bookmark" />
-
             <Text>Bookmark</Text>
           </Button>
         </View>
@@ -168,16 +148,6 @@ const renderAboveReviews = (
     </Container>
   );
 };
-
-// const useCurrentReviewText = () => {
-//   const [newReview, setNewReviewText] = useState({comment: ''});
-//   const currentReviewText = useSelector(
-//     (state: RootState) => state.reviews.currentReview,
-//   );
-//   setNewReviewText({comment: currentReviewText});
-
-//   return newReview;
-// };
 
 const Restaurant = () => {
   const route = useRoute();
