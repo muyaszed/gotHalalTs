@@ -1,8 +1,11 @@
-import {Dispatch} from 'redux';
+import {Dispatch, Action} from 'redux';
 import Api from '../Services/api';
 import {RootState} from 'app/Store/reducers';
 import types from '../Store/actions';
 import {showToast} from '../Services/helper';
+import {updateCurrentProfile} from '../Profile/action';
+import {getAllRestaurants} from '../Restaurant/action';
+import {ThunkDispatch} from 'redux-thunk';
 export type ReviewAction =
   | ReturnType<typeof loadReviewsSuccess>
   | ReturnType<typeof loadReviewsFailed>
@@ -55,7 +58,7 @@ export const setReviewText = (comment: string) => ({
 });
 
 export const setNewReview = (userToken: string) => async (
-  dispatch: Dispatch,
+  dispatch: ThunkDispatch<RootState, void, Action>,
   getState: () => RootState,
 ) => {
   const restaurantId = getState().restaurants.selectedRestaurantId;
@@ -72,6 +75,8 @@ export const setNewReview = (userToken: string) => async (
     dispatch(loadReviewsSuccess(data));
     dispatch(resetReviewText());
     showToast('Review successfully added');
+    dispatch(updateCurrentProfile(userToken));
+    dispatch(getAllRestaurants(userToken));
   } catch (error) {
     dispatch(setNewReviewFailed(error));
   }
