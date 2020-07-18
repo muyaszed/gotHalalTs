@@ -46,6 +46,16 @@ export default {
           Authorization: token,
         },
       }),
+    unbookmark: (token: string, restaurantId: number, userId: number) =>
+      axios({
+        method: 'POST',
+        url: `${Config.API_ADDRESS_DEV}/restaurants/${restaurantId}/${userId}/unbookmark_restaurant`,
+        headers: {
+          Accept: 'application/vnd.halaldir.v1+json',
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      }),
   },
   Get: {
     restaurants: (userToken: string) => {

@@ -24,7 +24,7 @@ import {RootState} from '../Store/reducers';
 import {loadReviews, setNewReview, setReviewText} from '../Review/action';
 import ListCard from '../Components/listCard';
 import {RestaurantModel} from '../Restaurant/reducer';
-import {userBookmark} from '../Bookmark/action';
+import {userBookmark, userUnbookmark} from '../Bookmark/action';
 
 const styles = StyleSheet.create({
   title: {
@@ -59,6 +59,7 @@ const renderAboveReviews = (
   dispatch: Dispatch<any>,
   userToken: string,
   currentReviewText: string,
+  currentUserBookmarkList: RestaurantModel[],
 ) => {
   return (
     <Container>
@@ -120,15 +121,30 @@ const renderAboveReviews = (
             <Icon active type="FontAwesome5" name="calendar-check" />
             <Text>Check-In Here</Text>
           </Button>
-          <Button
-            style={styles.groupBtn}
-            iconLeft
-            bordered
-            block
-            onPress={() => dispatch(userBookmark(userToken))}>
-            <Icon active type="Foundation" name="book-bookmark" />
-            <Text>Bookmark</Text>
-          </Button>
+          {currentUserBookmarkList.find(
+            (bookamarkedRestaurant) =>
+              bookamarkedRestaurant.id === restaurant.id,
+          ) ? (
+            <Button
+              style={styles.groupBtn}
+              iconLeft
+              bordered
+              block
+              onPress={() => dispatch(userUnbookmark(userToken))}>
+              <Icon active type="Foundation" name="book-bookmark" />
+              <Text>Unbookmark</Text>
+            </Button>
+          ) : (
+            <Button
+              style={styles.groupBtn}
+              iconLeft
+              bordered
+              block
+              onPress={() => dispatch(userBookmark(userToken))}>
+              <Icon active type="Foundation" name="book-bookmark" />
+              <Text>Bookmark</Text>
+            </Button>
+          )}
         </View>
         <Content padder>
           <Text>Reviews</Text>
@@ -169,6 +185,10 @@ const Restaurant = () => {
   const currentReviewText = useSelector(
     (state: RootState) => state.reviews.currentReview,
   );
+  const currentUserBookmarkList = useSelector(
+    (state: RootState) => state.profile.bookmark,
+  );
+
   React.useEffect(() => {
     if (userToken) {
       dispatch(loadReviews(userToken));
@@ -195,6 +215,7 @@ const Restaurant = () => {
         dispatch,
         userToken!,
         currentReviewText,
+        currentUserBookmarkList,
       )}
     />
   );
