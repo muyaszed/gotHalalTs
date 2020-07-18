@@ -24,6 +24,7 @@ import {RootState} from '../Store/reducers';
 import {loadReviews, setNewReview, setReviewText} from '../Review/action';
 import ListCard from '../Components/listCard';
 import {RestaurantModel} from '../Restaurant/reducer';
+import {userBookmark} from '../Bookmark/action';
 
 const styles = StyleSheet.create({
   title: {
@@ -119,7 +120,12 @@ const renderAboveReviews = (
             <Icon active type="FontAwesome5" name="calendar-check" />
             <Text>Check-In Here</Text>
           </Button>
-          <Button style={styles.groupBtn} iconLeft bordered block>
+          <Button
+            style={styles.groupBtn}
+            iconLeft
+            bordered
+            block
+            onPress={() => dispatch(userBookmark(userToken))}>
             <Icon active type="Foundation" name="book-bookmark" />
             <Text>Bookmark</Text>
           </Button>

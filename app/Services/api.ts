@@ -36,6 +36,16 @@ export default {
         data: JSON.stringify(comment),
       });
     },
+    bookmark: (token: string, restaurantId: number, userId: number) =>
+      axios({
+        method: 'POST',
+        url: `${Config.API_ADDRESS_DEV}/restaurants/${restaurantId}/${userId}/bookmark_restaurant`,
+        headers: {
+          Accept: 'application/vnd.halaldir.v1+json',
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      }),
   },
   Get: {
     restaurants: (userToken: string) => {
@@ -60,5 +70,15 @@ export default {
         },
       });
     },
+    user: (token: string, id: number) =>
+      axios({
+        method: 'GET',
+        url: `${Config.API_ADDRESS_DEV}/users/${id}`,
+        headers: {
+          Accept: 'application/vnd.halaldir.v1+json',
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      }),
   },
 };

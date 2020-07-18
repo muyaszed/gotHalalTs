@@ -16,6 +16,7 @@ interface CheckIns {
 }
 
 export interface UserProfile {
+  userId: number | null;
   email: string;
   firstName: string | null;
   lastName: string | null;
@@ -27,6 +28,7 @@ export interface UserProfile {
 }
 
 export const initialProfileState = {
+  userId: null,
   email: '',
   firstName: '',
   lastName: '',
