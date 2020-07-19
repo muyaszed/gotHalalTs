@@ -1,8 +1,6 @@
 import {CategoryType} from '../Category/reducer';
 import {CuisineType} from '../Cuisine/reducer';
-import {Actions} from '../Store/actions';
-import types from '../Store/actions';
-
+import types, {Actions} from '../Store/actions';
 interface OnlyIds {
   id: number;
 }
@@ -40,11 +38,11 @@ export interface RestaurantModel {
 export interface RestaurantState {
   list: RestaurantModel[];
   isLoading: boolean;
-  selectedRestaurantId: number;
+  selectedRestaurantId: number | null;
   error: string;
 }
 
-export const restaurantInitialState = {
+export const restaurantInitialState: RestaurantState = {
   list: [],
   isLoading: false,
   selectedRestaurantId: null,
@@ -54,7 +52,7 @@ export const restaurantInitialState = {
 export const restaurantReducer = (
   state = restaurantInitialState,
   action: Actions,
-) => {
+): RestaurantState => {
   switch (action.type) {
     case types.GETTING_ALL_RESTAURANTS:
       return {

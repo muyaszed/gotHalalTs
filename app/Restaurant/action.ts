@@ -13,7 +13,7 @@ const gettingAllRestaurants = () => ({
   type: types.GETTING_ALL_RESTAURANTS,
 });
 
-const gettingAllRestaurantsSuccess = (data: RestaurantModel) => ({
+const gettingAllRestaurantsSuccess = (data: RestaurantModel[]) => ({
   type: types.GETTING_ALL_RESTAURANTS_SUCCESS,
   payload: data,
 });

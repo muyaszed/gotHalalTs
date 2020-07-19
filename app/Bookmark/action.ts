@@ -12,12 +12,15 @@ export const userBookmark = (userToken: string) => async (
 ) => {
   const restaurantId = getState().restaurants.selectedRestaurantId;
   const userId = getState().profile.userId;
-  try {
-    await Api.Post.bookmark(userToken, restaurantId, userId!);
-    showToast('You have bookmark this place');
-    dispatch(updateCurrentProfile(userToken));
-    dispatch(getAllRestaurants(userToken));
-  } catch (error) {}
+
+  if (userId && restaurantId) {
+    try {
+      await Api.Post.bookmark(userToken, restaurantId, userId);
+      showToast('You have bookmark this place');
+      dispatch(updateCurrentProfile(userToken));
+      dispatch(getAllRestaurants(userToken));
+    } catch (error) {}
+  }
 };
 
 export const userUnbookmark = (userToken: string) => async (
@@ -26,10 +29,12 @@ export const userUnbookmark = (userToken: string) => async (
 ) => {
   const restaurantId = getState().restaurants.selectedRestaurantId;
   const userId = getState().profile.userId;
-  try {
-    await Api.Post.unbookmark(userToken, restaurantId, userId!);
-    showToast('You have unbookmark this place');
-    dispatch(updateCurrentProfile(userToken));
-    dispatch(getAllRestaurants(userToken));
-  } catch (error) {}
+  if (userId && restaurantId) {
+    try {
+      await Api.Post.unbookmark(userToken, restaurantId, userId);
+      showToast('You have unbookmark this place');
+      dispatch(updateCurrentProfile(userToken));
+      dispatch(getAllRestaurants(userToken));
+    } catch (error) {}
+  }
 };

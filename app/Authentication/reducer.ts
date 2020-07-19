@@ -6,13 +6,16 @@ export interface AuthState {
   userToken: string | null;
 }
 
-export const authInitialState = {
+export const authInitialState: AuthState = {
   isLoading: true,
   isSignout: true,
   userToken: null,
 };
 
-export const authReducer = (state = authInitialState, action: Actions) => {
+export const authReducer = (
+  state = authInitialState,
+  action: Actions,
+): AuthState => {
   switch (action.type) {
     case types.USER_SIGN_IN:
       return {

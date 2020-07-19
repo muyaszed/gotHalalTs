@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import {Image, StyleSheet, FlatList, View} from 'react-native';
+import {Image, StyleSheet, FlatList, View, RefreshControl} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from 'redux';
@@ -19,12 +19,13 @@ import {
   Textarea,
   Icon,
 } from '@codler/native-base';
-import Toast from 'react-native-simple-toast';
 import {RootState} from '../Store/reducers';
 import {loadReviews, setNewReview, setReviewText} from '../Review/action';
 import ListCard from '../Components/listCard';
 import {RestaurantModel} from '../Restaurant/reducer';
 import {userBookmark, userUnbookmark} from '../Bookmark/action';
+import {getAllRestaurants} from '../Restaurant/action';
+import {userCheckin} from '../CheckIn/action';
 
 const styles = StyleSheet.create({
   title: {
@@ -117,7 +118,7 @@ const renderAboveReviews = (
             iconLeft
             bordered
             block
-            onPress={() => Toast.show('This is a toast.')}>
+            onPress={() => dispatch(userCheckin())}>
             <Icon active type="FontAwesome5" name="calendar-check" />
             <Text>Check-In Here</Text>
           </Button>
@@ -171,6 +172,12 @@ const renderAboveReviews = (
   );
 };
 
+const wait = (timeout: number) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+};
+
 const Restaurant = () => {
   const route = useRoute();
   const restaurant = useSelector(
@@ -188,6 +195,19 @@ const Restaurant = () => {
   const currentUserBookmarkList = useSelector(
     (state: RootState) => state.profile.bookmark,
   );
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => {
+      if (userToken) {
+        dispatch(getAllRestaurants(userToken));
+        setRefreshing(false);
+      }
+    });
+  }, []);
 
   React.useEffect(() => {
     if (userToken) {
@@ -217,6 +237,9 @@ const Restaurant = () => {
         currentReviewText,
         currentUserBookmarkList,
       )}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
     />
   );
 };
