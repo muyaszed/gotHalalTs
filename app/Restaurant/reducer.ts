@@ -11,6 +11,12 @@ interface CheckingIns extends OnlyIds {}
 
 interface Reviews extends OnlyIds {}
 
+interface SocMed {
+  facebook: string;
+  instagram: string;
+  twitter: string;
+}
+
 export interface RestaurantModel {
   id: number;
   name: string;
@@ -22,6 +28,7 @@ export interface RestaurantModel {
   cuisine: CuisineType;
   start: string;
   desc: string;
+  sub_header: string;
   cover_uri: null | string;
   created_at: string;
   end: string;
@@ -30,6 +37,11 @@ export interface RestaurantModel {
   location: string;
   web: string;
   updated_at: number;
+  contact_number: string;
+  soc_med: SocMed;
+  family_friendly: boolean;
+  surau: boolean;
+  disabled_accessibility: boolean;
   bookmarking_user: BookmarkingUser[];
   checking_ins: CheckingIns[];
   reviews: Reviews[];
