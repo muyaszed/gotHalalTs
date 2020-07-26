@@ -24,6 +24,13 @@ export default {
         data: JSON.stringify(credential),
       });
     },
+    fbAuthentication: (token) =>
+      axios({
+        url: `${Config.API_ADDRESS_DEV}/auth/fb_login`,
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(token),
+      }),
     reviews: (token: string, comment: {comment: string}, id: number) => {
       return axios({
         method: 'post',
