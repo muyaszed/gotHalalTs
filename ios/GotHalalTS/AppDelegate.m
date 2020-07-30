@@ -13,6 +13,8 @@
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
 #import <GoogleMaps/GoogleMaps.h>
 #import "ReactNativeConfig.h"
+#import <React/RCTLinkingManager.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
@@ -58,6 +60,21 @@ NSString *apiUrl = [ReactNativeConfig envFor:@"GOOGLE_MAP_API"];
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
+}
+
+- (BOOL)application:(UIApplication *)app
+            openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+  if ([[FBSDKApplicationDelegate sharedInstance] application:app openURL:url options:options]) {
+    return YES;
+  }
+
+  if ([RCTLinkingManager application:app openURL:url options:options]) {
+    return YES;
+  }
+
+  return NO;
 }
 
 @end

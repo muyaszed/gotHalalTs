@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Config from 'react-native-config';
+import {FBToken} from 'app/Screens/SignIn';
 
 export interface Credential {
   email: string;
@@ -24,13 +25,14 @@ export default {
         data: JSON.stringify(credential),
       });
     },
-    fbAuthentication: (token) =>
-      axios({
+    fbAuthentication: (token: FBToken) => {
+      return axios({
+        method: 'post',
         url: `${Config.API_ADDRESS_DEV}/auth/fb_login`,
-        method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(token),
-      }),
+        data: JSON.stringify(token),
+      });
+    },
     reviews: (token: string, comment: {comment: string}, id: number) => {
       return axios({
         method: 'post',

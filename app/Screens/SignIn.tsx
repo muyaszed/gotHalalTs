@@ -11,8 +11,10 @@ import {
 } from '@codler/native-base';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
-import {userSignIn} from '../Authentication/action';
+import {userSignIn, signInWithFaceBook} from '../Authentication/action';
 import {StyleSheet, View} from 'react-native';
+import {LoginManager, AccessToken} from 'react-native-fbsdk';
+import {Dispatch} from 'redux';
 
 const styles = StyleSheet.create({
   mainContent: {
@@ -31,6 +33,33 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+export interface FBToken {
+  facebook_access_token: string;
+}
+
+const fbLogin = (dispatch: Dispatch<any>) => {
+  LoginManager.logOut();
+  LoginManager.logInWithPermissions(['email', 'public_profile']).then(
+    (result) => {
+      if (result.isCancelled) {
+        console.log('Login cancelled');
+      } else {
+        AccessToken.getCurrentAccessToken().then((data) => {
+          if (data) {
+            const token: FBToken = {
+              facebook_access_token: data.accessToken.toString(),
+            };
+            dispatch(signInWithFaceBook(token));
+          }
+        });
+      }
+    },
+    (error) => {
+      console.log('Login error: ', error);
+    },
+  );
+};
 
 const SignIn = () => {
   const navigation = useNavigation();
@@ -73,7 +102,7 @@ const SignIn = () => {
             }}>
             <Text>SIGN IN</Text>
           </Button>
-          <Button block bordered onPress={() => {}}>
+          <Button block bordered onPress={() => fbLogin(dispatch)}>
             <Text>SIGN IN WITH FACEBOOK</Text>
           </Button>
           <Text style={styles.underBtnText}>

@@ -12,7 +12,7 @@ import {
 // import {AuthContext} from '../Authentication/context';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
-import {userSignIn} from '../Authentication/action';
+import {userSignUp} from '../Authentication/action';
 
 const Signup = () => {
   const navigation = useNavigation();
@@ -60,10 +60,10 @@ const Signup = () => {
             block
             bordered
             onPress={() => {
-              dispatch(userSignIn(credential));
+              dispatch(userSignUp(credential));
             }}
             disabled={disableBtn}>
-            <Text>SIGN IN</Text>
+            <Text>SIGN UP</Text>
           </Button>
           <Text>
             Already have an account?{' '}

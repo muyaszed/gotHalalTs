@@ -3,6 +3,7 @@ import types from '../Store/actions';
 import Api, {Credential} from '../Services/api';
 import {Dispatch} from 'redux';
 import {saveProfile} from '../Profile/action';
+import {FBToken} from 'app/Screens/SignIn';
 
 export type AuthAction =
   | ReturnType<typeof signIn>
@@ -28,6 +29,32 @@ export const restoreToken = (newToken: string) => ({
   payload: newToken,
 });
 
+export const userSignUp = (credential: Credential) => async (
+  dispatch: Dispatch,
+) => {
+  try {
+    const apiCall = await Api.Post.userSignup(credential);
+    const token = apiCall.data.auth_token;
+    await AsyncStorage.setItem('userToken', token);
+    dispatch(signIn(token));
+    dispatch(
+      saveProfile({
+        userId: apiCall.data.user.id,
+        email: apiCall.data.user.email,
+        firstName: apiCall.data.user.profile.first_name,
+        lastName: apiCall.data.user.profile.last_name,
+        avatarUri: apiCall.data.user.profile.avatar_uri,
+        restaurantPosted: apiCall.data.user.restaurants,
+        reviews: apiCall.data.user.reviews,
+        bookmark: apiCall.data.user.bookmarked_restaurant,
+        checkIns: apiCall.data.user.checkinlist,
+      }),
+    );
+  } catch (error) {
+    console.log(error.response.data.message);
+  }
+};
+
 export const userSignIn = (credential: Credential) => async (
   dispatch: Dispatch,
 ) => {
@@ -35,7 +62,32 @@ export const userSignIn = (credential: Credential) => async (
     const apiCall = await Api.Post.userLogin(credential);
     const token = apiCall.data.auth_token;
     await AsyncStorage.setItem('userToken', token);
-    console.log(token);
+    dispatch(signIn(token));
+    dispatch(
+      saveProfile({
+        userId: apiCall.data.user.id,
+        email: apiCall.data.user.email,
+        firstName: apiCall.data.user.profile.first_name,
+        lastName: apiCall.data.user.profile.last_name,
+        avatarUri: apiCall.data.user.profile.avatar_uri,
+        restaurantPosted: apiCall.data.user.restaurants,
+        reviews: apiCall.data.user.reviews,
+        bookmark: apiCall.data.user.bookmarked_restaurant,
+        checkIns: apiCall.data.user.checkinlist,
+      }),
+    );
+  } catch (error) {
+    console.log(error.response.data.message);
+  }
+};
+
+export const signInWithFaceBook = (fbToken: FBToken) => async (
+  dispatch: Dispatch,
+) => {
+  try {
+    const apiCall = await Api.Post.fbAuthentication(fbToken);
+    const token = apiCall.data.auth_token;
+    await AsyncStorage.setItem('userToken', token);
     dispatch(signIn(token));
     dispatch(
       saveProfile({
