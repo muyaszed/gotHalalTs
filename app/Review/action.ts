@@ -29,13 +29,15 @@ export const loadReviews = (userToken: string) => async (
   getState: () => RootState,
 ) => {
   const restaurantId = getState().restaurants.selectedRestaurantId;
-  try {
-    const data = await (
-      await Api.Get.reviews(userToken.toString(), restaurantId)
-    ).data;
-    dispatch(loadReviewsSuccess(data));
-  } catch (error) {
-    dispatch(loadReviewsFailed(error));
+  if (restaurantId) {
+    try {
+      const data = await (
+        await Api.Get.reviews(userToken.toString(), restaurantId)
+      ).data;
+      dispatch(loadReviewsSuccess(data));
+    } catch (error) {
+      dispatch(loadReviewsFailed(error));
+    }
   }
 };
 
@@ -63,21 +65,26 @@ export const setNewReview = (userToken: string) => async (
 ) => {
   const restaurantId = getState().restaurants.selectedRestaurantId;
   const currentReviewText = getState().reviews.currentReview;
-  try {
-    await Api.Post.reviews(
-      userToken,
-      {comment: currentReviewText},
-      restaurantId,
-    );
-    dispatch(setNewReviewSucces());
-    const response = await Api.Get.reviews(userToken.toString(), restaurantId);
-    const data = response.data;
-    dispatch(loadReviewsSuccess(data));
-    dispatch(resetReviewText());
-    showToast('Review successfully added');
-    dispatch(updateCurrentProfile(userToken));
-    dispatch(getAllRestaurants(userToken));
-  } catch (error) {
-    dispatch(setNewReviewFailed(error));
+  if (restaurantId) {
+    try {
+      await Api.Post.reviews(
+        userToken,
+        {comment: currentReviewText},
+        restaurantId,
+      );
+      dispatch(setNewReviewSucces());
+      const response = await Api.Get.reviews(
+        userToken.toString(),
+        restaurantId,
+      );
+      const data = response.data;
+      dispatch(loadReviewsSuccess(data));
+      dispatch(resetReviewText());
+      showToast('Review successfully added');
+      dispatch(updateCurrentProfile(userToken));
+      dispatch(getAllRestaurants(userToken));
+    } catch (error) {
+      dispatch(setNewReviewFailed(error));
+    }
   }
 };

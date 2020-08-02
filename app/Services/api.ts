@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Config from 'react-native-config';
 import {FBToken} from 'app/Screens/SignIn';
+import {UpdatableUserProfile} from 'app/Profile/reducer';
 
 export interface Credential {
   email: string;
@@ -109,5 +110,18 @@ export default {
           Authorization: token,
         },
       }),
+  },
+  Put: {
+    profile: (token: string, data: FormData, currentUserId: number) => {
+      return axios({
+        method: 'PUT',
+        url: `${Config.API_ADDRESS_DEV}/profiles/${currentUserId}`,
+        headers: {
+          Accept: 'application/vnd.halaldir.v1+json',
+          Authorization: token,
+        },
+        data: data,
+      });
+    },
   },
 };

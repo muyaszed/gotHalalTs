@@ -1,11 +1,21 @@
 import React from 'react';
-import {SafeAreaView, View, Text, StyleSheet, Image} from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../Store/reducers';
 import {Icon, List, ListItem, Left, Right, Button} from '@codler/native-base';
 import {signOut} from '../Authentication/action';
 import {useNavigation} from '@react-navigation/native';
+import Modal from '../Components/modal';
+import {updateUserProfile} from '../Profile/action';
 
+import ImagePicker from 'react-native-image-picker';
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -29,6 +39,18 @@ const styles = StyleSheet.create({
   avatarIcon: {
     fontSize: 70,
   },
+  uploadAvatar: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'snow',
+    position: 'absolute',
+    right: '35%',
+    bottom: '15%',
+  },
   informationContainer: {
     flex: 4,
   },
@@ -37,10 +59,15 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
   },
+  cameraIcon: {
+    fontSize: 20,
+  },
 });
 
 const Profile = () => {
   const profile = useSelector((state: RootState) => state.profile);
+  const userToken = useSelector((state: RootState) => state.auth.userToken);
+  const [photoModal, setPhotoModal] = React.useState(false);
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -59,6 +86,86 @@ const Profile = () => {
             <Icon type="Entypo" name="bowl" style={styles.avatarIcon} />
           </View>
         )}
+        <TouchableOpacity
+          style={styles.uploadAvatar}
+          // onPress={() => setPhotoModal(true)}>
+          onPress={() => {
+            const options = {
+              title: 'Select Avatar',
+              customButtons: [
+                {name: 'fb', title: 'Choose Photo from Facebook'},
+              ],
+              storageOptions: {
+                skipBackup: true,
+                path: 'images',
+              },
+            };
+            ImagePicker.showImagePicker(options, (response) => {
+              console.log('Response = ', response);
+
+              if (response.didCancel) {
+                console.log('User cancelled image picker');
+              } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+              } else if (response.customButton) {
+                console.log(
+                  'User tapped custom button: ',
+                  response.customButton,
+                );
+              } else {
+                const source = {uri: response.uri};
+                console.log(source);
+                const form = new FormData();
+
+                form.append('avatar', {
+                  name: response.fileName,
+                  type: response.type,
+                  uri: response.uri.replace('file://', ''),
+                });
+                if (userToken && profile.userId) {
+                  dispatch(updateUserProfile(userToken, form, profile.userId));
+                }
+                // You can also display the image using data:
+                // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+              }
+            });
+          }}>
+          <Icon type="Entypo" name="camera" style={styles.cameraIcon} />
+        </TouchableOpacity>
+        {/* <Button
+          onPress={() => {
+            const options = {
+              title: 'Select Avatar',
+              customButtons: [
+                {name: 'fb', title: 'Choose Photo from Facebook'},
+              ],
+              storageOptions: {
+                skipBackup: true,
+                path: 'images',
+              },
+            };
+            ImagePicker.showImagePicker(options, (response) => {
+              console.log('Response = ', response);
+
+              if (response.didCancel) {
+                console.log('User cancelled image picker');
+              } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+              } else if (response.customButton) {
+                console.log(
+                  'User tapped custom button: ',
+                  response.customButton,
+                );
+              } else {
+                const source = {uri: response.uri};
+                console.log(source);
+                // You can also display the image using data:
+                // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+              }
+            });
+          }}>
+          <Text>Test photo</Text>
+        </Button> */}
       </View>
       <View style={styles.informationContainer}>
         <List>
@@ -125,6 +232,20 @@ const Profile = () => {
           <Text>Sign Out</Text>
         </Button>
       </View>
+      <Modal
+        title="Please select the source of your photo."
+        leftButtonName="Photo"
+        rightButtonName="Camera"
+        modalVisible={photoModal}
+        handleLeftButton={() => {
+          navigation.navigate('Photo');
+          setPhotoModal(false);
+        }}
+        handleRightButton={() => {
+          navigation.navigate('Camera');
+          setPhotoModal(false);
+        }}
+      />
     </SafeAreaView>
   );
 };

@@ -88,5 +88,17 @@
 		<string>fbauth2</string>
 		<string>fbshareextension</string>
 	</array>
+
+	<!-- Required with iOS 10 and higher -->
+<key>NSCameraUsageDescription</key>
+<string>Got Halal would like to use your camera for the first time</string>
+
+<!-- Required with iOS 11 and higher: include this only if you are planning to use the camera roll -->
+<key>NSPhotoLibraryAddUsageDescription</key>
+<string>Got Halal would like to use your photo library for the first time</string>
+
+<!-- Include this only if you are planning to use the camera roll -->
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Got Halal would like to use your photo library for the first time</string>
 </dict>
 </plist>

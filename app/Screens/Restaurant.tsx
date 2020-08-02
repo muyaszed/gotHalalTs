@@ -1,13 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import {
-  Image,
-  StyleSheet,
-  FlatList,
-  View,
-  RefreshControl,
-  Modal,
-} from 'react-native';
+import {Image, StyleSheet, FlatList, View, RefreshControl} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from 'redux';
@@ -36,6 +29,7 @@ import {RestaurantModel} from '../Restaurant/reducer';
 import {userBookmark, userUnbookmark} from '../Bookmark/action';
 import {getAllRestaurants} from '../Restaurant/action';
 import {userCheckin} from '../CheckIn/action';
+import Modal from '../Components/modal';
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -81,19 +75,9 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     height: 300,
   },
-  mapModal: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: '30%',
-  },
-  mapModalContent: {
-    backgroundColor: 'white',
-    height: 200,
-  },
-  mapModalTitle: {
-    textAlign: 'center',
-  },
+  mapModal: {},
+  mapModalContent: {},
+  mapModalTitle: {},
 });
 
 interface MapOption {
@@ -258,57 +242,33 @@ const renderAboveReviews = (
           </Button>
         </Form>
       </View>
-      <View style={styles.mapModal}>
-        <Modal
-          animationType="slide"
-          visible={mapModalVisible}
-          transparent={true}>
-          <View style={styles.mapModal}>
-            <View style={styles.mapModalContent}>
-              <Text style={styles.mapModalTitle}>
-                Please select your desired map application.
-              </Text>
-              <ListItem onPress={() => setUseGoogleMap(true)}>
-                <CheckBox checked={useGoogleMap} />
-                <Body>
-                  <Text>Google Map</Text>
-                </Body>
-              </ListItem>
-              <ListItem onPress={() => setUseGoogleMap(false)}>
-                <CheckBox checked={!useGoogleMap} />
-                <Body>
-                  <Text>IOS Map</Text>
-                </Body>
-              </ListItem>
-              <View style={styles.groupBtnContainer}>
-                <Button
-                  style={styles.groupBtn}
-                  iconLeft
-                  bordered
-                  block
-                  onPress={() => {
-                    handleOpenMap({
-                      latitude: restaurant.latitude,
-                      longitude: restaurant.longitude,
-                      google: useGoogleMap,
-                    });
-                    setMapModalVisible(false);
-                  }}>
-                  <Text>Open</Text>
-                </Button>
-                <Button
-                  style={styles.groupBtn}
-                  iconLeft
-                  bordered
-                  block
-                  onPress={() => setMapModalVisible(false)}>
-                  <Text>Cancel</Text>
-                </Button>
-              </View>
-            </View>
-          </View>
-        </Modal>
-      </View>
+      <Modal
+        title="Please select your desired map application."
+        leftButtonName="Open"
+        rightButtonName="Cancel"
+        modalVisible={mapModalVisible}
+        handleLeftButton={() => {
+          handleOpenMap({
+            latitude: restaurant.latitude,
+            longitude: restaurant.longitude,
+            google: useGoogleMap,
+          });
+          setMapModalVisible(false);
+        }}
+        handleRightButton={() => setMapModalVisible(false)}>
+        <ListItem onPress={() => setUseGoogleMap(true)}>
+          <CheckBox checked={useGoogleMap} />
+          <Body>
+            <Text>Google Map</Text>
+          </Body>
+        </ListItem>
+        <ListItem onPress={() => setUseGoogleMap(false)}>
+          <CheckBox checked={!useGoogleMap} />
+          <Body>
+            <Text>IOS Map</Text>
+          </Body>
+        </ListItem>
+      </Modal>
     </View>
   );
 };

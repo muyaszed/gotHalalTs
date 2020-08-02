@@ -1,6 +1,6 @@
 import {Action} from 'redux';
 import types from '../Store/actions';
-import {UserProfile} from './reducer';
+import {UserProfile, UpdatableUserProfile} from './reducer';
 import Api from '../Services/api';
 import {RootState} from '../Store/reducers';
 import {ThunkDispatch} from 'redux-thunk';
@@ -34,5 +34,16 @@ export const updateCurrentProfile = (userToken: string) => async (
         checkIns: apiCall.data.checkinlist,
       }),
     );
+  } catch (error) {}
+};
+
+export const updateUserProfile = (
+  userToken: string,
+  userData: any,
+  cuurentUserId: number,
+) => async (dispatch: ThunkDispatch<RootState, void, Action>) => {
+  try {
+    await Api.Put.profile(userToken, userData, cuurentUserId);
+    dispatch(updateCurrentProfile(userToken));
   } catch (error) {}
 };

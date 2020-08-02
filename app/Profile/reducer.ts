@@ -29,6 +29,12 @@ export interface UserProfile {
   checkIns: CheckIns[];
 }
 
+export interface UpdatableUserProfile {
+  first_name?: string;
+  last_name?: string;
+  avatar?: string;
+}
+
 export const initialProfileState: UserProfile = {
   userId: null,
   email: '',
