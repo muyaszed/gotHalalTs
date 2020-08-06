@@ -1,7 +1,9 @@
-import {Dispatch} from 'redux';
+import {Dispatch, Action} from 'redux';
 import Api from '../Services/api';
 import types from '../Store/actions';
 import {RestaurantModel} from './reducer';
+import {ThunkDispatch} from 'redux-thunk';
+import {RootState} from '../Store/reducers';
 
 export type RestaurantAction =
   | ReturnType<typeof gettingAllRestaurants>
@@ -39,4 +41,13 @@ export const setSelectedRestaurant = (restaurantId: number) => {
     type: types.SET_SELECTED_RESTAURANT,
     payload: restaurantId,
   };
+};
+
+export const setNewListing = (newData: FormData, token: string) => async (
+  dispatch: ThunkDispatch<RootState, void, Action>,
+) => {
+  try {
+    await Api.Post.restaurant(newData, token);
+    dispatch(getAllRestaurants(token));
+  } catch (error) {}
 };

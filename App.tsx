@@ -11,8 +11,25 @@ import SignUpScreen from './app/Screens/Signup';
 import LandingScreen from './app/Screens/Landing';
 import HomeScreen from './app/Screens/Home';
 import UserProfile from './app/Screens/UserProfile';
+import AddListing from './app/Screens/AddListing';
 import {RootState} from './app/Store/reducers';
 import {restoreToken} from './app/Authentication/action';
+import {View, StyleSheet} from 'react-native';
+import {Icon} from '@codler/native-base';
+
+const styles = StyleSheet.create({
+  addNewTab: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  addNewTabIcon: {
+    fontSize: 50,
+  },
+});
 
 const App = () => {
   const dispatch = useDispatch();
@@ -50,6 +67,23 @@ const App = () => {
             name="Home"
             component={HomeScreen}
             options={{tabBarLabel: 'Home'}}
+          />
+          <Tab.Screen
+            name="NewListing"
+            component={AddListing}
+            options={{
+              title: '',
+              tabBarLabel: undefined,
+              tabBarIcon: () => (
+                <View style={styles.addNewTab}>
+                  <Icon
+                    style={styles.addNewTabIcon}
+                    type="Feather"
+                    name="plus"
+                  />
+                </View>
+              ),
+            }}
           />
           <Tab.Screen
             name="Profile"

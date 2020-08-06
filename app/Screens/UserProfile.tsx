@@ -5,8 +5,6 @@ import UserListing from './UserListing';
 import UserReviews from './UserReviews';
 import UserBookmarks from './UserBookmarks';
 import UserCheckins from './UserCheckins';
-import Camera from './Camera';
-import Photo from './Photo';
 
 const UserProfile = () => {
   const Stack = createStackNavigator();
@@ -19,8 +17,6 @@ const UserProfile = () => {
         <Stack.Screen name={'My Reviews'} component={UserReviews} />
         <Stack.Screen name={'My Bookmarks'} component={UserBookmarks} />
         <Stack.Screen name={'My Check-ins'} component={UserCheckins} />
-        <Stack.Screen name={'Camera'} component={Camera} />
-        <Stack.Screen name={'Photo'} component={Photo} />
       </>
     </Stack.Navigator>
   );

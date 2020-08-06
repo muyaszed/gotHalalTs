@@ -1,7 +1,6 @@
 import axios from 'axios';
 import Config from 'react-native-config';
 import {FBToken} from 'app/Screens/SignIn';
-import {UpdatableUserProfile} from 'app/Profile/reducer';
 
 export interface Credential {
   email: string;
@@ -75,6 +74,16 @@ export default {
           'Content-Type': 'application/json',
           Authorization: token,
         },
+      }),
+    restaurant: (data: FormData, token: string) =>
+      axios({
+        method: 'POST',
+        url: `${Config.API_ADDRESS_DEV}/restaurants`,
+        headers: {
+          Accept: 'application/vnd.halaldir.v1+json',
+          Authorization: token,
+        },
+        data: data,
       }),
   },
   Get: {

@@ -58,7 +58,7 @@ const Restaurants = () => {
             name={item.name}
             description={item.desc}
             mainImageUri={item.cover_uri}
-            avatarUri={item.cover_uri}
+            avatar={false}
             footerChild={footerChildComponent(item)}
             onPress={() => {
               dispatch(setSelectedRestaurant(item.id));
