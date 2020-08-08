@@ -1,14 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import {Image, StyleSheet, FlatList, View, RefreshControl} from 'react-native';
-import {useRoute} from '@react-navigation/native';
+import {
+  Image,
+  StyleSheet,
+  FlatList,
+  View,
+  RefreshControl,
+  Platform,
+} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {Dispatch} from 'redux';
+import {Action} from 'redux';
 import {
   Left,
   Text,
   Button,
-  Right,
   Content,
   H1,
   H3,
@@ -20,16 +25,20 @@ import {
   CheckBox,
   Body,
 } from '@codler/native-base';
+import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 import MapView, {Marker, Callout} from 'react-native-maps';
 import openMap from 'react-native-open-maps';
 import {RootState} from '../Store/reducers';
-import {loadReviews, setNewReview, setReviewText} from '../Review/action';
+import {loadReviews, setNewReview} from '../Review/action';
 import ListCard from '../Components/listCard';
 import {RestaurantModel} from '../Restaurant/reducer';
 import {userBookmark, userUnbookmark} from '../Bookmark/action';
 import {getAllRestaurants} from '../Restaurant/action';
 import {userCheckin} from '../CheckIn/action';
 import Modal from '../Components/modal';
+import ImagePicker from 'react-native-image-picker';
+import {ThunkDispatch} from 'redux-thunk';
+import {showToast} from '../Services/helper';
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -38,7 +47,7 @@ const styles = StyleSheet.create({
   },
   title: {
     paddingTop: 30,
-    paddingBottom: 30,
+    paddingBottom: 10,
   },
   description: {},
   mainImageContainer: {
@@ -65,6 +74,9 @@ const styles = StyleSheet.create({
   },
   reviewTextArea: {
     marginBottom: 20,
+  },
+  reviewPhotoBtn: {
+    marginBottom: 10,
   },
   mapContainer: {
     flex: 1,
@@ -103,172 +115,227 @@ const handleOpenMap = (option: MapOption) => {
 
 const renderAboveReviews = (
   restaurant: RestaurantModel,
-  dispatch: Dispatch<any>,
+  dispatch: ThunkDispatch<RootState, void, Action>,
   userToken: string,
-  currentReviewText: string,
   currentUserBookmarkList: RestaurantModel[],
   mapModalVisible: boolean,
   setMapModalVisible: React.Dispatch<React.SetStateAction<boolean>>,
   useGoogleMap: boolean,
   setUseGoogleMap: React.Dispatch<React.SetStateAction<boolean>>,
+  selectedReviewImage: string | null,
+  setReviewImage: React.Dispatch<React.SetStateAction<string | null>>,
+  currentReview: string,
+  setCurrentReview: React.Dispatch<React.SetStateAction<string>>,
+  disableReviewSubmit: boolean,
+  selectedPlaceId: number | null,
 ) => {
   return (
-    <View style={styles.mainContainer}>
-      <H1 style={styles.title}>{restaurant.name.toUpperCase()}</H1>
-      <H3 style={styles.description}>{restaurant.desc.toUpperCase()}</H3>
+    <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <View style={styles.mainContainer}>
+        <H1 style={styles.title}>{restaurant.name.toUpperCase()}</H1>
+        <H3 style={styles.description}>{restaurant.desc.toUpperCase()}</H3>
 
-      <View style={styles.mainImage}>
-        <Image
-          style={styles.mainImage}
-          source={{
-            uri: restaurant.cover_uri ? restaurant.cover_uri : 'Image URL',
-          }}
-        />
-      </View>
-
-      <View>
-        <List>
-          <ListItem itemDivider>
-            <Left>
-              <Text>Cuisine</Text>
-            </Left>
-            <Right>
-              <Text>{restaurant.cuisine}</Text>
-            </Right>
-          </ListItem>
-          <ListItem itemDivider>
-            <Left>
-              <Text>Category</Text>
-            </Left>
-            <Right>
-              <Text>{restaurant.category}</Text>
-            </Right>
-          </ListItem>
-          <ListItem itemDivider>
-            <Left>
-              <Text>Operating Hours</Text>
-            </Left>
-            {restaurant.end.length === 0 ? (
-              <Text>{restaurant.start}</Text>
-            ) : (
-              <Text>{`From: ${restaurant.start} - To: ${restaurant.end}`}</Text>
-            )}
-          </ListItem>
-          {restaurant.web.length === 0 ? null : (
-            <ListItem itemDivider>
-              <Left>
-                <Text>Website</Text>
-              </Left>
-              <Right>
-                <Text>{restaurant.web}</Text>
-              </Right>
-            </ListItem>
-          )}
-        </List>
-      </View>
-
-      <View style={styles.groupBtnContainer}>
-        <Button
-          style={styles.groupBtn}
-          iconLeft
-          bordered
-          block
-          onPress={() => dispatch(userCheckin())}>
-          <Icon active type="FontAwesome5" name="calendar-check" />
-          <Text>Check-In Here</Text>
-        </Button>
-        {currentUserBookmarkList.find(
-          (bookamarkedRestaurant) => bookamarkedRestaurant.id === restaurant.id,
-        ) ? (
-          <Button
-            style={styles.groupBtn}
-            iconLeft
-            bordered
-            block
-            onPress={() => dispatch(userUnbookmark(userToken))}>
-            <Icon active type="Foundation" name="book-bookmark" />
-            <Text>Unbookmark</Text>
-          </Button>
-        ) : (
-          <Button
-            style={styles.groupBtn}
-            iconLeft
-            bordered
-            block
-            onPress={() => dispatch(userBookmark(userToken))}>
-            <Icon active type="Foundation" name="book-bookmark" />
-            <Text>Bookmark</Text>
-          </Button>
-        )}
-      </View>
-      <View style={styles.mapContainer}>
-        <MapView
-          onPress={() => setMapModalVisible(true)}
-          provider="google"
-          style={styles.map}
-          region={{
-            latitude: restaurant.latitude,
-            longitude: restaurant.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}>
-          <Marker
-            title={restaurant.name}
-            coordinate={{
-              latitude: restaurant.latitude,
-              longitude: restaurant.longitude,
+        <View style={styles.mainImage}>
+          <Image
+            style={styles.mainImage}
+            source={{
+              uri: restaurant.cover_uri ? restaurant.cover_uri : 'Image URL',
             }}
           />
-          <Callout />
-        </MapView>
-      </View>
-      <View style={styles.reviewContainer}>
-        <Text>Reviews</Text>
-        <Form>
-          <Textarea
-            style={styles.reviewTextArea}
-            underline
-            rowSpan={5}
-            bordered
-            placeholder="........"
-            onChangeText={(text) => dispatch(setReviewText(text))}
-            value={currentReviewText}
-          />
+        </View>
+
+        <View>
+          <List>
+            <ListItem itemDivider>
+              <Left>
+                <Text>Cuisine</Text>
+              </Left>
+              <Text>{restaurant.cuisine}</Text>
+            </ListItem>
+            <ListItem itemDivider>
+              <Left>
+                <Text>Category</Text>
+              </Left>
+              <Text>{restaurant.category}</Text>
+            </ListItem>
+            <ListItem itemDivider>
+              <Left>
+                <Text>Operating Hours</Text>
+              </Left>
+              {restaurant.end.length === 0 ? (
+                <Text>{restaurant.start}</Text>
+              ) : (
+                <Text>{`From: ${restaurant.start} - To: ${restaurant.end}`}</Text>
+              )}
+            </ListItem>
+            {restaurant.web.length === 0 ? null : (
+              <ListItem itemDivider>
+                <Left>
+                  <Text>Website</Text>
+                </Left>
+                <Text>{restaurant.web}</Text>
+              </ListItem>
+            )}
+          </List>
+        </View>
+
+        <View style={styles.groupBtnContainer}>
           <Button
+            style={styles.groupBtn}
+            iconLeft
             bordered
             block
-            onPress={() => dispatch(setNewReview(userToken))}>
-            <Text>Submit</Text>
+            onPress={() => dispatch(userCheckin())}>
+            <Icon active type="FontAwesome5" name="calendar-check" />
+            <Text>Check-In Here</Text>
           </Button>
-        </Form>
+          {currentUserBookmarkList.find(
+            (bookamarkedRestaurant) =>
+              bookamarkedRestaurant.id === restaurant.id,
+          ) ? (
+            <Button
+              style={styles.groupBtn}
+              iconLeft
+              bordered
+              block
+              onPress={() => dispatch(userUnbookmark(userToken))}>
+              <Icon active type="Foundation" name="book-bookmark" />
+              <Text>Unbookmark</Text>
+            </Button>
+          ) : (
+            <Button
+              style={styles.groupBtn}
+              iconLeft
+              bordered
+              block
+              onPress={() => dispatch(userBookmark(userToken))}>
+              <Icon active type="Foundation" name="book-bookmark" />
+              <Text>Bookmark</Text>
+            </Button>
+          )}
+        </View>
+        <View style={styles.mapContainer}>
+          <MapView
+            onPress={() => setMapModalVisible(true)}
+            provider="google"
+            style={styles.map}
+            region={{
+              latitude: restaurant.latitude,
+              longitude: restaurant.longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}>
+            <Marker
+              title={restaurant.name}
+              coordinate={{
+                latitude: restaurant.latitude,
+                longitude: restaurant.longitude,
+              }}
+            />
+            <Callout />
+          </MapView>
+        </View>
+        <View style={styles.reviewContainer}>
+          <Text>Reviews</Text>
+          <Form>
+            <Textarea
+              style={styles.reviewTextArea}
+              underline
+              rowSpan={5}
+              bordered
+              placeholder="........"
+              onChangeText={(text) => setCurrentReview(text)}
+              value={currentReview}
+            />
+            <Button
+              block
+              disabled={disableReviewSubmit}
+              style={styles.reviewPhotoBtn}
+              onPress={() => {
+                const options = {
+                  title: 'Select Your Image',
+
+                  storageOptions: {
+                    skipBackup: true,
+                    path: 'images',
+                  },
+                };
+                ImagePicker.showImagePicker(options, (response) => {
+                  console.log('Response = ', response);
+
+                  if (response.didCancel) {
+                    console.log('User cancelled image picker');
+                  } else if (response.error) {
+                    console.log('ImagePicker Error: ', response.error);
+                  } else if (response.customButton) {
+                    console.log(
+                      'User tapped custom button: ',
+                      response.customButton,
+                    );
+                  } else {
+                    setReviewImage(response.uri);
+                  }
+                });
+              }}>
+              <Icon name="camera" />
+            </Button>
+            <Button
+              bordered
+              block
+              disabled={disableReviewSubmit}
+              onPress={() => {
+                const reviewInfo = new FormData();
+                reviewInfo.append('comment', currentReview);
+                if (selectedReviewImage) {
+                  reviewInfo.append('photo', {
+                    name: 'review-photo.jpg',
+                    type: 'image/jpeg',
+                    uri: selectedReviewImage.replace('file://', ''),
+                  });
+                }
+                if (selectedPlaceId) {
+                  dispatch(
+                    setNewReview(userToken, reviewInfo, selectedPlaceId),
+                  ).then((res) => {
+                    if (res) {
+                      setCurrentReview('');
+                      showToast('Review successfully added');
+                    }
+                  });
+                }
+              }}>
+              <Text>Submit</Text>
+            </Button>
+          </Form>
+        </View>
+        <Modal
+          title="Please select your desired map application."
+          leftButtonName="Open"
+          rightButtonName="Cancel"
+          modalVisible={mapModalVisible}
+          handleLeftButton={() => {
+            handleOpenMap({
+              latitude: restaurant.latitude,
+              longitude: restaurant.longitude,
+              google: useGoogleMap,
+            });
+            setMapModalVisible(false);
+          }}
+          handleRightButton={() => setMapModalVisible(false)}>
+          <ListItem onPress={() => setUseGoogleMap(true)}>
+            <CheckBox checked={useGoogleMap} />
+            <Body>
+              <Text>Google Map</Text>
+            </Body>
+          </ListItem>
+          <ListItem onPress={() => setUseGoogleMap(false)}>
+            <CheckBox checked={!useGoogleMap} />
+            <Body>
+              <Text>IOS Map</Text>
+            </Body>
+          </ListItem>
+        </Modal>
       </View>
-      <Modal
-        title="Please select your desired map application."
-        leftButtonName="Open"
-        rightButtonName="Cancel"
-        modalVisible={mapModalVisible}
-        handleLeftButton={() => {
-          handleOpenMap({
-            latitude: restaurant.latitude,
-            longitude: restaurant.longitude,
-            google: useGoogleMap,
-          });
-          setMapModalVisible(false);
-        }}
-        handleRightButton={() => setMapModalVisible(false)}>
-        <ListItem onPress={() => setUseGoogleMap(true)}>
-          <CheckBox checked={useGoogleMap} />
-          <Body>
-            <Text>Google Map</Text>
-          </Body>
-        </ListItem>
-        <ListItem onPress={() => setUseGoogleMap(false)}>
-          <CheckBox checked={!useGoogleMap} />
-          <Body>
-            <Text>IOS Map</Text>
-          </Body>
-        </ListItem>
-      </Modal>
     </View>
   );
 };
@@ -280,19 +347,20 @@ const wait = (timeout: number) => {
 };
 
 const Restaurant = () => {
-  const route = useRoute();
+  const [currentReview, setCurrentReview] = React.useState('');
+  const [disableReviewSubmit, setReviewSubitButtonStatus] = React.useState(
+    true,
+  );
+  const selectedPlaceId = useSelector(
+    (state: RootState) => state.restaurants.selectedRestaurantId,
+  );
   const restaurant = useSelector(
     (state: RootState) =>
-      state.restaurants.list.filter(
-        (item) => item.id === parseInt(route.params.restaurant, 10),
-      )[0],
+      state.restaurants.list.filter((item) => item.id === selectedPlaceId)[0],
   );
   const userToken = useSelector((state: RootState) => state.auth.userToken);
-  const dispatch = useDispatch();
+  const dispatch: ThunkDispatch<RootState, void, Action> = useDispatch();
   const reviews = useSelector((state: RootState) => state.reviews.list);
-  const currentReviewText = useSelector(
-    (state: RootState) => state.reviews.currentReview,
-  );
   const currentUserBookmarkList = useSelector(
     (state: RootState) => state.profile.bookmark,
   );
@@ -300,6 +368,9 @@ const Restaurant = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [mapModalVisible, setMapModalVisible] = React.useState(false);
   const [useGoogleMap, setUseGoogleMap] = React.useState(true);
+  const [selectedReviewImage, setReviewImage] = React.useState<string | null>(
+    null,
+  );
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -318,8 +389,17 @@ const Restaurant = () => {
     }
   }, []);
 
+  React.useEffect(() => {
+    const reviewHasContent = currentReview.length > 10;
+    if (reviewHasContent) {
+      setReviewSubitButtonStatus(false);
+    } else {
+      setReviewSubitButtonStatus(true);
+    }
+  }, [currentReview]);
+
   return (
-    <FlatList
+    <KeyboardAwareFlatList
       data={reviews}
       renderItem={({item}) => (
         <Content padder>
@@ -327,6 +407,7 @@ const Restaurant = () => {
             name={`${item.user.firtName} ${item.user.lastName}`}
             avatarUri={item.user.avatar}
             mainImage={false}
+            mainImageUri={item.photo}
             mainText={item.comment}
             footer={false}
           />
@@ -337,12 +418,17 @@ const Restaurant = () => {
         restaurant,
         dispatch,
         userToken!,
-        currentReviewText,
         currentUserBookmarkList,
         mapModalVisible,
         setMapModalVisible,
         useGoogleMap,
         setUseGoogleMap,
+        selectedReviewImage,
+        setReviewImage,
+        currentReview,
+        setCurrentReview,
+        disableReviewSubmit,
+        selectedPlaceId,
       )}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

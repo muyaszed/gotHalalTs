@@ -11,11 +11,11 @@ export interface ReviewModel {
   id: number;
   comment: string;
   user: ReviewUser;
+  photo: string;
 }
 
 export interface ReviewState {
   list: ReviewModel[];
-  currentReview: string;
 }
 
 export const reviewInitialState = {
@@ -34,6 +34,7 @@ const saveReviewList = (data: any) => {
         lastName: item.user.profile.last_name,
         avatar: item.user.profile.avatar_uri,
       },
+      photo: item.photo_uri,
     };
   });
 };
@@ -44,16 +45,6 @@ export const reviewReducer = (state = reviewInitialState, action: Actions) => {
       return {
         ...state,
         list: saveReviewList(action.payload),
-      };
-    case types.SET_REVIEW_TEXT:
-      return {
-        ...state,
-        currentReview: action.payload,
-      };
-    case types.RESET_REVIEW_TEXT:
-      return {
-        ...state,
-        currentReview: '',
       };
     default:
       return state;

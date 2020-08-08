@@ -62,7 +62,7 @@ const Restaurants = () => {
             footerChild={footerChildComponent(item)}
             onPress={() => {
               dispatch(setSelectedRestaurant(item.id));
-              navigation.navigate('The Place', {restaurant: item.id});
+              navigation.navigate('The Place');
             }}
           />
         </Content>

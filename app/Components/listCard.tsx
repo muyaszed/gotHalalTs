@@ -98,6 +98,14 @@ const ListCard: React.SFC<Props> = ({
             )
           ) : (
             <Content style={styles.mainText}>
+              {mainImageUri ? (
+                <Image
+                  source={{
+                    uri: mainImageUri,
+                  }}
+                  style={styles.image}
+                />
+              ) : null}
               <Text>{mainText}</Text>
             </Content>
           )}

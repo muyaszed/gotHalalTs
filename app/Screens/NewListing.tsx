@@ -23,6 +23,9 @@ import ImagePicker from 'react-native-image-picker';
 import {useDispatch, useSelector} from 'react-redux';
 import {setNewListing} from '../Restaurant/action';
 import {RootState} from 'app/Store/reducers';
+import {ThunkDispatch} from 'redux-thunk';
+import {Action} from 'redux';
+import {useNavigation} from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   form: {
@@ -88,10 +91,11 @@ interface NewPlaceInfo {
 }
 
 const NewListing = () => {
-  const dispatch = useDispatch();
+  const dispatch: ThunkDispatch<RootState, void, Action> = useDispatch();
   const [displayImageUri, setDisplayImageUri] = React.useState<string | null>(
     null,
   );
+  const navigation = useNavigation();
   const [hasEndTime, setHasEndTime] = React.useState(true);
   const [submitBtnStatus, setSubmitBtnStatus] = React.useState(true);
   const token = useSelector((state: RootState) => state.auth.userToken);
@@ -425,7 +429,30 @@ const NewListing = () => {
                 }
               });
               if (token) {
-                dispatch(setNewListing(newData, token));
+                dispatch(setNewListing(newData, token)).then((res) => {
+                  if (res) {
+                    setPlaceInfo({
+                      name: '',
+                      sub_header: '',
+                      cover: {},
+                      desc: '',
+                      address: '',
+                      city: '',
+                      postcode: '',
+                      country: '',
+                      category: '',
+                      cuisine: '',
+                      start: '',
+                      end: '',
+                      contact_number: '',
+                      soc_med: {},
+                      surau: false,
+                      family_friendly: false,
+                      disabled_accessibility: false,
+                    });
+                  }
+                  navigation.navigate('Listing');
+                });
               }
             }}>
             <Text>Submit</Text>

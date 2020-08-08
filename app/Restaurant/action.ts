@@ -4,6 +4,7 @@ import types from '../Store/actions';
 import {RestaurantModel} from './reducer';
 import {ThunkDispatch} from 'redux-thunk';
 import {RootState} from '../Store/reducers';
+import {showToast} from '../Services/helper';
 
 export type RestaurantAction =
   | ReturnType<typeof gettingAllRestaurants>
@@ -49,5 +50,9 @@ export const setNewListing = (newData: FormData, token: string) => async (
   try {
     await Api.Post.restaurant(newData, token);
     dispatch(getAllRestaurants(token));
-  } catch (error) {}
+    showToast('You have successfully added a new place.');
+    return true;
+  } catch (error) {
+    return false;
+  }
 };

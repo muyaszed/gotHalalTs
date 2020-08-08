@@ -33,16 +33,15 @@ export default {
         data: JSON.stringify(token),
       });
     },
-    reviews: (token: string, comment: {comment: string}, id: number) => {
+    reviews: (token: string, reviewInfo: FormData, id: number) => {
       return axios({
         method: 'post',
         url: `${Config.API_ADDRESS_DEV}/restaurants/${id}/reviews`,
         headers: {
           Accept: 'application/vnd.halaldir.v1+json',
-          'Content-Type': 'application/json',
           Authorization: token,
         },
-        data: JSON.stringify(comment),
+        data: reviewInfo,
       });
     },
     bookmark: (token: string, restaurantId: number, userId: number) =>
