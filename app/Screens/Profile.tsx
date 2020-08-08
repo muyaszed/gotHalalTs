@@ -88,7 +88,6 @@ const Profile = () => {
         )}
         <TouchableOpacity
           style={styles.uploadAvatar}
-          // onPress={() => setPhotoModal(true)}>
           onPress={() => {
             const options = {
               title: 'Select Avatar',
@@ -113,59 +112,21 @@ const Profile = () => {
                   response.customButton,
                 );
               } else {
-                const source = {uri: response.uri};
-                console.log(source);
                 const form = new FormData();
 
                 form.append('avatar', {
-                  name: response.fileName,
+                  name: response.fileName ? response.fileName : 'avatar.jpeg',
                   type: response.type,
                   uri: response.uri.replace('file://', ''),
                 });
                 if (userToken && profile.userId) {
                   dispatch(updateUserProfile(userToken, form, profile.userId));
                 }
-                // You can also display the image using data:
-                // const source = { uri: 'data:image/jpeg;base64,' + response.data };
               }
             });
           }}>
           <Icon type="Entypo" name="camera" style={styles.cameraIcon} />
         </TouchableOpacity>
-        {/* <Button
-          onPress={() => {
-            const options = {
-              title: 'Select Avatar',
-              customButtons: [
-                {name: 'fb', title: 'Choose Photo from Facebook'},
-              ],
-              storageOptions: {
-                skipBackup: true,
-                path: 'images',
-              },
-            };
-            ImagePicker.showImagePicker(options, (response) => {
-              console.log('Response = ', response);
-
-              if (response.didCancel) {
-                console.log('User cancelled image picker');
-              } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-              } else if (response.customButton) {
-                console.log(
-                  'User tapped custom button: ',
-                  response.customButton,
-                );
-              } else {
-                const source = {uri: response.uri};
-                console.log(source);
-                // You can also display the image using data:
-                // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-              }
-            });
-          }}>
-          <Text>Test photo</Text>
-        </Button> */}
       </View>
       <View style={styles.informationContainer}>
         <List>

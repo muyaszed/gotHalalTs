@@ -26,6 +26,7 @@ import {RootState} from 'app/Store/reducers';
 import {ThunkDispatch} from 'redux-thunk';
 import {Action} from 'redux';
 import {useNavigation} from '@react-navigation/native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const styles = StyleSheet.create({
   form: {
@@ -84,6 +85,7 @@ interface NewPlaceInfo {
   start: string;
   end: string;
   contact_number: string;
+  web: string;
   soc_med: {};
   surau: boolean;
   family_friendly: boolean;
@@ -113,6 +115,7 @@ const NewListing = () => {
     start: '',
     end: '',
     contact_number: '',
+    web: '',
     soc_med: {},
     surau: false,
     family_friendly: false,
@@ -140,7 +143,7 @@ const NewListing = () => {
   }, [placeInfo]);
 
   return (
-    <ScrollView>
+    <KeyboardAwareScrollView>
       <Form style={styles.form}>
         <Item regular style={[styles.input]}>
           <Input
@@ -327,6 +330,12 @@ const NewListing = () => {
             }
           />
         </Item>
+        <Item regular style={[styles.input]}>
+          <Input
+            placeholder="Website"
+            onChangeText={(text) => setPlaceInfo({...placeInfo, web: text})}
+          />
+        </Item>
         <View style={[styles.input]}>
           <Label>Social Media</Label>
           <Item regular style={[styles.input]}>
@@ -445,6 +454,7 @@ const NewListing = () => {
                       start: '',
                       end: '',
                       contact_number: '',
+                      web: '',
                       soc_med: {},
                       surau: false,
                       family_friendly: false,
@@ -459,7 +469,7 @@ const NewListing = () => {
           </Button>
         </View>
       </Form>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 

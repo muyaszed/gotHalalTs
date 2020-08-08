@@ -12,9 +12,7 @@ interface CheckingIns extends OnlyIds {}
 interface Reviews extends OnlyIds {}
 
 interface SocMed {
-  facebook: string;
-  instagram: string;
-  twitter: string;
+  [key: string]: string;
 }
 
 export interface RestaurantModel {

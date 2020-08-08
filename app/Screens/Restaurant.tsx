@@ -1,13 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import {
-  Image,
-  StyleSheet,
-  FlatList,
-  View,
-  RefreshControl,
-  Platform,
-} from 'react-native';
+import {Image, StyleSheet, Linking, View, RefreshControl} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {Action} from 'redux';
 import {
@@ -90,6 +83,12 @@ const styles = StyleSheet.create({
   mapModal: {},
   mapModalContent: {},
   mapModalTitle: {},
+  socMed: {
+    justifyContent: 'space-around',
+  },
+  statusIconGroup: {
+    flexDirection: 'row',
+  },
 });
 
 interface MapOption {
@@ -130,7 +129,7 @@ const renderAboveReviews = (
   selectedPlaceId: number | null,
 ) => {
   return (
-    <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <View>
       <View style={styles.mainContainer}>
         <H1 style={styles.title}>{restaurant.name.toUpperCase()}</H1>
         <H3 style={styles.description}>{restaurant.desc.toUpperCase()}</H3>
@@ -176,6 +175,55 @@ const renderAboveReviews = (
                 <Text>{restaurant.web}</Text>
               </ListItem>
             )}
+            {restaurant.contact_number.length === 0 ? null : (
+              <ListItem itemDivider>
+                <Left>
+                  <Text>Contact number</Text>
+                </Left>
+                <Text>{restaurant.contact_number}</Text>
+              </ListItem>
+            )}
+            {Object.keys(restaurant.soc_med).length === 0 ? null : (
+              <ListItem itemDivider style={styles.socMed}>
+                {Object.keys(restaurant.soc_med).map((item, index) => {
+                  const socMed = restaurant.soc_med;
+                  return (
+                    <Icon
+                      key={index}
+                      onPress={() => Linking.openURL(socMed[item])}
+                      type="Entypo"
+                      name={item}
+                    />
+                  );
+                })}
+              </ListItem>
+            )}
+            <ListItem itemDivider style={styles.socMed}>
+              <View style={styles.statusIconGroup}>
+                <Icon type="FontAwesome5" name="mosque" />
+                {restaurant.surau ? (
+                  <Icon type="AntDesign" name="check" />
+                ) : (
+                  <Icon type="AntDesign" name="close" />
+                )}
+              </View>
+              <View style={styles.statusIconGroup}>
+                <Icon type="FontAwesome5" name="baby-carriage" />
+                {restaurant.family_friendly ? (
+                  <Icon type="AntDesign" name="check" />
+                ) : (
+                  <Icon type="AntDesign" name="close" />
+                )}
+              </View>
+              <View style={styles.statusIconGroup}>
+                <Icon type="FontAwesome" name="wheelchair" />
+                {restaurant.disabled_accessibility ? (
+                  <Icon type="AntDesign" name="check" />
+                ) : (
+                  <Icon type="AntDesign" name="close" />
+                )}
+              </View>
+            </ListItem>
           </List>
         </View>
 
