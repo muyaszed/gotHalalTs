@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Text,
   Button,
@@ -8,13 +8,15 @@ import {
   Right,
   Content,
 } from '@codler/native-base';
+import Geolocation from '@react-native-community/geolocation';
 import {FlatList} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../Store/reducers';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import ListCard from '../Components/listCard';
 import {setSelectedRestaurant} from '../Restaurant/action';
 import {RestaurantModel} from '../Restaurant/reducer';
+import {distanceBetweenLocation} from '../Services/helper';
 
 const footerChildComponent = (item: RestaurantModel) => {
   return (
@@ -47,8 +49,42 @@ const footerChildComponent = (item: RestaurantModel) => {
 
 const Restaurants = () => {
   const dispatch = useDispatch();
+  const [currentPosition, setCurrentPosition] = React.useState({
+    lat: 0,
+    long: 0,
+  });
   const navigation = useNavigation();
-  const restaurants = useSelector((state: RootState) => state.restaurants.list);
+  const restaurants = useSelector((state: RootState) => {
+    const sortedList = state.restaurants.list
+      .map((place) => {
+        console.log(currentPosition);
+        const distance = distanceBetweenLocation(
+          currentPosition.lat,
+          currentPosition.long,
+          place.latitude,
+          place.longitude,
+          'K',
+        );
+        const newPlace = {...place, distance};
+        return newPlace;
+      })
+      .sort((a, b) => a.distance - b.distance);
+    console.log('Sorted', sortedList);
+    return sortedList;
+  });
+  useEffect(() => {
+    const unsubscribe: () => void = navigation.addListener('focus', () => {
+      Geolocation.getCurrentPosition((res) =>
+        setCurrentPosition({
+          ...currentPosition,
+          lat: res.coords.latitude,
+          long: res.coords.longitude,
+        }),
+      );
+      return unsubscribe;
+    });
+  }, [navigation]);
+
   return (
     <FlatList
       data={restaurants}
@@ -60,6 +96,7 @@ const Restaurants = () => {
             mainImageUri={item.cover_uri}
             avatar={false}
             footerChild={footerChildComponent(item)}
+            topRightInfoContent={`${Math.round(item.distance).toString()}km`}
             onPress={() => {
               dispatch(setSelectedRestaurant(item.id));
               navigation.navigate('The Place');

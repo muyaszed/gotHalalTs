@@ -1,5 +1,5 @@
 import React, {ReactChild} from 'react';
-import {TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {TouchableOpacity, Image, StyleSheet, View} from 'react-native';
 import {
   Card,
   CardItem,
@@ -42,6 +42,8 @@ interface Props {
   avatarUri?: string | null;
   footer?: boolean;
   footerChild?: ReactChild;
+  topRightInfo?: boolean;
+  topRightInfoContent?: string;
 }
 
 const ListCard: React.SFC<Props> = ({
@@ -55,6 +57,8 @@ const ListCard: React.SFC<Props> = ({
   avatarUri,
   footer = true,
   footerChild,
+  topRightInfo = true,
+  topRightInfoContent,
 }) => {
   return (
     <TouchableOpacity
@@ -83,6 +87,11 @@ const ListCard: React.SFC<Props> = ({
               <Text note>{description}</Text>
             </Body>
           </Left>
+          {topRightInfo ? (
+            <View>
+              <Text>{topRightInfoContent}</Text>
+            </View>
+          ) : null}
         </CardItem>
         <CardItem cardBody style={styles.contentContainer}>
           {mainImage ? (
