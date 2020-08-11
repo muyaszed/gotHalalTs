@@ -9,7 +9,7 @@ import {
   Content,
 } from '@codler/native-base';
 import Geolocation from '@react-native-community/geolocation';
-import {FlatList} from 'react-native';
+import {FlatList, View, StyleSheet} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../Store/reducers';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
@@ -17,6 +17,14 @@ import ListCard from '../Components/listCard';
 import {setSelectedRestaurant} from '../Restaurant/action';
 import {RestaurantModel} from '../Restaurant/reducer';
 import {distanceBetweenLocation} from '../Services/helper';
+
+const styles = StyleSheet.create({
+  noListing: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 const footerChildComponent = (item: RestaurantModel) => {
   return (
@@ -48,6 +56,9 @@ const footerChildComponent = (item: RestaurantModel) => {
 };
 
 const Restaurants = () => {
+  const userSettings = useSelector(
+    (state: RootState) => state.profile.settings,
+  );
   const dispatch = useDispatch();
   const [currentPosition, setCurrentPosition] = React.useState({
     lat: 0,
@@ -63,13 +74,13 @@ const Restaurants = () => {
           currentPosition.long,
           place.latitude,
           place.longitude,
-          'K',
+          userSettings.distance_unit === 'kilometer' ? 'K' : 'M',
         );
         const newPlace = {...place, distance};
         return newPlace;
       })
       .sort((a, b) => a.distance - b.distance);
-    console.log('Sorted', sortedList);
+
     return sortedList;
   });
   useEffect(() => {
@@ -85,7 +96,7 @@ const Restaurants = () => {
     });
   }, [navigation]);
 
-  return (
+  return restaurants.length > 0 ? (
     <FlatList
       data={restaurants}
       renderItem={({item}) => (
@@ -96,7 +107,9 @@ const Restaurants = () => {
             mainImageUri={item.cover_uri}
             avatar={false}
             footerChild={footerChildComponent(item)}
-            topRightInfoContent={`${Math.round(item.distance).toString()}km`}
+            topRightInfoContent={`${Math.round(item.distance).toString()}${
+              userSettings.distance_unit === 'kilometer' ? 'km' : 'miles'
+            }`}
             onPress={() => {
               dispatch(setSelectedRestaurant(item.id));
               navigation.navigate('The Place');
@@ -106,6 +119,10 @@ const Restaurants = () => {
       )}
       keyExtractor={(item) => item.id.toString()}
     />
+  ) : (
+    <View style={styles.noListing}>
+      <Text>Sorry, there is no listing yet.</Text>
+    </View>
   );
 };
 

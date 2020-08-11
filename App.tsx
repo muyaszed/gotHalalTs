@@ -10,7 +10,7 @@ import SignInScreen from './app/Screens/SignIn';
 import SignUpScreen from './app/Screens/Signup';
 import LandingScreen from './app/Screens/Landing';
 import HomeScreen from './app/Screens/Home';
-import UserProfile from './app/Screens/UserProfile';
+import Profile from './app/Screens/Profile';
 import AddListing from './app/Screens/AddListing';
 import {RootState} from './app/Store/reducers';
 import {restoreToken} from './app/Authentication/action';
@@ -87,7 +87,7 @@ const App = () => {
           />
           <Tab.Screen
             name="Profile"
-            component={UserProfile}
+            component={Profile}
             options={{tabBarLabel: 'Profile'}}
           />
         </Tab.Navigator>

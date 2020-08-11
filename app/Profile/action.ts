@@ -25,13 +25,21 @@ export const updateCurrentProfile = (userToken: string) => async (
       saveProfile({
         userId: apiCall.data.id,
         email: apiCall.data.email,
-        firstName: apiCall.data.profile.first_name,
-        lastName: apiCall.data.profile.last_name,
+        firstName: apiCall.data.profile.first_name
+          ? apiCall.data.profile.first_name
+          : '',
+        lastName: apiCall.data.profile.last_name
+          ? apiCall.data.profile.last_name
+          : '',
         avatarUri: apiCall.data.profile.avatar_uri,
+        fbAvatarUri: apiCall.data.facebook_auth
+          ? apiCall.data.facebook_auth.fb_avatar
+          : null,
         restaurantPosted: apiCall.data.restaurants,
         reviews: apiCall.data.reviews,
         bookmark: apiCall.data.bookmarked_restaurant,
         checkIns: apiCall.data.checkinlist,
+        settings: apiCall.data.settings,
       }),
     );
   } catch (error) {}

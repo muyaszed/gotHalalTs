@@ -41,13 +41,21 @@ export const userSignUp = (credential: Credential) => async (
       saveProfile({
         userId: apiCall.data.user.id,
         email: apiCall.data.user.email,
-        firstName: apiCall.data.user.profile.first_name,
-        lastName: apiCall.data.user.profile.last_name,
+        firstName: apiCall.data.user.profile.first_name
+          ? apiCall.data.user.profile.first_name
+          : '',
+        lastName: apiCall.data.user.profile.last_name
+          ? apiCall.data.user.profile.last_name
+          : '',
         avatarUri: apiCall.data.user.profile.avatar_uri,
+        fbAvatarUri: apiCall.data.user.facebook_auth
+          ? apiCall.data.user.facebook_auth.fb_avatar
+          : null,
         restaurantPosted: apiCall.data.user.restaurants,
         reviews: apiCall.data.user.reviews,
         bookmark: apiCall.data.user.bookmarked_restaurant,
         checkIns: apiCall.data.user.checkinlist,
+        settings: apiCall.data.user.settings,
       }),
     );
   } catch (error) {
@@ -67,13 +75,21 @@ export const userSignIn = (credential: Credential) => async (
       saveProfile({
         userId: apiCall.data.user.id,
         email: apiCall.data.user.email,
-        firstName: apiCall.data.user.profile.first_name,
-        lastName: apiCall.data.user.profile.last_name,
+        firstName: apiCall.data.user.profile.first_name
+          ? apiCall.data.user.profile.first_name
+          : '',
+        lastName: apiCall.data.user.profile.last_name
+          ? apiCall.data.user.profile.last_name
+          : '',
         avatarUri: apiCall.data.user.profile.avatar_uri,
+        fbAvatarUri: apiCall.data.user.facebook_auth
+          ? apiCall.data.user.facebook_auth.fb_avatar
+          : null,
         restaurantPosted: apiCall.data.user.restaurants,
         reviews: apiCall.data.user.reviews,
         bookmark: apiCall.data.user.bookmarked_restaurant,
         checkIns: apiCall.data.user.checkinlist,
+        settings: apiCall.data.user.settings,
       }),
     );
   } catch (error) {
@@ -93,13 +109,21 @@ export const signInWithFaceBook = (fbToken: FBToken) => async (
       saveProfile({
         userId: apiCall.data.user.id,
         email: apiCall.data.user.email,
-        firstName: apiCall.data.user.profile.first_name,
-        lastName: apiCall.data.user.profile.last_name,
+        firstName: apiCall.data.user.profile.first_name
+          ? apiCall.data.user.profile.first_name
+          : '',
+        lastName: apiCall.data.user.profile.last_name
+          ? apiCall.data.user.profile.last_name
+          : '',
         avatarUri: apiCall.data.user.profile.avatar_uri,
+        fbAvatarUri: apiCall.data.user.facebook_auth
+          ? apiCall.data.user.facebook_auth.fb_avatar
+          : null,
         restaurantPosted: apiCall.data.user.restaurants,
         reviews: apiCall.data.user.reviews,
         bookmark: apiCall.data.user.bookmarked_restaurant,
         checkIns: apiCall.data.user.checkinlist,
+        settings: apiCall.data.user.settings,
       }),
     );
   } catch (error) {

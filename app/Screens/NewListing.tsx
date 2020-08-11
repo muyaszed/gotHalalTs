@@ -128,8 +128,8 @@ const NewListing = () => {
       placeInfo.sub_header.length > 5 &&
       placeInfo.desc.length > 15 &&
       placeInfo.address.length > 10 &&
-      placeInfo.city.length > 5 &&
-      placeInfo.postcode.length > 5 &&
+      placeInfo.city.length > 1 &&
+      placeInfo.postcode.length > 1 &&
       placeInfo.country.length > 1 &&
       placeInfo.cuisine.length > 1 &&
       placeInfo.category.length > 1 &&
