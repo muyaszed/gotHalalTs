@@ -26,8 +26,8 @@ export interface UserSettingItems {
 export interface UserProfile {
   userId: number | null;
   email: string;
-  firstName: string | null;
-  lastName: string | null;
+  firstName: string;
+  lastName: string;
   avatarUri: string | null;
   fbAvatarUri: string | null;
   restaurantPosted: RestaurantModel[];

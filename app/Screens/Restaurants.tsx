@@ -18,7 +18,7 @@ import {setSelectedRestaurant} from '../Restaurant/action';
 import {RestaurantModel} from '../Restaurant/reducer';
 import {distanceBetweenLocation} from '../Services/helper';
 import {getAllRestaurants} from '../Restaurant/action';
-import {userSignOut} from '../Authentication/action';
+import {saveErrorMessage, showErrorDialog} from '../Error/action';
 
 const styles = StyleSheet.create({
   noListing: {
@@ -58,7 +58,7 @@ const footerChildComponent = (item: RestaurantModel) => {
 };
 
 const Restaurants = () => {
-  const needLogOut = useSelector((state: RootState) => state.error.needLogOut);
+  const userProfile = useSelector((state: RootState) => state.profile);
   const userToken = useSelector((state: RootState) => state.auth.userToken);
   const userSettings = useSelector(
     (state: RootState) => state.profile.settings,
@@ -99,6 +99,18 @@ const Restaurants = () => {
 
       if (userToken) {
         dispatch(getAllRestaurants(userToken));
+      }
+
+      if (
+        userProfile.firstName.length === 0 &&
+        userProfile.lastName.length === 0
+      ) {
+        dispatch(
+          saveErrorMessage(
+            'Please provide your First and Last name please. Thank you',
+          ),
+        );
+        dispatch(showErrorDialog());
       }
 
       return unsubscribe;

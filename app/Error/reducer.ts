@@ -32,7 +32,10 @@ const handleErrorMessage = (state: ErrorState, message: string) => {
         needLogOut: true,
       };
     default:
-      return state;
+      return {
+        ...state,
+        message,
+      };
   }
 };
 
