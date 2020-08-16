@@ -3,12 +3,14 @@ import {authReducer, AuthState} from '../Authentication/reducer';
 import {restaurantReducer, RestaurantState} from '../Restaurant/reducer';
 import {reviewReducer, ReviewState} from '../Review/reducer';
 import {UserProfile, profileReducer} from '../Profile/reducer';
+import {ErrorState, errorReducer} from '../Error/reducer';
 
 export interface RootState {
   auth: AuthState;
   restaurants: RestaurantState;
   reviews: ReviewState;
   profile: UserProfile;
+  error: ErrorState;
 }
 
 const reducers = combineReducers({
@@ -16,6 +18,7 @@ const reducers = combineReducers({
   restaurants: restaurantReducer,
   reviews: reviewReducer,
   profile: profileReducer,
+  error: errorReducer,
 });
 
 export default reducers;

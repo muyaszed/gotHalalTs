@@ -9,13 +9,13 @@ import Restaurant from './Restaurant';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const userToken = useSelector((state: RootState) => state.auth.userToken);
+  // const userToken = useSelector((state: RootState) => state.auth.userToken);
 
-  React.useEffect(() => {
-    if (userToken) {
-      dispatch(getAllRestaurants(userToken));
-    }
-  }, []);
+  // React.useEffect(() => {
+  //   if (userToken) {
+  //     dispatch(getAllRestaurants(userToken));
+  //   }
+  // }, []);
 
   const Stack = createStackNavigator();
 

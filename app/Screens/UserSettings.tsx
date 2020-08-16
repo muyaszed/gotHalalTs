@@ -4,6 +4,18 @@ import {List, ListItem, Left, Picker, Icon} from '@codler/native-base';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../Store/reducers';
 import {updateUserProfile} from '../Profile/action';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../Screens/Profile';
+import {UserSettingItems} from 'app/Profile/reducer';
+
+type ProfileScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'My Settings'
+>;
+
+type Props = {
+  navigation: ProfileScreenNavigationProp;
+};
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -15,7 +27,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const UserSettings = ({navigation}) => {
+const UserSettings: React.FC<Props> = ({navigation}) => {
   const dispatch = useDispatch();
   const userToken = useSelector((state: RootState) => state.auth.userToken);
   const userId = useSelector((state: RootState) => state.profile.userId);
@@ -23,7 +35,7 @@ const UserSettings = ({navigation}) => {
     (state: RootState) => state.profile.settings,
   );
   const [enableSave, setEnableSave] = React.useState(false);
-  const [newSettingsValue, onChange] = React.useState({
+  const [newSettingsValue, onChange] = React.useState<UserSettingItems>({
     facebook_avatar: false,
     distance_unit: 'kilometer',
   });
@@ -31,7 +43,6 @@ const UserSettings = ({navigation}) => {
   React.useEffect(() => {
     let count = [];
     Object.keys(currentSettings).forEach((setting) => {
-      console.log(currentSettings[setting], newSettingsValue[setting]);
       if (currentSettings[setting] !== newSettingsValue[setting]) {
         count.push(1);
       }
@@ -47,7 +58,7 @@ const UserSettings = ({navigation}) => {
       });
       setEnableSave(false);
     }
-  }, [newSettingsValue]);
+  }, [newSettingsValue, currentSettings, navigation]);
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('blur', () => {
@@ -67,6 +78,7 @@ const UserSettings = ({navigation}) => {
     });
 
     return unsubscribe;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation, enableSave]);
 
   React.useEffect(() => {
@@ -75,6 +87,7 @@ const UserSettings = ({navigation}) => {
     });
 
     return unsubscribeFocus;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation]);
 
   React.useLayoutEffect(() => {
@@ -95,7 +108,7 @@ const UserSettings = ({navigation}) => {
               <Switch
                 trackColor={{false: '#767577', true: '#81b0ff'}}
                 ios_backgroundColor="#3e3e3e"
-                onValueChange={(value) =>
+                onValueChange={() =>
                   onChange((state) => ({
                     ...newSettingsValue,
                     facebook_avatar: !state.facebook_avatar,

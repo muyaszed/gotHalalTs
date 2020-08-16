@@ -12,11 +12,13 @@ import Geolocation from '@react-native-community/geolocation';
 import {FlatList, View, StyleSheet} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../Store/reducers';
-import {useNavigation, useFocusEffect} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import ListCard from '../Components/listCard';
 import {setSelectedRestaurant} from '../Restaurant/action';
 import {RestaurantModel} from '../Restaurant/reducer';
 import {distanceBetweenLocation} from '../Services/helper';
+import {getAllRestaurants} from '../Restaurant/action';
+import {userSignOut} from '../Authentication/action';
 
 const styles = StyleSheet.create({
   noListing: {
@@ -56,6 +58,8 @@ const footerChildComponent = (item: RestaurantModel) => {
 };
 
 const Restaurants = () => {
+  const needLogOut = useSelector((state: RootState) => state.error.needLogOut);
+  const userToken = useSelector((state: RootState) => state.auth.userToken);
   const userSettings = useSelector(
     (state: RootState) => state.profile.settings,
   );
@@ -86,12 +90,17 @@ const Restaurants = () => {
   useEffect(() => {
     const unsubscribe: () => void = navigation.addListener('focus', () => {
       Geolocation.getCurrentPosition((res) =>
-        setCurrentPosition({
-          ...currentPosition,
+        setCurrentPosition((prevState) => ({
+          ...prevState,
           lat: res.coords.latitude,
           long: res.coords.longitude,
-        }),
+        })),
       );
+
+      if (userToken) {
+        dispatch(getAllRestaurants(userToken));
+      }
+
       return unsubscribe;
     });
   }, [navigation]);
@@ -122,6 +131,9 @@ const Restaurants = () => {
   ) : (
     <View style={styles.noListing}>
       <Text>Sorry, there is no listing yet.</Text>
+      <Button transparent onPress={() => setError(true)}>
+        <Text>Hello</Text>
+      </Button>
     </View>
   );
 };

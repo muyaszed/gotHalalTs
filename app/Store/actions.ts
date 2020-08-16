@@ -2,12 +2,14 @@ import {AuthAction} from '../Authentication/action';
 import {RestaurantAction} from '../Restaurant/action';
 import {ReviewAction} from '../Review/action';
 import {ProfileAction} from '../Profile/action';
+import {ErrorAction} from '../Error/action';
 
 export type Actions =
   | AuthAction
   | RestaurantAction
   | ReviewAction
-  | ProfileAction;
+  | ProfileAction
+  | ErrorAction;
 
 export default {
   USER_SIGN_IN: 'USER_SIGN_IN' as const,
@@ -23,4 +25,8 @@ export default {
   SETTING_NEW_REVIEW_SUCCESS: 'SETTING_NEW_REVIEW_SUCCESS' as const,
   SETTING_NEW_REVIEW_FAILED: 'SETTING_NEW_REVIEW_FAILED' as const,
   SAVE_PROFILE: 'SAVE_PROFILE' as const,
+  SHOW_ERROR_DIALOG: 'SHOW_ERROR_DIALOG' as const,
+  CLOSE_ERROR_DIALOG: 'CLOSE_ERROR_DIALOG' as const,
+  SAVE_ERROR_MESSAGE: 'SAVE_ERROR_MESSAGE' as const,
+  RESET_ERROR_FLAGS: 'RESET_ERROR_FLAGS' as const,
 };

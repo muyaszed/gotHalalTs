@@ -1,9 +1,10 @@
 import {Action} from 'redux';
 import types from '../Store/actions';
-import {UserProfile, UpdatableUserProfile} from './reducer';
+import {UserProfile} from './reducer';
 import Api from '../Services/api';
 import {RootState} from '../Store/reducers';
 import {ThunkDispatch} from 'redux-thunk';
+import {saveErrorMessage, showErrorDialog} from '../Error/action';
 
 export type ProfileAction = ReturnType<typeof saveProfile>;
 
@@ -53,5 +54,11 @@ export const updateUserProfile = (
   try {
     await Api.Put.profile(userToken, userData, cuurentUserId);
     dispatch(updateCurrentProfile(userToken));
-  } catch (error) {}
+  } catch (error) {
+    const errorMessage = error.response
+      ? error.response.data.message
+      : error.message;
+    dispatch(saveErrorMessage(errorMessage));
+    dispatch(showErrorDialog());
+  }
 };

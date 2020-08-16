@@ -33,9 +33,9 @@ const styles = StyleSheet.create({
 
 interface Props {
   title: string;
-  leftButtonName: string;
+  leftButtonName?: string;
   rightButtonName: string;
-  handleLeftButton: () => void;
+  handleLeftButton?: () => void;
   handleRightButton: () => void;
   modalVisible: boolean;
 }
@@ -58,14 +58,16 @@ const GenericModal: React.FC<Props> = ({
           </View>
           <View style={styles.content}>{children}</View>
           <View style={styles.groupButtonWrapper}>
-            <Button
-              style={styles.leftButton}
-              iconLeft
-              bordered
-              block
-              onPress={handleLeftButton}>
-              <Text>{leftButtonName}</Text>
-            </Button>
+            {leftButtonName ? (
+              <Button
+                style={styles.leftButton}
+                iconLeft
+                bordered
+                block
+                onPress={handleLeftButton}>
+                <Text>{leftButtonName}</Text>
+              </Button>
+            ) : null}
             <Button
               style={styles.rightButton}
               iconLeft

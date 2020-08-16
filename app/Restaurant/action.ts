@@ -5,6 +5,7 @@ import {RestaurantModel} from './reducer';
 import {ThunkDispatch} from 'redux-thunk';
 import {RootState} from '../Store/reducers';
 import {showToast} from '../Services/helper';
+import {saveErrorMessage, showErrorDialog} from '../Error/action';
 
 export type RestaurantAction =
   | ReturnType<typeof gettingAllRestaurants>
@@ -33,7 +34,12 @@ export const getAllRestaurants = (userToken: string) => async (
     const data = await (await Api.Get.restaurants(userToken)).data;
     dispatch(gettingAllRestaurantsSuccess(data));
   } catch (error) {
-    dispatch(gettingAllRestaurantsFailed(error));
+    const errorMessage = error.response
+      ? error.response.data.message
+      : error.message;
+    dispatch(gettingAllRestaurantsFailed(errorMessage));
+    dispatch(saveErrorMessage(errorMessage));
+    dispatch(showErrorDialog());
   }
 };
 
@@ -53,6 +59,13 @@ export const setNewListing = (newData: FormData, token: string) => async (
     showToast('You have successfully added a new place.');
     return true;
   } catch (error) {
+    console.log(error.response);
+    dispatch(
+      saveErrorMessage(
+        'Your submission may not be complete. Please check and try to submit again',
+      ),
+    );
+    dispatch(showErrorDialog());
     return false;
   }
 };

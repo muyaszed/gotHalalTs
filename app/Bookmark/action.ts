@@ -5,6 +5,7 @@ import {showToast} from '../Services/helper';
 import {updateCurrentProfile} from '../Profile/action';
 import {ThunkDispatch} from 'redux-thunk';
 import {getAllRestaurants} from '../Restaurant/action';
+import {saveErrorMessage, showErrorDialog} from '../Error/action';
 
 export const userBookmark = (userToken: string) => async (
   dispatch: ThunkDispatch<RootState, void, Action>,
@@ -19,7 +20,13 @@ export const userBookmark = (userToken: string) => async (
       showToast('You have bookmark this place');
       dispatch(updateCurrentProfile(userToken));
       dispatch(getAllRestaurants(userToken));
-    } catch (error) {}
+    } catch (error) {
+      const errorMessage = error.response
+        ? error.response.data.message
+        : error.message;
+      dispatch(saveErrorMessage(errorMessage));
+      dispatch(showErrorDialog());
+    }
   }
 };
 
@@ -35,6 +42,12 @@ export const userUnbookmark = (userToken: string) => async (
       showToast('You have unbookmark this place');
       dispatch(updateCurrentProfile(userToken));
       dispatch(getAllRestaurants(userToken));
-    } catch (error) {}
+    } catch (error) {
+      const errorMessage = error.response
+        ? error.response.data.message
+        : error.message;
+      dispatch(saveErrorMessage(errorMessage));
+      dispatch(showErrorDialog());
+    }
   }
 };

@@ -7,8 +7,17 @@ import UserBookmarks from './UserBookmarks';
 import UserCheckins from './UserCheckins';
 import UserSettings from './UserSettings';
 
+export type RootStackParamList = {
+  'My Profile': undefined;
+  'My Listing': undefined;
+  'My Reviews': undefined;
+  'My Bookmarks': undefined;
+  'My Check-ins': undefined;
+  'My Settings': undefined;
+};
+
 const Profile = () => {
-  const Stack = createStackNavigator();
+  const Stack = createStackNavigator<RootStackParamList>();
 
   return (
     <Stack.Navigator>

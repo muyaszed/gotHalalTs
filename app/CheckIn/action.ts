@@ -5,6 +5,7 @@ import {updateCurrentProfile} from '../Profile/action';
 import {getAllRestaurants} from '../Restaurant/action';
 import {showToast} from '../Services/helper';
 import Api from '../Services/api';
+import {saveErrorMessage, showErrorDialog} from '../Error/action';
 
 export const userCheckin = () => async (
   dispatch: ThunkDispatch<RootState, void, Action>,
@@ -37,7 +38,13 @@ export const userCheckin = () => async (
         dispatch(updateCurrentProfile(userToken));
         dispatch(getAllRestaurants(userToken));
         showToast('You have successfully check-in to this place.');
-      } catch (error) {}
+      } catch (error) {
+        const errorMessage = error.response
+          ? error.response.data.message
+          : error.message;
+        dispatch(saveErrorMessage(errorMessage));
+        dispatch(showErrorDialog());
+      }
     } else {
       showToast(
         "You can't check-in now. Pull to refresh content and try again",
@@ -51,6 +58,12 @@ export const userCheckin = () => async (
         dispatch(getAllRestaurants(userToken));
         showToast('You have successfully check-in to this place.');
       }
-    } catch (error) {}
+    } catch (error) {
+      const errorMessage = error.response
+        ? error.response.data.message
+        : error.message;
+      dispatch(saveErrorMessage(errorMessage));
+      dispatch(showErrorDialog());
+    }
   }
 };

@@ -5,6 +5,7 @@ import types from '../Store/actions';
 import {updateCurrentProfile} from '../Profile/action';
 import {getAllRestaurants} from '../Restaurant/action';
 import {ThunkDispatch} from 'redux-thunk';
+import {saveErrorMessage, showErrorDialog} from '../Error/action';
 export type ReviewAction =
   | ReturnType<typeof loadReviewsSuccess>
   | ReturnType<typeof loadReviewsFailed>
@@ -34,6 +35,11 @@ export const loadReviews = (userToken: string) => async (
       dispatch(loadReviewsSuccess(data));
     } catch (error) {
       dispatch(loadReviewsFailed(error));
+      const errorMessage = error.response
+        ? error.response.data.message
+        : error.message;
+      dispatch(saveErrorMessage(errorMessage));
+      dispatch(showErrorDialog());
     }
   }
 };
@@ -63,6 +69,11 @@ export const setNewReview = (
     return true;
   } catch (error) {
     dispatch(setNewReviewFailed(error));
+    const errorMessage = error.response
+      ? error.response.data.message
+      : error.message;
+    dispatch(saveErrorMessage(errorMessage));
+    dispatch(showErrorDialog());
     return false;
   }
 };

@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Dimensions,
-  ScrollView,
-  StyleSheet,
-  Image,
-} from 'react-native';
+import {View, Text, Dimensions, StyleSheet, Image} from 'react-native';
 import {
   Form,
   Item,
@@ -427,7 +420,7 @@ const NewListing = () => {
             style={[styles.input, styles.submitBtn]}
             block
             light={submitBtnStatus}
-            disabled={submitBtnStatus}
+            disabled={false}
             onPress={() => {
               const newData = new FormData();
               Object.entries(placeInfo).forEach(([key, value]) => {
@@ -460,8 +453,8 @@ const NewListing = () => {
                       family_friendly: false,
                       disabled_accessibility: false,
                     });
+                    navigation.navigate('Listing');
                   }
-                  navigation.navigate('Listing');
                 });
               }
             }}>

@@ -3,7 +3,13 @@ import types from '../Store/actions';
 import Api, {Credential} from '../Services/api';
 import {Dispatch} from 'redux';
 import {saveProfile} from '../Profile/action';
-import {FBToken} from 'app/Screens/SignIn';
+import {FBToken} from '../Screens/SignIn';
+import {
+  saveErrorMessage,
+  showErrorDialog,
+  resetErrorFlags,
+} from '../Error/action';
+import {RootState} from '../Store/reducers';
 
 export type AuthAction =
   | ReturnType<typeof signIn>
@@ -19,9 +25,16 @@ export const userSignOut = () => ({
   type: types.USER_SIGN_OUT,
 });
 
-export const signOut = () => (dispatch: Dispatch) => {
+export const signOut = () => (
+  dispatch: Dispatch,
+  getState: () => RootState,
+) => {
+  const needLogOut = getState().error.needLogOut;
   AsyncStorage.removeItem('userToken');
   dispatch(userSignOut());
+  if (needLogOut) {
+    dispatch(resetErrorFlags());
+  }
 };
 
 export const restoreToken = (newToken: string) => ({
@@ -60,6 +73,8 @@ export const userSignUp = (credential: Credential) => async (
     );
   } catch (error) {
     console.log(error.response.data.message);
+    dispatch(saveErrorMessage(error.response.data.message));
+    dispatch(showErrorDialog());
   }
 };
 
@@ -94,6 +109,8 @@ export const userSignIn = (credential: Credential) => async (
     );
   } catch (error) {
     console.log(error.response.data.message);
+    dispatch(saveErrorMessage(error.response.data.message));
+    dispatch(showErrorDialog());
   }
 };
 

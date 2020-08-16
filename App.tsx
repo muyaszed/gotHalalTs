@@ -6,6 +6,11 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import AsyncStorage from '@react-native-community/async-storage';
+import {
+  setJSExceptionHandler,
+  setNativeExceptionHandler,
+} from 'react-native-exception-handler';
+
 import SignInScreen from './app/Screens/SignIn';
 import SignUpScreen from './app/Screens/Signup';
 import LandingScreen from './app/Screens/Landing';
@@ -13,9 +18,39 @@ import HomeScreen from './app/Screens/Home';
 import Profile from './app/Screens/Profile';
 import AddListing from './app/Screens/AddListing';
 import {RootState} from './app/Store/reducers';
-import {restoreToken} from './app/Authentication/action';
-import {View, StyleSheet} from 'react-native';
+import {restoreToken, signOut} from './app/Authentication/action';
+import {View, StyleSheet, Text, DevSettings, Alert} from 'react-native';
 import {Icon} from '@codler/native-base';
+import Modal from './app/Components/modal';
+import {closeErrorDialog, resetErrorFlags} from './app/Error/action';
+
+setJSExceptionHandler((error, isFatal) => {
+  if (isFatal) {
+    if (error) {
+      Alert.alert(
+        'Sorry, something is not right.',
+        `
+      Error: ${isFatal ? 'Fatal:' : ''} ${error.name} ${error.message}
+      We will need to restart the app.
+      `,
+        [
+          {
+            text: 'Restart',
+            onPress: () => {
+              DevSettings.reload();
+            },
+          },
+        ],
+      );
+    }
+  } else {
+    console.log(error);
+  }
+});
+
+setNativeExceptionHandler((errorString) => {
+  console.log('setNativeExceptionHandler');
+});
 
 const styles = StyleSheet.create({
   addNewTab: {
@@ -32,8 +67,15 @@ const styles = StyleSheet.create({
 });
 
 const App = () => {
+  const needLogOut = useSelector((state: RootState) => state.error.needLogOut);
+  const needReload = useSelector((state: RootState) => state.error.needReload);
   const dispatch = useDispatch();
+  const showErrorModal = useSelector(
+    (state: RootState) => state.error.showModal,
+  );
+  const errorMessage = useSelector((state: RootState) => state.error.message);
   const authState = useSelector((state: RootState) => state.auth);
+
   React.useEffect(() => {
     const bootstrapAsync = async () => {
       let userTokenStorage = null;
@@ -92,6 +134,22 @@ const App = () => {
           />
         </Tab.Navigator>
       )}
+      <Modal
+        modalVisible={showErrorModal}
+        title="Sorry, something is not right."
+        rightButtonName="OK"
+        handleRightButton={() => {
+          dispatch(closeErrorDialog());
+          if (needLogOut) {
+            dispatch(signOut());
+          }
+          if (needReload) {
+            dispatch(resetErrorFlags);
+            DevSettings.reload();
+          }
+        }}>
+        <Text>{errorMessage}</Text>
+      </Modal>
     </NavigationContainer>
   );
 };

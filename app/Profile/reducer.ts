@@ -17,9 +17,10 @@ interface CheckIns {
   time: number;
 }
 
-interface UserSettings {
+export interface UserSettingItems {
   facebook_avatar: boolean;
   distance_unit: 'kilometer' | 'mile';
+  [key: string]: string | boolean;
 }
 
 export interface UserProfile {
@@ -33,7 +34,7 @@ export interface UserProfile {
   reviews: UserReview[];
   bookmark: RestaurantModel[];
   checkIns: CheckIns[];
-  settings: UserSettings;
+  settings: UserSettingItems;
 }
 
 export interface UpdatableUserProfile {
