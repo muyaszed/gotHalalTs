@@ -101,21 +101,24 @@ const Restaurants = () => {
         dispatch(getAllRestaurants(userToken));
       }
 
-      if (
-        userProfile.firstName.length === 0 &&
-        userProfile.lastName.length === 0
-      ) {
-        dispatch(
-          saveErrorMessage(
-            'Please provide your First and Last name please. Thank you',
-          ),
-        );
-        dispatch(showErrorDialog());
-      }
-
       return unsubscribe;
     });
-  }, [navigation]);
+  }, [navigation, dispatch, userToken]);
+
+  useEffect(() => {
+    if (
+      userProfile.firstName.length === 0 &&
+      userProfile.lastName.length === 0
+    ) {
+      dispatch(
+        saveErrorMessage(
+          'Looks like you have not set you name properly. Please go to your profile and set your full name(long press the first or last name)',
+        ),
+      );
+      dispatch(showErrorDialog());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return restaurants.length > 0 ? (
     <FlatList
@@ -143,9 +146,6 @@ const Restaurants = () => {
   ) : (
     <View style={styles.noListing}>
       <Text>Sorry, there is no listing yet.</Text>
-      <Button transparent onPress={() => setError(true)}>
-        <Text>Hello</Text>
-      </Button>
     </View>
   );
 };

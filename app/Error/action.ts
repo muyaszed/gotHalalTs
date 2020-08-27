@@ -1,7 +1,4 @@
 import types from '../Store/actions';
-import {ThunkDispatch} from 'redux-thunk';
-import {Action} from 'redux';
-import {RootState} from '../Store/reducers';
 
 export type ErrorAction =
   | ReturnType<typeof resetErrorFlags>
@@ -25,11 +22,3 @@ export const saveErrorMessage = (message: string) => ({
 export const resetErrorFlags = () => ({
   type: types.RESET_ERROR_FLAGS,
 });
-
-// export const triggerError = (message: string) => (
-//   dispatch: ThunkDispatch<RootState, void, Action>,
-// ) => {
-//   console.log('in thunk', message);
-//   dispatch(saveErrorMessage(message));
-//   dispatch(showErrorDialog());
-// };

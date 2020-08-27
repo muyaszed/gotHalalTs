@@ -48,7 +48,7 @@ setJSExceptionHandler((error, isFatal) => {
   }
 });
 
-setNativeExceptionHandler((errorString) => {
+setNativeExceptionHandler(() => {
   console.log('setNativeExceptionHandler');
 });
 

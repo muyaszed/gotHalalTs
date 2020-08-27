@@ -9,13 +9,22 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../Store/reducers';
-import {Icon, List, ListItem, Left, Right, Button} from '@codler/native-base';
+import {
+  Icon,
+  List,
+  ListItem,
+  Left,
+  Right,
+  Button,
+  Input,
+} from '@codler/native-base';
 import {signOut} from '../Authentication/action';
 import {useNavigation} from '@react-navigation/native';
 import Modal from '../Components/modal';
 import {updateUserProfile} from '../Profile/action';
 
 import ImagePicker from 'react-native-image-picker';
+import {Dispatch} from 'redux';
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -64,12 +73,32 @@ const styles = StyleSheet.create({
   },
 });
 
+const updateFullName = (config: {
+  dispatch: Dispatch<any>;
+  fullName: {
+    firstName: string;
+    lastName: string;
+  };
+  userToken: string;
+  userId: number;
+}) => {
+  const form = new FormData();
+  form.append('first_name', config.fullName.firstName);
+  form.append('last_name', config.fullName.lastName);
+  config.dispatch(updateUserProfile(config.userToken, form, config.userId));
+};
+
 const Profile = () => {
   const profile = useSelector((state: RootState) => state.profile);
   const userToken = useSelector((state: RootState) => state.auth.userToken);
   const [photoModal, setPhotoModal] = React.useState(false);
+  const [fullName, setFullName] = React.useState({
+    firstName: '',
+    lastName: '',
+  });
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [enableSetName, setEnableSetNameStatus] = React.useState(false);
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -140,22 +169,104 @@ const Profile = () => {
       </View>
       <View style={styles.informationContainer}>
         <List>
-          <ListItem>
-            <Left>
-              <Text>First Name</Text>
-            </Left>
-            <View>
-              <Text>{profile.firstName}</Text>
-            </View>
-          </ListItem>
-          <ListItem>
-            <Left>
-              <Text>Last Name</Text>
-            </Left>
-            <View>
-              <Text>{profile.lastName}</Text>
-            </View>
-          </ListItem>
+          {enableSetName ? (
+            <ListItem>
+              <Left>
+                <Input
+                  placeholder="Your First Name"
+                  onChangeText={(text) =>
+                    setFullName({
+                      ...fullName,
+                      firstName: text,
+                    })
+                  }
+                  value={fullName.firstName}
+                />
+              </Left>
+              <View>
+                <Icon
+                  onPress={() => {
+                    setEnableSetNameStatus(false);
+                    if (userToken && profile.userId) {
+                      updateFullName({
+                        dispatch,
+                        fullName,
+                        userToken,
+                        userId: profile.userId,
+                      });
+                    }
+                  }}
+                  type="AntDesign"
+                  name="save"
+                />
+                <Icon
+                  onPress={() => {
+                    setEnableSetNameStatus(false);
+                  }}
+                  type="MaterialIcons"
+                  name="cancel"
+                />
+              </View>
+            </ListItem>
+          ) : (
+            <ListItem onLongPress={() => setEnableSetNameStatus(true)}>
+              <Left>
+                <Text>First Name</Text>
+              </Left>
+              <View>
+                <Text>{profile.firstName}</Text>
+              </View>
+            </ListItem>
+          )}
+          {enableSetName ? (
+            <ListItem>
+              <Left>
+                <Input
+                  placeholder="Your Last Name"
+                  onChangeText={(text) =>
+                    setFullName({
+                      ...fullName,
+                      lastName: text,
+                    })
+                  }
+                  value={fullName.lastName}
+                />
+              </Left>
+              <View>
+                <Icon
+                  onPress={() => {
+                    setEnableSetNameStatus(false);
+                    if (userToken && profile.userId) {
+                      updateFullName({
+                        dispatch,
+                        fullName,
+                        userToken,
+                        userId: profile.userId,
+                      });
+                    }
+                  }}
+                  type="AntDesign"
+                  name="save"
+                />
+                <Icon
+                  onPress={() => {
+                    setEnableSetNameStatus(false);
+                  }}
+                  type="MaterialIcons"
+                  name="cancel"
+                />
+              </View>
+            </ListItem>
+          ) : (
+            <ListItem onLongPress={() => setEnableSetNameStatus(true)}>
+              <Left>
+                <Text>Last Name</Text>
+              </Left>
+              <View>
+                <Text>{profile.lastName}</Text>
+              </View>
+            </ListItem>
+          )}
           <ListItem>
             <Left>
               <Text>Email</Text>
