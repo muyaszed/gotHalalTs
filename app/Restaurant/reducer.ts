@@ -1,5 +1,3 @@
-import {CategoryType} from '../Category/reducer';
-import {CuisineType} from '../Cuisine/reducer';
 import types, {Actions} from '../Store/actions';
 interface OnlyIds {
   id: number;
@@ -22,8 +20,8 @@ export interface RestaurantModel {
   city: string;
   country: string;
   postcode: string;
-  category: CategoryType;
-  cuisine: CuisineType;
+  category: string;
+  cuisine: string;
   start: string;
   desc: string;
   sub_header: string;
@@ -43,6 +41,13 @@ export interface RestaurantModel {
   bookmarking_user: BookmarkingUser[];
   checking_ins: CheckingIns[];
   reviews: Reviews[];
+  certificate_verification: string;
+  confirmation_verification: string;
+  logo_verification: string;
+  halal_verifications: {
+    id: number;
+    user_id: number;
+  }[];
 }
 
 export interface RestaurantState {

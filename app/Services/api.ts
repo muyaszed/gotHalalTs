@@ -84,6 +84,22 @@ export default {
         },
         data: data,
       }),
+    verification: (
+      token: string,
+      restaurantId: number,
+      userId: number,
+      data: FormData,
+    ) =>
+      axios({
+        method: 'POST',
+        url: `${Config.API_ADDRESS_DEV}/restaurants/${restaurantId}/${userId}/halal_verification`,
+        headers: {
+          Accept: 'application/vnd.halaldir.v1+json',
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+        data,
+      }),
   },
   Get: {
     restaurants: (userToken: string) => {

@@ -32,6 +32,7 @@ import Modal from '../Components/modal';
 import ImagePicker from 'react-native-image-picker';
 import {ThunkDispatch} from 'redux-thunk';
 import {showToast} from '../Services/helper';
+import {userVerify} from '../HalalVerification/action';
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -50,6 +51,17 @@ const styles = StyleSheet.create({
   mainImage: {
     height: 300,
     resizeMode: 'cover',
+  },
+  verifyButtonContainer: {
+    paddingTop: 10,
+  },
+  verifyButton: {
+    width: '100%',
+    textAlign: 'center',
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
   },
   groupBtnContainer: {
     flex: 1,
@@ -89,12 +101,33 @@ const styles = StyleSheet.create({
   statusIconGroup: {
     flexDirection: 'row',
   },
+  verificationIcons: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  logoIcon: {
+    fontSize: 1,
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 interface MapOption {
   latitude: number;
   longitude: number;
   google: boolean;
+}
+
+interface VerificationData {
+  confirmation: boolean;
+  certification: boolean;
+  logo: boolean;
 }
 
 const handleOpenMap = (option: MapOption) => {
@@ -116,6 +149,7 @@ const renderAboveReviews = (
   restaurant: RestaurantModel,
   dispatch: ThunkDispatch<RootState, void, Action>,
   userToken: string,
+  userId: number,
   currentUserBookmarkList: RestaurantModel[],
   mapModalVisible: boolean,
   setMapModalVisible: React.Dispatch<React.SetStateAction<boolean>>,
@@ -127,6 +161,10 @@ const renderAboveReviews = (
   setCurrentReview: React.Dispatch<React.SetStateAction<string>>,
   disableReviewSubmit: boolean,
   selectedPlaceId: number | null,
+  verificationData: VerificationData,
+  setVerification: React.Dispatch<React.SetStateAction<VerificationData>>,
+  verifyModalVisible: boolean,
+  setVerifyModalVisible: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   return (
     <View>
@@ -142,7 +180,40 @@ const renderAboveReviews = (
             }}
           />
         </View>
-
+        <View style={styles.verificationIcons}>
+          {restaurant.certificate_verification !== '0' ? (
+            <View>
+              <Icon type="FontAwesome" name="certificate" />
+              <Text>{`${restaurant.certificate_verification}%`}</Text>
+            </View>
+          ) : null}
+          {restaurant.confirmation_verification !== '0' ? (
+            <View>
+              <Icon type="FontAwesome" name="commenting" />
+              <Text>{`${restaurant.confirmation_verification}%`}</Text>
+            </View>
+          ) : null}
+          {restaurant.logo_verification !== '0' ? (
+            <View>
+              <View style={styles.logoIcon}>
+                <Text>حلا</Text>
+              </View>
+              <Text>{`${restaurant.logo_verification}%`}</Text>
+            </View>
+          ) : null}
+        </View>
+        {restaurant.halal_verifications.map((item) => item.user_id === userId)
+          .length === 0 ? (
+          <View style={styles.verifyButtonContainer}>
+            <Button
+              iconLeft
+              bordered
+              block
+              onPress={() => setVerifyModalVisible(true)}>
+              <Text>Verify Halal Status</Text>
+            </Button>
+          </View>
+        ) : null}
         <View>
           <List>
             <ListItem itemDivider>
@@ -383,6 +454,70 @@ const renderAboveReviews = (
             </Body>
           </ListItem>
         </Modal>
+        <Modal
+          title="Please select item you'll like to verify"
+          leftButtonName="Verify"
+          rightButtonName="Cancel"
+          modalVisible={verifyModalVisible}
+          handleLeftButton={() => {
+            const data = new FormData();
+            data.append('confirmation', verificationData.confirmation);
+            data.append('certificate', verificationData.certification);
+            data.append('logo', verificationData.logo);
+            dispatch(userVerify(userToken, data));
+            console.log(data);
+            setVerifyModalVisible(false);
+            setVerification({
+              confirmation: false,
+              certification: false,
+              logo: false,
+            });
+          }}
+          handleRightButton={() => {
+            setVerifyModalVisible(false);
+            setVerification({
+              confirmation: false,
+              certification: false,
+              logo: false,
+            });
+          }}>
+          <ListItem
+            onPress={() =>
+              setVerification((prevState) => ({
+                ...prevState,
+                confirmation: !prevState.confirmation,
+              }))
+            }>
+            <CheckBox checked={verificationData.confirmation} />
+            <Body>
+              <Text>Written or verbal confirmation</Text>
+            </Body>
+          </ListItem>
+          <ListItem
+            onPress={() =>
+              setVerification((prevState) => ({
+                ...prevState,
+                certification: !prevState.certification,
+              }))
+            }>
+            <CheckBox checked={verificationData.certification} />
+            <Body>
+              <Text>Halal certification</Text>
+            </Body>
+          </ListItem>
+          <ListItem
+            onPress={() =>
+              setVerification((prevState) => ({
+                ...prevState,
+                logo: !prevState.logo,
+              }))
+            }>
+            <CheckBox checked={verificationData.logo} />
+            <Body>
+              <Text>Halal logo</Text>
+            </Body>
+          </ListItem>
+        </Modal>
       </View>
     </View>
   );
@@ -409,6 +544,7 @@ const Restaurant = () => {
   const userToken = useSelector((state: RootState) => state.auth.userToken);
   const dispatch: ThunkDispatch<RootState, void, Action> = useDispatch();
   const reviews = useSelector((state: RootState) => state.reviews.list);
+  const userId = useSelector((state: RootState) => state.profile.userId);
   const currentUserBookmarkList = useSelector(
     (state: RootState) => state.profile.bookmark,
   );
@@ -419,6 +555,13 @@ const Restaurant = () => {
   const [selectedReviewImage, setReviewImage] = React.useState<string | null>(
     null,
   );
+
+  const [verificationData, setVerification] = React.useState<VerificationData>({
+    confirmation: false,
+    certification: false,
+    logo: false,
+  });
+  const [verifyModalVisible, setVerifyModalVisible] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -466,6 +609,7 @@ const Restaurant = () => {
         restaurant,
         dispatch,
         userToken!,
+        userId!,
         currentUserBookmarkList,
         mapModalVisible,
         setMapModalVisible,
@@ -477,6 +621,10 @@ const Restaurant = () => {
         setCurrentReview,
         disableReviewSubmit,
         selectedPlaceId,
+        verificationData,
+        setVerification,
+        verifyModalVisible,
+        setVerifyModalVisible,
       )}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
