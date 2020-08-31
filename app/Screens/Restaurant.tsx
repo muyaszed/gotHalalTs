@@ -36,14 +36,19 @@ import {userVerify} from '../HalalVerification/action';
 
 const styles = StyleSheet.create({
   mainContainer: {
-    paddingLeft: 15,
-    paddingRight: 15,
+    // paddingLeft: 15,
+    // paddingRight: 15,
   },
   title: {
     paddingTop: 30,
-    paddingBottom: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
   },
-  description: {},
+  description: {
+    fontSize: 15,
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
   mainImageContainer: {
     flex: 1,
     height: 300,
@@ -51,6 +56,8 @@ const styles = StyleSheet.create({
   mainImage: {
     height: 300,
     resizeMode: 'cover',
+    paddingLeft: 0,
+    paddingRight: 0,
   },
   verifyButtonContainer: {
     paddingTop: 10,
@@ -72,16 +79,33 @@ const styles = StyleSheet.create({
   groupBtn: {
     width: '45%',
     textAlign: 'center',
+    backgroundColor: '#098E33',
+    borderColor: '#098E33',
+  },
+  groupBtnIcon: {
+    color: '#f4f4f4',
+  },
+  groupBtnText: {
+    color: '#f4f4f4',
   },
   reviewContainer: {
     flex: 1,
     marginTop: 20,
+    paddingLeft: 15,
+    paddingRight: 15,
   },
   reviewTextArea: {
     marginBottom: 20,
   },
   reviewPhotoBtn: {
     marginBottom: 10,
+    backgroundColor: '#098E33',
+  },
+  reviewSubmitBtn: {
+    borderColor: '#098E33',
+  },
+  reviewSubmitBtnText: {
+    color: '#098E33',
   },
   mapContainer: {
     flex: 1,
@@ -96,14 +120,47 @@ const styles = StyleSheet.create({
   mapModalContent: {},
   mapModalTitle: {},
   socMed: {
+    justifyContent: 'center',
+  },
+  extraInfo: {
     justifyContent: 'space-around',
   },
+  extraInfoCheckWrapper: {
+    width: 30,
+    height: 30,
+    borderRadius: 25,
+    backgroundColor: '#098E33',
+    marginLeft: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  extraInfoCheck: {
+    fontSize: 26,
+  },
+  socMedIcon: {
+    color: '#098E33',
+    fontSize: 40,
+  },
   statusIconGroup: {
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 5,
+    paddingRight: 5,
     flexDirection: 'row',
+    borderWidth: 1,
+    borderRadius: 5,
+  },
+  verificationContainer: {
+    marginTop: 30,
+    marginLeft: 15,
+    marginRight: 15,
+    borderWidth: 1,
+    borderColor: '#098E33',
+    borderRadius: 10,
   },
   verificationIcons: {
     paddingTop: 10,
-    paddingBottom: 10,
+    paddingBottom: 20,
     flexDirection: 'row',
     justifyContent: 'center',
   },
@@ -115,6 +172,48 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  verifyCircle: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#098E33',
+    marginLeft: 15,
+    marginRight: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  percentage: {
+    fontSize: 12,
+  },
+  verifyTitle: {
+    position: 'relative',
+    bottom: 11,
+    left: 15,
+    backgroundColor: '#f4f4f4',
+    width: 136,
+    paddingLeft: 3,
+    paddingRight: 3,
+  },
+  reviewBtn: {
+    textAlign: 'center',
+    backgroundColor: '#098E33',
+    borderColor: '#098E33',
+  },
+  reviewForm: {
+    borderWidth: 1,
+    paddingLeft: 5,
+    paddingRight: 5,
+    paddingTop: 15,
+    paddingBottom: 5,
+    borderRadius: 5,
+  },
+  reviewFormCancelIcon: {
+    alignItems: 'flex-end',
+  },
+  reviewContent: {
+    paddingLeft: 80,
+    paddingBottom: 10,
   },
 });
 
@@ -165,12 +264,14 @@ const renderAboveReviews = (
   setVerification: React.Dispatch<React.SetStateAction<VerificationData>>,
   verifyModalVisible: boolean,
   setVerifyModalVisible: React.Dispatch<React.SetStateAction<boolean>>,
+  showReviewForm: boolean,
+  setShowReviewForm: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   return (
     <View>
       <View style={styles.mainContainer}>
         <H1 style={styles.title}>{restaurant.name.toUpperCase()}</H1>
-        <H3 style={styles.description}>{restaurant.desc.toUpperCase()}</H3>
+        <H3 style={styles.description}>{restaurant.desc}</H3>
 
         <View style={styles.mainImage}>
           <Image
@@ -180,28 +281,37 @@ const renderAboveReviews = (
             }}
           />
         </View>
-        <View style={styles.verificationIcons}>
-          {restaurant.certificate_verification !== '0' ? (
-            <View>
+        <View style={styles.verificationContainer}>
+          <Text style={styles.verifyTitle}>Halal Verifications</Text>
+          <View style={styles.verificationIcons}>
+            <View style={styles.verifyCircle}>
               <Icon type="FontAwesome" name="certificate" />
-              <Text>{`${restaurant.certificate_verification}%`}</Text>
+              <Text
+                style={
+                  styles.percentage
+                }>{`${restaurant.certificate_verification}%`}</Text>
             </View>
-          ) : null}
-          {restaurant.confirmation_verification !== '0' ? (
-            <View>
+
+            <View style={styles.verifyCircle}>
               <Icon type="FontAwesome" name="commenting" />
-              <Text>{`${restaurant.confirmation_verification}%`}</Text>
+              <Text
+                style={
+                  styles.percentage
+                }>{`${restaurant.confirmation_verification}%`}</Text>
             </View>
-          ) : null}
-          {restaurant.logo_verification !== '0' ? (
-            <View>
+
+            <View style={styles.verifyCircle}>
               <View style={styles.logoIcon}>
                 <Text>حلا</Text>
               </View>
-              <Text>{`${restaurant.logo_verification}%`}</Text>
+              <Text
+                style={
+                  styles.percentage
+                }>{`${restaurant.logo_verification}%`}</Text>
             </View>
-          ) : null}
+          </View>
         </View>
+
         {restaurant.halal_verifications.map((item) => item.user_id === userId)
           .length === 0 ? (
           <View style={styles.verifyButtonContainer}>
@@ -260,6 +370,7 @@ const renderAboveReviews = (
                   const socMed = restaurant.soc_med;
                   return (
                     <Icon
+                      style={styles.socMedIcon}
                       key={index}
                       onPress={() => Linking.openURL(socMed[item])}
                       type="Entypo"
@@ -269,11 +380,17 @@ const renderAboveReviews = (
                 })}
               </ListItem>
             )}
-            <ListItem itemDivider style={styles.socMed}>
+            <ListItem itemDivider style={styles.extraInfo}>
               <View style={styles.statusIconGroup}>
                 <Icon type="FontAwesome5" name="mosque" />
                 {restaurant.surau ? (
-                  <Icon type="AntDesign" name="check" />
+                  <View style={styles.extraInfoCheckWrapper}>
+                    <Icon
+                      type="AntDesign"
+                      name="check"
+                      style={styles.extraInfoCheck}
+                    />
+                  </View>
                 ) : (
                   <Icon type="AntDesign" name="close" />
                 )}
@@ -281,7 +398,13 @@ const renderAboveReviews = (
               <View style={styles.statusIconGroup}>
                 <Icon type="FontAwesome5" name="baby-carriage" />
                 {restaurant.family_friendly ? (
-                  <Icon type="AntDesign" name="check" />
+                  <View style={styles.extraInfoCheckWrapper}>
+                    <Icon
+                      type="AntDesign"
+                      name="check"
+                      style={styles.extraInfoCheck}
+                    />
+                  </View>
                 ) : (
                   <Icon type="AntDesign" name="close" />
                 )}
@@ -289,7 +412,13 @@ const renderAboveReviews = (
               <View style={styles.statusIconGroup}>
                 <Icon type="FontAwesome" name="wheelchair" />
                 {restaurant.disabled_accessibility ? (
-                  <Icon type="AntDesign" name="check" />
+                  <View style={styles.extraInfoCheckWrapper}>
+                    <Icon
+                      type="AntDesign"
+                      name="check"
+                      style={styles.extraInfoCheck}
+                    />
+                  </View>
                 ) : (
                   <Icon type="AntDesign" name="close" />
                 )}
@@ -305,8 +434,13 @@ const renderAboveReviews = (
             bordered
             block
             onPress={() => dispatch(userCheckin())}>
-            <Icon active type="FontAwesome5" name="calendar-check" />
-            <Text>Check-In Here</Text>
+            <Icon
+              style={styles.groupBtnIcon}
+              active
+              type="FontAwesome5"
+              name="calendar-check"
+            />
+            <Text style={styles.groupBtnText}>Check-In Here</Text>
           </Button>
           {currentUserBookmarkList.find(
             (bookamarkedRestaurant) =>
@@ -318,8 +452,13 @@ const renderAboveReviews = (
               bordered
               block
               onPress={() => dispatch(userUnbookmark(userToken))}>
-              <Icon active type="Foundation" name="book-bookmark" />
-              <Text>Unbookmark</Text>
+              <Icon
+                style={styles.groupBtnIcon}
+                active
+                type="Foundation"
+                name="book-bookmark"
+              />
+              <Text style={styles.groupBtnText}>Unbookmark</Text>
             </Button>
           ) : (
             <Button
@@ -328,8 +467,13 @@ const renderAboveReviews = (
               bordered
               block
               onPress={() => dispatch(userBookmark(userToken))}>
-              <Icon active type="Foundation" name="book-bookmark" />
-              <Text>Bookmark</Text>
+              <Icon
+                style={styles.groupBtnIcon}
+                active
+                type="Foundation"
+                name="book-bookmark"
+              />
+              <Text style={styles.groupBtnText}>Bookmark</Text>
             </Button>
           )}
         </View>
@@ -355,77 +499,103 @@ const renderAboveReviews = (
           </MapView>
         </View>
         <View style={styles.reviewContainer}>
-          <Text>Reviews</Text>
-          <Form>
-            <Textarea
-              style={styles.reviewTextArea}
-              underline
-              rowSpan={5}
-              bordered
-              placeholder="........"
-              onChangeText={(text) => setCurrentReview(text)}
-              value={currentReview}
-            />
+          <H3>Reviews</H3>
+          {!showReviewForm ? (
             <Button
+              style={styles.reviewBtn}
+              iconLeft
+              bordered
               block
-              disabled={disableReviewSubmit}
-              style={styles.reviewPhotoBtn}
-              onPress={() => {
-                const options = {
-                  title: 'Select Your Image',
-
-                  storageOptions: {
-                    skipBackup: true,
-                    path: 'images',
-                  },
-                };
-                ImagePicker.showImagePicker(options, (response) => {
-                  console.log('Response = ', response);
-
-                  if (response.didCancel) {
-                    console.log('User cancelled image picker');
-                  } else if (response.error) {
-                    console.log('ImagePicker Error: ', response.error);
-                  } else if (response.customButton) {
-                    console.log(
-                      'User tapped custom button: ',
-                      response.customButton,
-                    );
-                  } else {
-                    setReviewImage(response.uri);
-                  }
-                });
-              }}>
-              <Icon name="camera" />
+              onPress={() => setShowReviewForm(true)}>
+              <Icon
+                style={styles.groupBtnIcon}
+                active
+                type="Foundation"
+                name="book-bookmark"
+              />
+              <Text style={styles.groupBtnText}>Write a review</Text>
             </Button>
-            <Button
-              bordered
-              block
-              disabled={disableReviewSubmit}
-              onPress={() => {
-                const reviewInfo = new FormData();
-                reviewInfo.append('comment', currentReview);
-                if (selectedReviewImage) {
-                  reviewInfo.append('photo', {
-                    name: 'review-photo.jpg',
-                    type: 'image/jpeg',
-                    uri: selectedReviewImage.replace('file://', ''),
-                  });
-                }
-                if (selectedPlaceId) {
-                  dispatch(
-                    setNewReview(userToken, reviewInfo, selectedPlaceId),
-                  ).then((res) => {
-                    if (res) {
-                      setCurrentReview('');
-                      showToast('Review successfully added');
+          ) : null}
+          {showReviewForm ? (
+            <Form style={styles.reviewForm}>
+              <View style={styles.reviewFormCancelIcon}>
+                <Icon
+                  onPress={() => setShowReviewForm(false)}
+                  type="AntDesign"
+                  name="close"
+                />
+              </View>
+              <Textarea
+                style={styles.reviewTextArea}
+                underline
+                rowSpan={5}
+                bordered
+                placeholder="........"
+                onChangeText={(text) => setCurrentReview(text)}
+                value={currentReview}
+              />
+              <Button
+                block
+                disabled={disableReviewSubmit}
+                style={styles.reviewPhotoBtn}
+                onPress={() => {
+                  const options = {
+                    title: 'Select Your Image',
+
+                    storageOptions: {
+                      skipBackup: true,
+                      path: 'images',
+                    },
+                  };
+                  ImagePicker.showImagePicker(options, (response) => {
+                    console.log('Response = ', response);
+
+                    if (response.didCancel) {
+                      console.log('User cancelled image picker');
+                    } else if (response.error) {
+                      console.log('ImagePicker Error: ', response.error);
+                    } else if (response.customButton) {
+                      console.log(
+                        'User tapped custom button: ',
+                        response.customButton,
+                      );
+                    } else {
+                      setReviewImage(response.uri);
                     }
                   });
-                }
-              }}>
-              <Text>Submit</Text>
-            </Button>
-          </Form>
+                }}>
+                <Icon name="camera" />
+              </Button>
+              <Button
+                bordered
+                block
+                style={styles.reviewSubmitBtn}
+                disabled={disableReviewSubmit}
+                onPress={() => {
+                  const reviewInfo = new FormData();
+                  reviewInfo.append('comment', currentReview);
+                  if (selectedReviewImage) {
+                    reviewInfo.append('photo', {
+                      name: 'review-photo.jpg',
+                      type: 'image/jpeg',
+                      uri: selectedReviewImage.replace('file://', ''),
+                    });
+                  }
+                  if (selectedPlaceId) {
+                    dispatch(
+                      setNewReview(userToken, reviewInfo, selectedPlaceId),
+                    ).then((res) => {
+                      if (res) {
+                        setCurrentReview('');
+                        showToast('Review successfully added');
+                      }
+                    });
+                  }
+                }}>
+                <Text style={styles.reviewSubmitBtnText}>Submit</Text>
+              </Button>
+            </Form>
+          ) : null}
         </View>
         <Modal
           title="Please select your desired map application."
@@ -562,7 +732,7 @@ const Restaurant = () => {
     logo: false,
   });
   const [verifyModalVisible, setVerifyModalVisible] = React.useState(false);
-
+  const [showReviewForm, setShowReviewForm] = React.useState(false);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
 
@@ -600,6 +770,7 @@ const Restaurant = () => {
             mainImage={false}
             mainImageUri={item.photo}
             mainText={item.comment}
+            mainTextStyle={styles.reviewContent}
             footer={false}
           />
         </Content>
@@ -625,6 +796,8 @@ const Restaurant = () => {
         setVerification,
         verifyModalVisible,
         setVerifyModalVisible,
+        showReviewForm,
+        setShowReviewForm,
       )}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

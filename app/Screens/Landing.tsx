@@ -1,7 +1,7 @@
 import React from 'react';
 import {Container, Content, Button, Text, Icon} from '@codler/native-base';
 import {useNavigation} from '@react-navigation/native';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Image, View} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -28,9 +28,12 @@ const styles = StyleSheet.create({
     position: 'relative',
     top: 25,
   },
-  logo: {
-    fontSize: 100,
+  logoContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
+  logo: {width: 200, height: 150},
 });
 
 const Landing = () => {
@@ -39,8 +42,13 @@ const Landing = () => {
   return (
     <Container style={styles.container}>
       <Content contentContainerStyle={styles.main} padder>
-        <Icon type="Entypo" name="bowl" style={styles.logo} />
-        <Text>GotHalal?</Text>
+        <View style={styles.logoContainer}>
+          <Image
+            style={styles.logo}
+            resizeMode="cover"
+            source={require('../Images/logo.png')}
+          />
+        </View>
         <Button block light onPress={() => navigation.navigate('Sign Up')}>
           <Text>Create free account</Text>
         </Button>

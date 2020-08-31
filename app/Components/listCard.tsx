@@ -1,5 +1,11 @@
 import React, {ReactChild} from 'react';
-import {TouchableOpacity, Image, StyleSheet, View} from 'react-native';
+import {
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {
   Card,
   CardItem,
@@ -38,6 +44,7 @@ interface Props {
   mainImage?: boolean;
   mainImageUri?: string | null;
   mainText?: string;
+  mainTextStyle?: ViewStyle;
   avatar?: boolean;
   avatarUri?: string | null;
   footer?: boolean;
@@ -53,6 +60,7 @@ const ListCard: React.SFC<Props> = ({
   mainImage = true,
   mainImageUri,
   mainText,
+  mainTextStyle,
   avatar = true,
   avatarUri,
   footer = true,
@@ -106,7 +114,7 @@ const ListCard: React.SFC<Props> = ({
               <Icon type="Entypo" name="bowl" style={styles.mainImageIcon} />
             )
           ) : (
-            <Content style={styles.mainText}>
+            <Content style={mainTextStyle ? mainTextStyle : styles.mainText}>
               {mainImageUri ? (
                 <Image
                   source={{
