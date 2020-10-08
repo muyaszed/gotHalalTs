@@ -28,9 +28,11 @@ const styles = StyleSheet.create({
   signInBtn: {
     marginTop: 50,
     marginBottom: 20,
+    backgroundColor: '#098E33',
   },
   underBtnText: {
     textAlign: 'center',
+    paddingTop: 10,
   },
 });
 
@@ -38,6 +40,7 @@ export interface FBToken {
   facebook_access_token: string;
 }
 
+//TODO - pull this function to a helper file
 const fbLogin = (dispatch: Dispatch<any>) => {
   LoginManager.logOut();
   LoginManager.logInWithPermissions(['email', 'public_profile']).then(
@@ -69,6 +72,7 @@ const SignIn = () => {
     password: '',
   });
 
+  //TODO- need to extract tis into a componen
   return (
     <Container>
       <Content padder contentContainerStyle={styles.mainContent}>
@@ -96,7 +100,6 @@ const SignIn = () => {
           <Button
             style={styles.signInBtn}
             block
-            bordered
             onPress={() => {
               dispatch(userSignIn(credential));
             }}>

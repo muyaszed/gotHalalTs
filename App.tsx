@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
   },
   addNewTabIcon: {
     fontSize: 50,
+    color: '#098E33',
   },
 });
 
@@ -104,11 +105,17 @@ const App = () => {
           <Stack.Screen name="Sign Up" component={SignUpScreen} />
         </Stack.Navigator>
       ) : (
-        <Tab.Navigator>
+        <Tab.Navigator
+          tabBarOptions={{
+            activeTintColor: '#098E33',
+          }}>
           <Tab.Screen
             name="Home"
             component={HomeScreen}
-            options={{tabBarLabel: 'Home'}}
+            options={{
+              tabBarLabel: 'Home',
+              tabBarIcon: () => <Icon type="Entypo" name="home" />,
+            }}
           />
           <Tab.Screen
             name="NewListing"
@@ -130,7 +137,10 @@ const App = () => {
           <Tab.Screen
             name="Profile"
             component={Profile}
-            options={{tabBarLabel: 'Profile'}}
+            options={{
+              tabBarLabel: 'Profile',
+              tabBarIcon: () => <Icon type="Octicons" name="person" />,
+            }}
           />
         </Tab.Navigator>
       )}

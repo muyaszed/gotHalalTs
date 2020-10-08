@@ -1,21 +1,29 @@
 import React from 'react';
 import {Content} from '@codler/native-base';
-import {FlatList} from 'react-native';
+import {FlatList, Text, View, StyleSheet} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../Store/reducers';
 import {useNavigation} from '@react-navigation/native';
 import ListCard from '../Components/listCard';
 import {setSelectedRestaurant} from '../Restaurant/action';
 
+const styles = StyleSheet.create({
+  emptyText: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
 const UserCheckins = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const userCheckIns = useSelector(
+  const userCheckedIns = useSelector(
     (state: RootState) => state.profile.checkIns,
   );
-  return (
+  return userCheckedIns.length > 0 ? (
     <FlatList
-      data={userCheckIns}
+      data={userCheckedIns}
       renderItem={({item}) => (
         <Content padder>
           <ListCard
@@ -33,6 +41,10 @@ const UserCheckins = () => {
       )}
       keyExtractor={(item) => item.checkin.id.toString()}
     />
+  ) : (
+    <View style={styles.emptyText}>
+      <Text>You do not have any check-in</Text>
+    </View>
   );
 };
 

@@ -68,6 +68,9 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
   },
+  logoutBtn: {
+    backgroundColor: '#098E33',
+  },
   cameraIcon: {
     fontSize: 20,
   },
@@ -318,7 +321,10 @@ const Profile = () => {
         </List>
       </View>
       <View style={styles.logoutContainer}>
-        <Button block onPress={() => dispatch(signOut())}>
+        <Button
+          style={styles.logoutBtn}
+          block
+          onPress={() => dispatch(signOut())}>
           <Text>Sign Out</Text>
         </Button>
       </View>

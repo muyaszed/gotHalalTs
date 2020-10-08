@@ -1,13 +1,21 @@
 import React from 'react';
 import {Content} from '@codler/native-base';
-import {FlatList} from 'react-native';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../Store/reducers';
 import ListCard from '../Components/listCard';
 
+const styles = StyleSheet.create({
+  emptyText: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
 const UserReviews = () => {
   const userReviews = useSelector((state: RootState) => state.profile.reviews);
-  return (
+  return userReviews.length > 0 ? (
     <FlatList
       data={userReviews}
       renderItem={({item}) => (
@@ -23,6 +31,10 @@ const UserReviews = () => {
       )}
       keyExtractor={(item) => item.id.toString()}
     />
+  ) : (
+    <View style={styles.emptyText}>
+      <Text>You do not have any check-in</Text>
+    </View>
   );
 };
 

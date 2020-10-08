@@ -1,18 +1,27 @@
 import React from 'react';
 import {Content} from '@codler/native-base';
-import {FlatList} from 'react-native';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../Store/reducers';
 import {useNavigation} from '@react-navigation/native';
 import ListCard from '../Components/listCard';
 import {setSelectedRestaurant} from '../Restaurant/action';
+
+const styles = StyleSheet.create({
+  emptyText: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
 const UserBookmarks = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const uerBookmarks = useSelector(
     (state: RootState) => state.profile.bookmark,
   );
-  return (
+  return uerBookmarks.length > 0 ? (
     <FlatList
       data={uerBookmarks}
       renderItem={({item}) => (
@@ -32,6 +41,10 @@ const UserBookmarks = () => {
       )}
       keyExtractor={(item) => item.id.toString()}
     />
+  ) : (
+    <View style={styles.emptyText}>
+      <Text>You do not have any check-in</Text>
+    </View>
   );
 };
 

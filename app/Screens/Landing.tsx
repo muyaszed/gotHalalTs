@@ -33,7 +33,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  logo: {width: 200, height: 150},
+  logo: {width: 205, height: 165},
+  createAccBtn: {
+    backgroundColor: '#098E33',
+  },
 });
 
 const Landing = () => {
@@ -49,7 +52,11 @@ const Landing = () => {
             source={require('../Images/logo.png')}
           />
         </View>
-        <Button block light onPress={() => navigation.navigate('Sign Up')}>
+        <Button
+          style={styles.createAccBtn}
+          block
+          light
+          onPress={() => navigation.navigate('Sign Up')}>
           <Text>Create free account</Text>
         </Button>
         <Text style={styles.bottomText}>

@@ -26,34 +26,55 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  listingFooter: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    padding: 10,
+  },
+  footerItem: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  footerItemIcon: {
+    color: '#098E33',
+    fontSize: 20,
+  },
 });
 
 const footerChildComponent = (item: RestaurantModel) => {
   return (
-    <CardItem>
-      <Left>
-        <Button transparent>
-          <Icon active type="Foundation" name="book-bookmark" />
-          <Text>{`${item.bookmarking_user.length} ${
-            item.bookmarking_user.length > 1 ? 'bookmarks' : 'bookmark'
-          }`}</Text>
-        </Button>
-        <Button transparent>
-          <Icon active name="chatbubbles" />
-          <Text>{`${item.reviews.length} ${
-            item.reviews.length > 1 ? 'reviews' : 'review'
-          }`}</Text>
-        </Button>
-      </Left>
-      <Right>
-        <Button transparent>
-          <Icon active type="FontAwesome5" name="calendar-check" />
-          <Text>{`${item.checking_ins.length} ${
-            item.checking_ins.length > 1 ? 'check-ins' : 'check-in'
-          }`}</Text>
-        </Button>
-      </Right>
-    </CardItem>
+    <View style={styles.listingFooter}>
+      <View style={styles.footerItem}>
+        <Icon
+          style={styles.footerItemIcon}
+          active
+          type="Foundation"
+          name="book-bookmark"
+        />
+        <Text>{`${item.bookmarking_user.length} ${
+          item.bookmarking_user.length > 1 ? 'bookmarks' : 'bookmark'
+        }`}</Text>
+      </View>
+      <View style={styles.footerItem}>
+        <Icon style={styles.footerItemIcon} active name="chatbubbles" />
+        <Text>{`${item.reviews.length} ${
+          item.reviews.length > 1 ? 'reviews' : 'review'
+        }`}</Text>
+      </View>
+      <View style={styles.footerItem}>
+        <Icon
+          style={styles.footerItemIcon}
+          active
+          type="FontAwesome5"
+          name="calendar-check"
+        />
+        <Text>{`${item.checking_ins.length} ${
+          item.checking_ins.length > 1 ? 'check-ins' : 'check-in'
+        }`}</Text>
+      </View>
+    </View>
   );
 };
 
