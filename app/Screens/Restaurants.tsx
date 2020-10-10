@@ -1,13 +1,5 @@
 import React, {useEffect} from 'react';
-import {
-  Text,
-  Button,
-  CardItem,
-  Left,
-  Icon,
-  Right,
-  Content,
-} from '@codler/native-base';
+import {Text, Icon, Content} from '@codler/native-base';
 import Geolocation from '@react-native-community/geolocation';
 import {FlatList, View, StyleSheet} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';

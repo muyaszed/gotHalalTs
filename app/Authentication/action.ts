@@ -14,11 +14,17 @@ import {RootState} from '../Store/reducers';
 export type AuthAction =
   | ReturnType<typeof signIn>
   | ReturnType<typeof userSignOut>
-  | ReturnType<typeof restoreToken>;
+  | ReturnType<typeof restoreToken>
+  | ReturnType<typeof setLoadingState>;
 
 export const signIn = (token: string) => ({
   type: types.USER_SIGN_IN,
   payload: token,
+});
+
+export const setLoadingState = (status: boolean) => ({
+  type: types.SET_LOADING_STATE,
+  payload: status,
 });
 
 export const userSignOut = () => ({
@@ -46,6 +52,7 @@ export const userSignUp = (credential: Credential) => async (
   dispatch: Dispatch,
 ) => {
   try {
+    dispatch(setLoadingState(true));
     const apiCall = await Api.Post.userSignup(credential);
     const token = apiCall.data.auth_token;
     await AsyncStorage.setItem('userToken', token);
@@ -71,6 +78,7 @@ export const userSignUp = (credential: Credential) => async (
         settings: apiCall.data.user.settings,
       }),
     );
+    dispatch(setLoadingState(false));
   } catch (error) {
     console.log(error.response.data.message);
     dispatch(saveErrorMessage(error.response.data.message));
@@ -82,6 +90,7 @@ export const userSignIn = (credential: Credential) => async (
   dispatch: Dispatch,
 ) => {
   try {
+    dispatch(setLoadingState(true));
     const apiCall = await Api.Post.userLogin(credential);
     const token = apiCall.data.auth_token;
     await AsyncStorage.setItem('userToken', token);
@@ -107,6 +116,7 @@ export const userSignIn = (credential: Credential) => async (
         settings: apiCall.data.user.settings,
       }),
     );
+    dispatch(setLoadingState(false));
   } catch (error) {
     console.log(error.response.data.message);
     dispatch(saveErrorMessage(error.response.data.message));
@@ -118,6 +128,7 @@ export const signInWithFaceBook = (fbToken: FBToken) => async (
   dispatch: Dispatch,
 ) => {
   try {
+    dispatch(setLoadingState(true));
     const apiCall = await Api.Post.fbAuthentication(fbToken);
     const token = apiCall.data.auth_token;
     await AsyncStorage.setItem('userToken', token);
@@ -143,6 +154,7 @@ export const signInWithFaceBook = (fbToken: FBToken) => async (
         settings: apiCall.data.user.settings,
       }),
     );
+    dispatch(setLoadingState(false));
   } catch (error) {
     console.log(error);
   }

@@ -7,7 +7,7 @@ export interface AuthState {
 }
 
 export const authInitialState: AuthState = {
-  isLoading: true,
+  isLoading: false,
   isSignout: true,
   userToken: null,
 };
@@ -34,6 +34,11 @@ export const authReducer = (
         ...state,
         isSignout: true,
         userToken: null,
+      };
+    case types.SET_LOADING_STATE:
+      return {
+        ...state,
+        isLoading: action.payload,
       };
     default:
       return state;

@@ -20,7 +20,7 @@ import AddListing from './app/Screens/AddListing';
 import {RootState} from './app/Store/reducers';
 import {restoreToken, signOut} from './app/Authentication/action';
 import {View, StyleSheet, Text, DevSettings, Alert} from 'react-native';
-import {Icon} from '@codler/native-base';
+import {Icon, Spinner} from '@codler/native-base';
 import Modal from './app/Components/modal';
 import {closeErrorDialog, resetErrorFlags} from './app/Error/action';
 
@@ -64,6 +64,16 @@ const styles = StyleSheet.create({
   addNewTabIcon: {
     fontSize: 50,
     color: '#098E33',
+  },
+  spinner: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'grey',
+    opacity: 0.8,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
@@ -160,6 +170,12 @@ const App = () => {
         }}>
         <Text>{errorMessage}</Text>
       </Modal>
+      {authState.isLoading ? (
+        <View style={styles.spinner}>
+          <Spinner />
+          <Text>Loading</Text>
+        </View>
+      ) : null}
     </NavigationContainer>
   );
 };
