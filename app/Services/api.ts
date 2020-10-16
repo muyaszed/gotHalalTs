@@ -12,7 +12,7 @@ export default {
     userLogin: (credential: Credential) => {
       return axios({
         method: 'post',
-        url: `${Config.API_ADDRESS_DEV}/auth/login`,
+        url: `${Config.API_ADDRESS}/auth/login`,
         headers: {'Content-Type': 'application/json'},
         data: JSON.stringify(credential),
       });
@@ -20,7 +20,7 @@ export default {
     userSignup: (credential: Credential) => {
       return axios({
         method: 'post',
-        url: `${Config.API_ADDRESS_DEV}/signup`,
+        url: `${Config.API_ADDRESS}/signup`,
         headers: {'Content-Type': 'application/json'},
         data: JSON.stringify(credential),
       });
@@ -28,7 +28,7 @@ export default {
     fbAuthentication: (token: FBToken) => {
       return axios({
         method: 'post',
-        url: `${Config.API_ADDRESS_DEV}/auth/fb_login`,
+        url: `${Config.API_ADDRESS}/auth/fb_login`,
         headers: {'Content-Type': 'application/json'},
         data: JSON.stringify(token),
       });
@@ -36,7 +36,7 @@ export default {
     reviews: (token: string, reviewInfo: FormData, id: number) => {
       return axios({
         method: 'post',
-        url: `${Config.API_ADDRESS_DEV}/restaurants/${id}/reviews`,
+        url: `${Config.API_ADDRESS}/restaurants/${id}/reviews`,
         headers: {
           Accept: 'application/vnd.halaldir.v1+json',
           Authorization: token,
@@ -47,7 +47,7 @@ export default {
     bookmark: (token: string, restaurantId: number, userId: number) =>
       axios({
         method: 'POST',
-        url: `${Config.API_ADDRESS_DEV}/restaurants/${restaurantId}/${userId}/bookmark_restaurant`,
+        url: `${Config.API_ADDRESS}/restaurants/${restaurantId}/${userId}/bookmark_restaurant`,
         headers: {
           Accept: 'application/vnd.halaldir.v1+json',
           'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ export default {
     unbookmark: (token: string, restaurantId: number, userId: number) =>
       axios({
         method: 'POST',
-        url: `${Config.API_ADDRESS_DEV}/restaurants/${restaurantId}/${userId}/unbookmark_restaurant`,
+        url: `${Config.API_ADDRESS}/restaurants/${restaurantId}/${userId}/unbookmark_restaurant`,
         headers: {
           Accept: 'application/vnd.halaldir.v1+json',
           'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ export default {
     checkin: (token: string, restaurantId: number, userId: number) =>
       axios({
         method: 'POST',
-        url: `${Config.API_ADDRESS_DEV}/restaurants/${restaurantId}/${userId}/checkin_restaurant`,
+        url: `${Config.API_ADDRESS}/restaurants/${restaurantId}/${userId}/checkin_restaurant`,
         headers: {
           Accept: 'application/vnd.halaldir.v1+json',
           'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ export default {
     restaurant: (data: FormData, token: string) =>
       axios({
         method: 'POST',
-        url: `${Config.API_ADDRESS_DEV}/restaurants`,
+        url: `${Config.API_ADDRESS}/restaurants`,
         headers: {
           Accept: 'application/vnd.halaldir.v1+json',
           Authorization: token,
@@ -92,7 +92,7 @@ export default {
     ) =>
       axios({
         method: 'POST',
-        url: `${Config.API_ADDRESS_DEV}/restaurants/${restaurantId}/${userId}/halal_verification`,
+        url: `${Config.API_ADDRESS}/restaurants/${restaurantId}/${userId}/halal_verification`,
         headers: {
           Accept: 'application/vnd.halaldir.v1+json',
           'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ export default {
     restaurants: (userToken: string) => {
       return axios({
         method: 'get',
-        url: `${Config.API_ADDRESS_DEV}/restaurants`,
+        url: `${Config.API_ADDRESS}/restaurants`,
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/vnd.halaldir.v1+json',
@@ -116,7 +116,7 @@ export default {
     reviews: (userToken: string, id: number) => {
       return axios({
         method: 'get',
-        url: `${Config.API_ADDRESS_DEV}/restaurants/${id}/reviews`,
+        url: `${Config.API_ADDRESS}/restaurants/${id}/reviews`,
         headers: {
           Accept: 'application/vnd.halaldir.v1+json',
           'Content-Type': 'application/json',
@@ -127,7 +127,7 @@ export default {
     user: (token: string, id: number) =>
       axios({
         method: 'GET',
-        url: `${Config.API_ADDRESS_DEV}/users/${id}`,
+        url: `${Config.API_ADDRESS}/users/${id}`,
         headers: {
           Accept: 'application/vnd.halaldir.v1+json',
           'Content-Type': 'application/json',
@@ -139,7 +139,7 @@ export default {
     profile: (token: string, data: FormData, currentUserId: number) => {
       return axios({
         method: 'PUT',
-        url: `${Config.API_ADDRESS_DEV}/profiles/${currentUserId}`,
+        url: `${Config.API_ADDRESS}/profiles/${currentUserId}`,
         headers: {
           Accept: 'application/vnd.halaldir.v1+json',
           Authorization: token,
