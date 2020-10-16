@@ -15,11 +15,12 @@ import {categories, cuisines, countries, time} from '../Services/constant';
 import ImagePicker from 'react-native-image-picker';
 import {useDispatch, useSelector} from 'react-redux';
 import {setNewListing} from '../Restaurant/action';
-import {RootState} from 'app/Store/reducers';
+import {RootState} from '../Store/reducers';
 import {ThunkDispatch} from 'redux-thunk';
 import {Action} from 'redux';
 import {useNavigation} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {setLoadingState} from '../Authentication/action';
 
 const styles = StyleSheet.create({
   form: {
@@ -79,7 +80,11 @@ interface NewPlaceInfo {
   end: string;
   contact_number: string;
   web: string;
-  soc_med: {};
+  soc_med: {
+    facebook: string;
+    instagram: string;
+    twitter: string;
+  };
   surau: boolean;
   family_friendly: boolean;
   disabled_accessibility: boolean;
@@ -109,7 +114,11 @@ const NewListing = () => {
     end: '',
     contact_number: '',
     web: '',
-    soc_med: {},
+    soc_med: {
+      facebook: '',
+      instagram: '',
+      twitter: '',
+    },
     surau: false,
     family_friendly: false,
     disabled_accessibility: false,
@@ -126,7 +135,10 @@ const NewListing = () => {
       placeInfo.country.length > 1 &&
       placeInfo.cuisine.length > 1 &&
       placeInfo.category.length > 1 &&
-      placeInfo.start.length > 1;
+      placeInfo.start.length > 1 &&
+      placeInfo.contact_number.length > 5;
+
+    console.log(enableBtn);
     setSubmitBtnStatus(!enableBtn);
     if (placeInfo.start === '24 hours') {
       setHasEndTime(false);
@@ -141,12 +153,14 @@ const NewListing = () => {
         <Item regular style={[styles.input]}>
           <Input
             placeholder="Place name"
+            value={placeInfo.name}
             onChangeText={(text) => setPlaceInfo({...placeInfo, name: text})}
           />
         </Item>
         <Item regular style={[styles.input]}>
           <Input
             placeholder="Sub-header"
+            value={placeInfo.sub_header}
             onChangeText={(text) =>
               setPlaceInfo({...placeInfo, sub_header: text})
             }
@@ -206,6 +220,7 @@ const NewListing = () => {
         </View>
         <View>
           <Textarea
+            value={placeInfo.desc}
             style={[styles.input]}
             onChangeText={(text) => setPlaceInfo({...placeInfo, desc: text})}
             rowSpan={5}
@@ -279,18 +294,21 @@ const NewListing = () => {
         <Item regular style={[styles.input]}>
           <Input
             placeholder="Address"
+            value={placeInfo.address}
             onChangeText={(text) => setPlaceInfo({...placeInfo, address: text})}
           />
         </Item>
         <Item regular style={[styles.input]}>
           <Input
             placeholder="City"
+            value={placeInfo.city}
             onChangeText={(text) => setPlaceInfo({...placeInfo, city: text})}
           />
         </Item>
         <Item regular style={[styles.input]}>
           <Input
             placeholder="Postcode"
+            value={placeInfo.postcode}
             onChangeText={(text) =>
               setPlaceInfo({...placeInfo, postcode: text})
             }
@@ -318,6 +336,7 @@ const NewListing = () => {
         <Item regular style={[styles.input]}>
           <Input
             placeholder="Phone Number"
+            value={placeInfo.contact_number}
             onChangeText={(text) =>
               setPlaceInfo({...placeInfo, contact_number: text})
             }
@@ -326,6 +345,7 @@ const NewListing = () => {
         <Item regular style={[styles.input]}>
           <Input
             placeholder="Website"
+            value={placeInfo.web}
             onChangeText={(text) => setPlaceInfo({...placeInfo, web: text})}
           />
         </Item>
@@ -339,6 +359,7 @@ const NewListing = () => {
             />
             <Input
               placeholder="Facebook"
+              value={placeInfo.soc_med.facebook}
               onChangeText={(text) =>
                 setPlaceInfo({
                   ...placeInfo,
@@ -356,6 +377,7 @@ const NewListing = () => {
             />
             <Input
               placeholder="Instagram"
+              value={placeInfo.soc_med.instagram}
               onChangeText={(text) =>
                 setPlaceInfo({
                   ...placeInfo,
@@ -368,6 +390,7 @@ const NewListing = () => {
             <Icon style={styles.twitterIcon} type="AntDesign" name="twitter" />
             <Input
               placeholder="Twitter"
+              value={placeInfo.soc_med.twitter}
               onChangeText={(text) =>
                 setPlaceInfo({
                   ...placeInfo,
@@ -420,8 +443,9 @@ const NewListing = () => {
             style={[styles.input, styles.submitBtn]}
             block
             light={submitBtnStatus}
-            disabled={false}
+            disabled={submitBtnStatus}
             onPress={() => {
+              dispatch(setLoadingState(true));
               const newData = new FormData();
               Object.entries(placeInfo).forEach(([key, value]) => {
                 if (key === 'soc_med') {
@@ -448,12 +472,18 @@ const NewListing = () => {
                       end: '',
                       contact_number: '',
                       web: '',
-                      soc_med: {},
+                      soc_med: {
+                        facebook: '',
+                        instagram: '',
+                        twitter: '',
+                      },
                       surau: false,
                       family_friendly: false,
                       disabled_accessibility: false,
                     });
+                    setDisplayImageUri(null);
                     navigation.navigate('Listing');
+                    dispatch(setLoadingState(false));
                   }
                 });
               }

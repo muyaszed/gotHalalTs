@@ -48,6 +48,7 @@ export interface RestaurantModel {
     id: number;
     user_id: number;
   }[];
+  approved: boolean;
 }
 
 export interface RestaurantState {

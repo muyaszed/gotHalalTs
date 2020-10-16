@@ -61,14 +61,17 @@ const styles = StyleSheet.create({
   },
   verifyButtonContainer: {
     paddingTop: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
   },
   verifyButton: {
     width: '100%',
     textAlign: 'center',
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
+    backgroundColor: '#098E33',
+    borderColor: '#098E33',
+  },
+  verifyBtnText: {
+    color: '#f4f4f4',
   },
   groupBtnContainer: {
     flex: 1,
@@ -93,6 +96,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingLeft: 15,
     paddingRight: 15,
+    paddingBottom: 30,
   },
   reviewTextArea: {
     marginBottom: 20,
@@ -316,11 +320,12 @@ const renderAboveReviews = (
           .length === 0 ? (
           <View style={styles.verifyButtonContainer}>
             <Button
+              style={styles.verifyButton}
               iconLeft
               bordered
               block
               onPress={() => setVerifyModalVisible(true)}>
-              <Text>Verify Halal Status</Text>
+              <Text style={styles.verifyBtnText}>Verify Halal Status</Text>
             </Button>
           </View>
         ) : null}
@@ -364,9 +369,11 @@ const renderAboveReviews = (
                 <Text>{restaurant.contact_number}</Text>
               </ListItem>
             )}
-            {Object.keys(restaurant.soc_med).length === 0 ? null : (
-              <ListItem itemDivider style={styles.socMed}>
-                {Object.keys(restaurant.soc_med).map((item, index) => {
+
+            <ListItem itemDivider style={styles.socMed}>
+              {Object.values(restaurant.soc_med)
+                .filter((item: string) => item.length > 0)
+                .map((item, index) => {
                   const socMed = restaurant.soc_med;
                   return (
                     <Icon
@@ -378,8 +385,8 @@ const renderAboveReviews = (
                     />
                   );
                 })}
-              </ListItem>
-            )}
+            </ListItem>
+
             <ListItem itemDivider style={styles.extraInfo}>
               <View style={styles.statusIconGroup}>
                 <Icon type="FontAwesome5" name="mosque" />

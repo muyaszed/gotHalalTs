@@ -84,6 +84,7 @@ const Restaurants = () => {
   const navigation = useNavigation();
   const restaurants = useSelector((state: RootState) => {
     const sortedList = state.restaurants.list
+      .filter((allPlace) => allPlace.approved === true)
       .map((place) => {
         console.log(currentPosition);
         const distance = distanceBetweenLocation(

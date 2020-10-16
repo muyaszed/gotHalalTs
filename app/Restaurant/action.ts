@@ -6,6 +6,7 @@ import {ThunkDispatch} from 'redux-thunk';
 import {RootState} from '../Store/reducers';
 import {showToast} from '../Services/helper';
 import {saveErrorMessage, showErrorDialog} from '../Error/action';
+import {setLoadingState} from '../Authentication/action';
 
 export type RestaurantAction =
   | ReturnType<typeof gettingAllRestaurants>
@@ -60,6 +61,7 @@ export const setNewListing = (newData: FormData, token: string) => async (
     return true;
   } catch (error) {
     console.log(error.response);
+    dispatch(setLoadingState(false));
     dispatch(
       saveErrorMessage(
         'Your submission may not be complete. Please check and try to submit again',

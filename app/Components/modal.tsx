@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Modal} from 'react-native';
+import {StyleSheet, View, Modal, ViewStyle} from 'react-native';
 import {Text, Button} from '@codler/native-base';
 
 const styles = StyleSheet.create({
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   titleWrapper: {},
   title: {},
   content: {
-    minHeight: 50,
+    minHeight: 200,
   },
   groupButtonWrapper: {
     flexDirection: 'row',
@@ -25,9 +25,19 @@ const styles = StyleSheet.create({
   },
   leftButton: {
     width: 100,
+    backgroundColor: '#098E33',
+    borderColor: '#098E33',
+  },
+  leftBtnText: {
+    color: '#f4f4f4',
   },
   rightButton: {
     width: 100,
+    backgroundColor: '#098E33',
+    borderColor: '#098E33',
+  },
+  rightBtnText: {
+    color: '#f4f4f4',
   },
 });
 
@@ -38,6 +48,7 @@ interface Props {
   handleLeftButton?: () => void;
   handleRightButton: () => void;
   modalVisible: boolean;
+  contentStyle?: ViewStyle;
 }
 
 const GenericModal: React.FC<Props> = ({
@@ -48,6 +59,7 @@ const GenericModal: React.FC<Props> = ({
   handleLeftButton,
   handleRightButton,
   modalVisible,
+  contentStyle,
 }) => {
   return (
     <Modal animationType="slide" visible={modalVisible} transparent={true}>
@@ -56,7 +68,7 @@ const GenericModal: React.FC<Props> = ({
           <View style={styles.titleWrapper}>
             <Text style={styles.title}>{title}</Text>
           </View>
-          <View style={styles.content}>{children}</View>
+          <View style={[styles.content, contentStyle]}>{children}</View>
           <View style={styles.groupButtonWrapper}>
             {leftButtonName ? (
               <Button
@@ -65,7 +77,7 @@ const GenericModal: React.FC<Props> = ({
                 bordered
                 block
                 onPress={handleLeftButton}>
-                <Text>{leftButtonName}</Text>
+                <Text style={styles.leftBtnText}>{leftButtonName}</Text>
               </Button>
             ) : null}
             <Button
@@ -74,7 +86,7 @@ const GenericModal: React.FC<Props> = ({
               bordered
               block
               onPress={handleRightButton}>
-              <Text>{rightButtonName}</Text>
+              <Text style={styles.rightBtnText}>{rightButtonName}</Text>
             </Button>
           </View>
         </View>
