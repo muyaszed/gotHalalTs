@@ -309,6 +309,8 @@ PODS:
     - React
   - react-native-safe-area-context (3.0.7):
     - React
+  - react-native-sensitive-info (6.0.0-alpha.6):
+    - React
   - react-native-simple-toast (1.1.2):
     - React
     - Toast (~> 4.0.0)
@@ -443,6 +445,7 @@ DEPENDENCIES:
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-sensitive-info (from `../node_modules/react-native-sensitive-info`)
   - react-native-simple-toast (from `../node_modules/react-native-simple-toast`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -535,6 +538,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-sensitive-info:
+    :path: "../node_modules/react-native-sensitive-info"
   react-native-simple-toast:
     :path: "../node_modules/react-native-simple-toast"
   React-RCTActionSheet:
@@ -619,6 +624,7 @@ SPEC CHECKSUMS:
   react-native-image-picker: a6c3d644751a388b0fc8b56822ff7cbd398a3008
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-safe-area-context: c39fc20a20cd66ebf1d56c6f8b8711142fbfee98
+  react-native-sensitive-info: 50a0db17f996d019fd421793c1aa05c2b6be13de
   react-native-simple-toast: a3a8e9033a549c11741debe875e54698cc4c0dd7
   React-RCTActionSheet: 910163b6b09685a35c4ebbc52b66d1bfbbe39fc5
   React-RCTAnimation: 9a883bbe1e9d2e158d4fb53765ed64c8dc2200c6
@@ -643,6 +649,6 @@ SPEC CHECKSUMS:
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 7e35f885669a76a01e7df3f40b846f9c0949f9e9
+PODFILE CHECKSUM: 2d25e22fd629583d366a1aae0759fd5ed48def0f
 
 COCOAPODS: 1.9.3
