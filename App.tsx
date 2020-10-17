@@ -5,11 +5,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import AsyncStorage from '@react-native-community/async-storage';
 import {
   setJSExceptionHandler,
   setNativeExceptionHandler,
 } from 'react-native-exception-handler';
+import SInfo from 'react-native-sensitive-info';
 
 import SignInScreen from './app/Screens/SignIn';
 import SignUpScreen from './app/Screens/Signup';
@@ -82,7 +82,7 @@ const App = () => {
     const bootstrapAsync = async () => {
       let userTokenStorage = null;
       try {
-        userTokenStorage = await AsyncStorage.getItem('userToken');
+        userTokenStorage = await SInfo.getItem('token', {});
         if (userTokenStorage) {
           dispatch(restoreToken(userTokenStorage));
         }

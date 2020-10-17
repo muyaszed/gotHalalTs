@@ -9,7 +9,6 @@ target 'GotHalalTS' do
   pod 'react-native-google-maps', :path => rn_maps_path
   pod 'GoogleMaps'
   pod 'Google-Maps-iOS-Utils'
-  pod 'RNFS', :path => '../node_modules/react-native-fs'
   pod 'ReactNativeExceptionHandler', :podspec => '../node_modules/react-native-exception-handler/ReactNativeExceptionHandler.podspec'
   
   config = use_native_modules!
