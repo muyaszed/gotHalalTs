@@ -22,16 +22,14 @@ export const loadReviewsFailed = (error: any) => ({
   payload: error,
 });
 
-export const loadReviews = (userToken: string) => async (
+export const loadReviews = () => async (
   dispatch: Dispatch,
   getState: () => RootState,
 ) => {
   const restaurantId = getState().restaurants.selectedRestaurantId;
   if (restaurantId) {
     try {
-      const data = await (
-        await Api.Get.reviews(userToken.toString(), restaurantId)
-      ).data;
+      const data = await (await Api.Get.reviews(restaurantId)).data;
       dispatch(loadReviewsSuccess(data));
     } catch (error) {
       dispatch(loadReviewsFailed(error));
@@ -53,19 +51,17 @@ const setNewReviewFailed = (error: string) => ({
   payload: error,
 });
 
-export const setNewReview = (
-  userToken: string,
-  reviewInfo: FormData,
-  placeId: number,
-) => async (dispatch: ThunkDispatch<RootState, void, Action>) => {
+export const setNewReview = (reviewInfo: FormData, placeId: number) => async (
+  dispatch: ThunkDispatch<RootState, void, Action>,
+) => {
   try {
-    await Api.Post.reviews(userToken, reviewInfo, placeId);
+    await Api.Post.reviews(reviewInfo, placeId);
     dispatch(setNewReviewSucces());
-    const response = await Api.Get.reviews(userToken.toString(), placeId);
+    const response = await Api.Get.reviews(placeId);
     const data = response.data;
     dispatch(loadReviewsSuccess(data));
-    dispatch(updateCurrentProfile(userToken));
-    dispatch(getAllRestaurants(userToken));
+    dispatch(updateCurrentProfile());
+    dispatch(getAllRestaurants());
     return true;
   } catch (error) {
     dispatch(setNewReviewFailed(error));

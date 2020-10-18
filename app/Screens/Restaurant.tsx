@@ -251,7 +251,6 @@ const handleOpenMap = (option: MapOption) => {
 const renderAboveReviews = (
   restaurant: RestaurantModel,
   dispatch: ThunkDispatch<RootState, void, Action>,
-  userToken: string,
   userId: number,
   currentUserBookmarkList: RestaurantModel[],
   mapModalVisible: boolean,
@@ -458,7 +457,7 @@ const renderAboveReviews = (
               iconLeft
               bordered
               block
-              onPress={() => dispatch(userUnbookmark(userToken))}>
+              onPress={() => dispatch(userUnbookmark())}>
               <Icon
                 style={styles.groupBtnIcon}
                 active
@@ -473,7 +472,7 @@ const renderAboveReviews = (
               iconLeft
               bordered
               block
-              onPress={() => dispatch(userBookmark(userToken))}>
+              onPress={() => dispatch(userBookmark())}>
               <Icon
                 style={styles.groupBtnIcon}
                 active
@@ -589,14 +588,14 @@ const renderAboveReviews = (
                     });
                   }
                   if (selectedPlaceId) {
-                    dispatch(
-                      setNewReview(userToken, reviewInfo, selectedPlaceId),
-                    ).then((res) => {
-                      if (res) {
-                        setCurrentReview('');
-                        showToast('Review successfully added');
-                      }
-                    });
+                    dispatch(setNewReview(reviewInfo, selectedPlaceId)).then(
+                      (res) => {
+                        if (res) {
+                          setCurrentReview('');
+                          showToast('Review successfully added');
+                        }
+                      },
+                    );
                   }
                 }}>
                 <Text style={styles.reviewSubmitBtnText}>Submit</Text>
@@ -641,7 +640,7 @@ const renderAboveReviews = (
             data.append('confirmation', verificationData.confirmation);
             data.append('certificate', verificationData.certification);
             data.append('logo', verificationData.logo);
-            dispatch(userVerify(userToken, data));
+            dispatch(userVerify(data));
             console.log(data);
             setVerifyModalVisible(false);
             setVerification({
@@ -718,7 +717,6 @@ const Restaurant = () => {
     (state: RootState) =>
       state.restaurants.list.filter((item) => item.id === selectedPlaceId)[0],
   );
-  const userToken = useSelector((state: RootState) => state.auth.userToken);
   const dispatch: ThunkDispatch<RootState, void, Action> = useDispatch();
   const reviews = useSelector((state: RootState) => state.reviews.list);
   const userId = useSelector((state: RootState) => state.profile.userId);
@@ -744,17 +742,17 @@ const Restaurant = () => {
     setRefreshing(true);
 
     wait(2000).then(() => {
-      if (userToken) {
-        dispatch(getAllRestaurants(userToken));
-        setRefreshing(false);
-      }
+      // if (userToken) {
+      dispatch(getAllRestaurants());
+      setRefreshing(false);
+      // }
     });
   }, []);
 
   React.useEffect(() => {
-    if (userToken) {
-      dispatch(loadReviews(userToken));
-    }
+    // if (userToken) {
+    dispatch(loadReviews());
+    // }
   }, []);
 
   React.useEffect(() => {
@@ -786,7 +784,6 @@ const Restaurant = () => {
       ListHeaderComponent={renderAboveReviews(
         restaurant,
         dispatch,
-        userToken!,
         userId!,
         currentUserBookmarkList,
         mapModalVisible,

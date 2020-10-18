@@ -72,7 +72,7 @@ const footerChildComponent = (item: RestaurantModel) => {
 
 const Restaurants = () => {
   const userProfile = useSelector((state: RootState) => state.profile);
-  const userToken = useSelector((state: RootState) => state.auth.userToken);
+  // const userToken = useSelector((state: RootState) => state.auth.userToken);
   const userSettings = useSelector(
     (state: RootState) => state.profile.settings,
   );
@@ -111,13 +111,13 @@ const Restaurants = () => {
         })),
       );
 
-      if (userToken) {
-        dispatch(getAllRestaurants(userToken));
-      }
+      // if (userToken) {
+      dispatch(getAllRestaurants());
+      // }
 
       return unsubscribe;
     });
-  }, [navigation, dispatch, userToken]);
+  }, [navigation, dispatch]);
 
   useEffect(() => {
     if (

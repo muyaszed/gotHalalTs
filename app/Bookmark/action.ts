@@ -7,7 +7,7 @@ import {ThunkDispatch} from 'redux-thunk';
 import {getAllRestaurants} from '../Restaurant/action';
 import {saveErrorMessage, showErrorDialog} from '../Error/action';
 
-export const userBookmark = (userToken: string) => async (
+export const userBookmark = () => async (
   dispatch: ThunkDispatch<RootState, void, Action>,
   getState: () => RootState,
 ) => {
@@ -16,10 +16,10 @@ export const userBookmark = (userToken: string) => async (
 
   if (userId && restaurantId) {
     try {
-      await Api.Post.bookmark(userToken, restaurantId, userId);
+      await Api.Post.bookmark(restaurantId, userId);
       showToast('You have bookmark this place');
-      dispatch(updateCurrentProfile(userToken));
-      dispatch(getAllRestaurants(userToken));
+      dispatch(updateCurrentProfile());
+      dispatch(getAllRestaurants());
     } catch (error) {
       const errorMessage = error.response
         ? error.response.data.message
@@ -30,7 +30,7 @@ export const userBookmark = (userToken: string) => async (
   }
 };
 
-export const userUnbookmark = (userToken: string) => async (
+export const userUnbookmark = () => async (
   dispatch: ThunkDispatch<RootState, void, Action>,
   getState: () => RootState,
 ) => {
@@ -38,10 +38,10 @@ export const userUnbookmark = (userToken: string) => async (
   const userId = getState().profile.userId;
   if (userId && restaurantId) {
     try {
-      await Api.Post.unbookmark(userToken, restaurantId, userId);
+      await Api.Post.unbookmark(restaurantId, userId);
       showToast('You have unbookmark this place');
-      dispatch(updateCurrentProfile(userToken));
-      dispatch(getAllRestaurants(userToken));
+      dispatch(updateCurrentProfile());
+      dispatch(getAllRestaurants());
     } catch (error) {
       const errorMessage = error.response
         ? error.response.data.message

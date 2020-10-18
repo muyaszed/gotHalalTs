@@ -82,18 +82,16 @@ const updateFullName = (config: {
     firstName: string;
     lastName: string;
   };
-  userToken: string;
   userId: number;
 }) => {
   const form = new FormData();
   form.append('first_name', config.fullName.firstName);
   form.append('last_name', config.fullName.lastName);
-  config.dispatch(updateUserProfile(config.userToken, form, config.userId));
+  config.dispatch(updateUserProfile(form, config.userId));
 };
 
 const Profile = () => {
   const profile = useSelector((state: RootState) => state.profile);
-  const userToken = useSelector((state: RootState) => state.auth.userToken);
   const [photoModal, setPhotoModal] = React.useState(false);
   const [fullName, setFullName] = React.useState({
     firstName: '',
@@ -161,8 +159,8 @@ const Profile = () => {
                   type: response.type,
                   uri: response.uri.replace('file://', ''),
                 });
-                if (userToken && profile.userId) {
-                  dispatch(updateUserProfile(userToken, form, profile.userId));
+                if (profile.userId) {
+                  dispatch(updateUserProfile(form, profile.userId));
                 }
               }
             });
@@ -190,11 +188,10 @@ const Profile = () => {
                 <Icon
                   onPress={() => {
                     setEnableSetNameStatus(false);
-                    if (userToken && profile.userId) {
+                    if (profile.userId) {
                       updateFullName({
                         dispatch,
                         fullName,
-                        userToken,
                         userId: profile.userId,
                       });
                     }
@@ -239,11 +236,10 @@ const Profile = () => {
                 <Icon
                   onPress={() => {
                     setEnableSetNameStatus(false);
-                    if (userToken && profile.userId) {
+                    if (profile.userId) {
                       updateFullName({
                         dispatch,
                         fullName,
-                        userToken,
                         userId: profile.userId,
                       });
                     }
