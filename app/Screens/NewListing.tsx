@@ -344,13 +344,13 @@ const NewListing = () => {
         </Item>
         <Item regular style={[styles.input]}>
           <Input
-            placeholder="Website"
+            placeholder="Website(must start with http:// or https://)"
             value={placeInfo.web}
             onChangeText={(text) => setPlaceInfo({...placeInfo, web: text})}
           />
         </Item>
         <View style={[styles.input]}>
-          <Label>Social Media</Label>
+          <Label>Social Media(full address including https://)</Label>
           <Item regular style={[styles.input]}>
             <Icon
               style={styles.facebookIcon}

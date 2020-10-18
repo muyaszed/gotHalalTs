@@ -371,8 +371,8 @@ const renderAboveReviews = (
             )}
 
             <ListItem itemDivider style={styles.socMed}>
-              {Object.values(restaurant.soc_med)
-                .filter((item: string) => item.length > 0)
+              {Object.keys(restaurant.soc_med)
+                .filter((key: string) => restaurant.soc_med[key].length > 0)
                 .map((item, index) => {
                   const socMed = restaurant.soc_med;
                   return (
