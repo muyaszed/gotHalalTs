@@ -8,6 +8,7 @@ import {
   setJSExceptionHandler,
   setNativeExceptionHandler,
 } from 'react-native-exception-handler';
+import SplashScreen from 'react-native-splash-screen';
 
 import SignInScreen from './app/Screens/SignIn';
 import SignUpScreen from './app/Screens/Signup';
@@ -76,21 +77,9 @@ const App = () => {
   const errorMessage = useSelector((state: RootState) => state.error.message);
   const authState = useSelector((state: RootState) => state.auth);
 
-  // React.useEffect(() => {
-  //   const bootstrapAsync = async () => {
-  //     let userTokenStorage = null;
-  //     try {
-  //       userTokenStorage = await SInfo.getItem('token', {});
-  //       if (userTokenStorage) {
-  //         dispatch(restoreToken(userTokenStorage));
-  //       }
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //   };
-
-  //   bootstrapAsync();
-  // }, []);
+  React.useEffect(() => {
+    SplashScreen.hide();
+  }, []);
 
   const Stack = createStackNavigator();
   const Tab = createBottomTabNavigator();
