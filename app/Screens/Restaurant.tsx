@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
   },
-  description: {
+  subHeader: {
     fontSize: 15,
     paddingLeft: 15,
     paddingRight: 15,
@@ -58,6 +58,11 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     paddingLeft: 0,
     paddingRight: 0,
+  },
+  description: {
+    paddingTop: 15,
+    paddingLeft: 15,
+    paddingRight: 15,
   },
   verifyButtonContainer: {
     paddingTop: 10,
@@ -219,6 +224,9 @@ const styles = StyleSheet.create({
     paddingLeft: 80,
     paddingBottom: 10,
   },
+  imageLogo: {
+    resizeMode: 'center',
+  },
 });
 
 interface MapOption {
@@ -274,15 +282,22 @@ const renderAboveReviews = (
     <View>
       <View style={styles.mainContainer}>
         <H1 style={styles.title}>{restaurant.name.toUpperCase()}</H1>
-        <H3 style={styles.description}>{restaurant.desc}</H3>
+        <H3 style={styles.subHeader}>{restaurant.sub_header}</H3>
 
         <View style={styles.mainImage}>
           <Image
-            style={styles.mainImage}
-            source={{
-              uri: restaurant.cover_uri ? restaurant.cover_uri : 'Image URL',
-            }}
+            style={restaurant.cover_uri ? styles.mainImage : styles.imageLogo}
+            source={
+              restaurant.cover_uri
+                ? {
+                    uri: restaurant.cover_uri,
+                  }
+                : require('../Images/logo.png')
+            }
           />
+        </View>
+        <View style={styles.description}>
+          <Text>{restaurant.desc}</Text>
         </View>
         <View style={styles.verificationContainer}>
           <Text style={styles.verifyTitle}>Halal Verifications</Text>
@@ -742,17 +757,13 @@ const Restaurant = () => {
     setRefreshing(true);
 
     wait(2000).then(() => {
-      // if (userToken) {
       dispatch(getAllRestaurants());
       setRefreshing(false);
-      // }
     });
   }, []);
 
   React.useEffect(() => {
-    // if (userToken) {
     dispatch(loadReviews());
-    // }
   }, []);
 
   React.useEffect(() => {

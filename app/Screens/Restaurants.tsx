@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect} from 'react';
 import {Text, Icon, Content} from '@codler/native-base';
 import Geolocation from '@react-native-community/geolocation';
-import {FlatList, View, StyleSheet} from 'react-native';
+import {FlatList, View, StyleSheet, RefreshControl} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../Store/reducers';
 import {useNavigation} from '@react-navigation/native';
@@ -11,6 +12,8 @@ import {RestaurantModel} from '../Restaurant/reducer';
 import {distanceBetweenLocation} from '../Services/helper';
 import {getAllRestaurants} from '../Restaurant/action';
 import {saveErrorMessage, showErrorDialog} from '../Error/action';
+import {ThunkDispatch} from 'redux-thunk';
+import {Action} from 'redux';
 
 const styles = StyleSheet.create({
   noListing: {
@@ -35,7 +38,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const footerChildComponent = (item: RestaurantModel) => {
+interface RestaurantViewModel extends RestaurantModel {
+  distance: number;
+}
+
+const footerChildComponent = (item: RestaurantViewModel) => {
   return (
     <View style={styles.listingFooter}>
       <View style={styles.footerItem}>
@@ -70,13 +77,20 @@ const footerChildComponent = (item: RestaurantModel) => {
   );
 };
 
+const wait = (timeout: number) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+};
+
 const Restaurants = () => {
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [currentData, setCurrentData] = React.useState(3);
   const userProfile = useSelector((state: RootState) => state.profile);
-  // const userToken = useSelector((state: RootState) => state.auth.userToken);
   const userSettings = useSelector(
     (state: RootState) => state.profile.settings,
   );
-  const dispatch = useDispatch();
+  const dispatch: ThunkDispatch<RootState, void, Action> = useDispatch();
   const [currentPosition, setCurrentPosition] = React.useState({
     lat: 0,
     long: 0,
@@ -86,7 +100,6 @@ const Restaurants = () => {
     const sortedList = state.restaurants.list
       .filter((allPlace) => allPlace.approved === true)
       .map((place) => {
-        console.log(currentPosition);
         const distance = distanceBetweenLocation(
           currentPosition.lat,
           currentPosition.long,
@@ -100,7 +113,8 @@ const Restaurants = () => {
       .sort((a, b) => a.distance - b.distance);
 
     return sortedList;
-  });
+  }).slice(0, currentData);
+
   useEffect(() => {
     const unsubscribe: () => void = navigation.addListener('focus', () => {
       Geolocation.getCurrentPosition((res) =>
@@ -111,9 +125,8 @@ const Restaurants = () => {
         })),
       );
 
-      // if (userToken) {
       dispatch(getAllRestaurants());
-      // }
+      setCurrentData(3);
 
       return unsubscribe;
     });
@@ -131,7 +144,16 @@ const Restaurants = () => {
       );
       dispatch(showErrorDialog());
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => {
+      dispatch(getAllRestaurants());
+      setRefreshing(false);
+      setCurrentData(3);
+    });
   }, []);
 
   return restaurants.length > 0 ? (
@@ -141,12 +163,12 @@ const Restaurants = () => {
         <Content padder>
           <ListCard
             name={item.name}
-            description={item.desc}
+            description={item.sub_header}
             mainImageUri={item.cover_uri}
             avatar={false}
             footerChild={footerChildComponent(item)}
             topRightInfoContent={`${Math.round(item.distance).toString()}${
-              userSettings.distance_unit === 'kilometer' ? 'km' : 'miles'
+              userSettings.distance_unit === 'kilometer' ? ' km' : ' miles'
             }`}
             onPress={() => {
               dispatch(setSelectedRestaurant(item.id));
@@ -156,6 +178,14 @@ const Restaurants = () => {
         </Content>
       )}
       keyExtractor={(item) => item.id.toString()}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      onEndReached={() => {
+        console.log('Get more');
+        setCurrentData((state) => (state += 3));
+      }}
+      onEndReachedThreshold={0}
     />
   ) : (
     <View style={styles.noListing}>

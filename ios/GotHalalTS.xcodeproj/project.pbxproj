@@ -19,6 +19,8 @@
 		312908D0CE945FD46DF5EC2A /* libPods-GotHalalTS-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB9A399E1B6E08ACE9F43C2 /* libPods-GotHalalTS-tvOS.a */; };
 		50787D3A43DEF389C48470E6 /* libPods-GotHalalTS-GotHalalTSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 880F79340D91C18C0E1EBA15 /* libPods-GotHalalTS-GotHalalTSTests.a */; };
 		6F3DE6ED4236B57C2C68477A /* libPods-GotHalalTS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 230E3B11DBC99A3E9562E35C /* libPods-GotHalalTS.a */; };
+		E4E9D9EA254C923F00FF4559 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4E9D9E9254C923F00FF4559 /* LaunchScreen.storyboard */; };
+		E4E9D9EB254C923F00FF4559 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4E9D9E9254C923F00FF4559 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,7 +48,6 @@
 		13B07F961A680F5B00A75B9A /* GotHalalTS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GotHalalTS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = GotHalalTS/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = GotHalalTS/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = GotHalalTS/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = GotHalalTS/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = GotHalalTS/main.m; sourceTree = "<group>"; };
@@ -63,6 +64,7 @@
 		AEB9A399E1B6E08ACE9F43C2 /* libPods-GotHalalTS-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GotHalalTS-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9660A8072C8ED9CF60D8FA7 /* Pods-GotHalalTS-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GotHalalTS-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-GotHalalTS-tvOSTests/Pods-GotHalalTS-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		D0BB3861CA3311C223DA484D /* Pods-GotHalalTS-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GotHalalTS-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-GotHalalTS-tvOSTests/Pods-GotHalalTS-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E4E9D9E9254C923F00FF4559 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F7716BD023C39A7544FF411A /* Pods-GotHalalTS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GotHalalTS.release.xcconfig"; path = "Target Support Files/Pods-GotHalalTS/Pods-GotHalalTS.release.xcconfig"; sourceTree = "<group>"; };
@@ -129,8 +131,8 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				E4E9D9E9254C923F00FF4559 /* LaunchScreen.storyboard */,
 			);
 			name = GotHalalTS;
 			sourceTree = "<group>";
@@ -147,7 +149,6 @@
 				D0BB3861CA3311C223DA484D /* Pods-GotHalalTS-tvOSTests.debug.xcconfig */,
 				B9660A8072C8ED9CF60D8FA7 /* Pods-GotHalalTS-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -339,6 +340,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4E9D9EA254C923F00FF4559 /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -347,6 +349,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4E9D9EB254C923F00FF4559 /* LaunchScreen.storyboard in Resources */,
 				2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -674,18 +677,6 @@
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		13B07FB11A68108700A75B9A /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				13B07FB21A68108700A75B9A /* Base */,
-			);
-			name = LaunchScreen.xib;
-			path = GotHalalTS;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {

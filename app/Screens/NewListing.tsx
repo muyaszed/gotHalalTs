@@ -68,7 +68,7 @@ const windowWidth = Dimensions.get('window').width;
 interface NewPlaceInfo {
   name: string;
   sub_header: string;
-  cover: {};
+  cover: {} | false;
   desc: string;
   address: string;
   city: string;
@@ -101,7 +101,7 @@ const NewListing = () => {
   const [placeInfo, setPlaceInfo] = React.useState<NewPlaceInfo>({
     name: '',
     sub_header: '',
-    cover: {},
+    cover: false,
     desc: '',
     address: '',
     city: '',
@@ -134,8 +134,7 @@ const NewListing = () => {
       placeInfo.country.length > 1 &&
       placeInfo.cuisine.length > 1 &&
       placeInfo.category.length > 1 &&
-      placeInfo.start.length > 1 &&
-      placeInfo.contact_number.length > 5;
+      placeInfo.start.length > 1;
 
     console.log(enableBtn);
     setSubmitBtnStatus(!enableBtn);
@@ -458,7 +457,7 @@ const NewListing = () => {
                   setPlaceInfo({
                     name: '',
                     sub_header: '',
-                    cover: {},
+                    cover: false,
                     desc: '',
                     address: '',
                     city: '',

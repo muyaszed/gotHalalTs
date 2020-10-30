@@ -90,6 +90,7 @@ const Signup = () => {
           <Item inlineLabel last>
             <Label>Password</Label>
             <Input
+              secureTextEntry={true}
               value={credential.password}
               onChangeText={(text) =>
                 onChangeText({...credential, password: text})

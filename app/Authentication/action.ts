@@ -80,6 +80,7 @@ export const userSignUp = (credential: Credential) => async (
     dispatch(setLoadingState(false));
   } catch (error) {
     console.log(error.response.data.message);
+    dispatch(setLoadingState(false));
     dispatch(saveErrorMessage(error.response.data.message));
     dispatch(showErrorDialog());
   }
@@ -118,6 +119,7 @@ export const userSignIn = (credential: Credential) => async (
     dispatch(setLoadingState(false));
   } catch (error) {
     console.log(error.response.data.message);
+    dispatch(setLoadingState(false));
     dispatch(saveErrorMessage(error.response.data.message));
     dispatch(showErrorDialog());
   }
@@ -155,6 +157,7 @@ export const signInWithFaceBook = (fbToken: FBToken) => async (
     );
     dispatch(setLoadingState(false));
   } catch (error) {
+    dispatch(setLoadingState(false));
     console.log(error);
   }
 };
