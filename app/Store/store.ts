@@ -1,7 +1,8 @@
-import {createStore, applyMiddleware, compose} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
 import {persistStore, persistReducer} from 'redux-persist';
 import AsyncStorage from '@react-native-community/async-storage';
 import thunk from 'redux-thunk';
+import {composeWithDevTools} from 'redux-devtools-extension';
 import reducers from './reducers';
 
 const persistConfig = {
@@ -11,12 +12,11 @@ const persistConfig = {
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export default () => {
   let store = createStore(
     persistedReducer,
-    composeEnhancers(applyMiddleware(thunk)),
+    composeWithDevTools(applyMiddleware(thunk)),
   );
   let persistor = persistStore(store);
 

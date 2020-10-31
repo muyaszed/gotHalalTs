@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(9, 142, 51, 0.678)',
   },
   modalWrapper: {
     backgroundColor: 'white',
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
   titleWrapper: {},
   title: {},
   content: {
-    minHeight: 200,
+    padding: 20,
   },
   groupButtonWrapper: {
     flexDirection: 'row',
@@ -62,7 +63,7 @@ const GenericModal: React.FC<Props> = ({
   contentStyle,
 }) => {
   return (
-    <Modal animationType="slide" visible={modalVisible} transparent={true}>
+    <Modal animationType="slide" visible={modalVisible} transparent>
       <View style={styles.overlay}>
         <View style={styles.modalWrapper}>
           <View style={styles.titleWrapper}>
