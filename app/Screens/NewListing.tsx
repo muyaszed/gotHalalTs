@@ -148,9 +148,12 @@ const NewListing = () => {
   return (
     <KeyboardAwareScrollView>
       <Form style={styles.form}>
+        <View style={[styles.input]}>
+          <Text>All item with * is required</Text>
+        </View>
         <Item regular style={[styles.input]}>
           <Input
-            placeholder="Place name"
+            placeholder="Place name *"
             value={placeInfo.name}
             onChangeText={(text) => setPlaceInfo({...placeInfo, name: text})}
           />
@@ -164,58 +167,64 @@ const NewListing = () => {
             }
           />
         </Item>
-        {displayImageUri ? (
-          <View style={styles.imageFrame}>
-            <Image
-              resizeMode="cover"
-              source={{
-                uri: displayImageUri ? displayImageUri : '',
-              }}
-              style={styles.imageDisplay}
-            />
+        <View style={[styles.input]}>
+          <Label>Image</Label>
+          {displayImageUri ? (
+            <View style={styles.imageFrame}>
+              <Image
+                resizeMode="cover"
+                source={{
+                  uri: displayImageUri ? displayImageUri : '',
+                }}
+                style={styles.imageDisplay}
+              />
+            </View>
+          ) : null}
+          <View>
+            <Button
+              style={[styles.input]}
+              block
+              onPress={() => {
+                const options = {
+                  title: 'Select Your Image',
+
+                  storageOptions: {
+                    skipBackup: true,
+                    path: 'images',
+                  },
+                };
+                ImagePicker.showImagePicker(options, (response) => {
+                  console.log('Response = ', response);
+
+                  if (response.didCancel) {
+                    console.log('User cancelled image picker');
+                  } else if (response.error) {
+                    console.log('ImagePicker Error: ', response.error);
+                  } else if (response.customButton) {
+                    console.log(
+                      'User tapped custom button: ',
+                      response.customButton,
+                    );
+                  } else {
+                    setDisplayImageUri(response.uri);
+                    setPlaceInfo({
+                      ...placeInfo,
+                      cover: {
+                        name: response.fileName
+                          ? response.fileName
+                          : 'cover.jpg',
+                        type: response.type,
+                        uri: response.uri.replace('file://', ''),
+                      },
+                    });
+                  }
+                });
+              }}>
+              <Icon name="camera" />
+            </Button>
           </View>
-        ) : null}
-        <View>
-          <Button
-            style={[styles.input]}
-            block
-            onPress={() => {
-              const options = {
-                title: 'Select Your Image',
-
-                storageOptions: {
-                  skipBackup: true,
-                  path: 'images',
-                },
-              };
-              ImagePicker.showImagePicker(options, (response) => {
-                console.log('Response = ', response);
-
-                if (response.didCancel) {
-                  console.log('User cancelled image picker');
-                } else if (response.error) {
-                  console.log('ImagePicker Error: ', response.error);
-                } else if (response.customButton) {
-                  console.log(
-                    'User tapped custom button: ',
-                    response.customButton,
-                  );
-                } else {
-                  setDisplayImageUri(response.uri);
-                  setPlaceInfo({
-                    ...placeInfo,
-                    cover: {
-                      name: response.fileName ? response.fileName : 'cover.jpg',
-                      type: response.type,
-                      uri: response.uri.replace('file://', ''),
-                    },
-                  });
-                }
-              });
-            }}>
-            <Icon name="camera" />
-          </Button>
         </View>
+
         <View>
           <Textarea
             value={placeInfo.desc}
@@ -224,7 +233,7 @@ const NewListing = () => {
             rowSpan={5}
             bordered
             underline
-            placeholder="Description"
+            placeholder="Description *"
           />
         </View>
         <Item regular style={[styles.input]}>
@@ -232,7 +241,7 @@ const NewListing = () => {
             mode="dropdown"
             iosIcon={<Icon name="arrow-down" />}
             style={{width: windowWidth * 0.95}}
-            placeholder="Select category"
+            placeholder="Select Category *"
             selectedValue={placeInfo.category}
             onValueChange={(value) =>
               setPlaceInfo({...placeInfo, category: value})
@@ -247,7 +256,7 @@ const NewListing = () => {
             mode="dropdown"
             iosIcon={<Icon name="arrow-down" />}
             style={{width: windowWidth * 0.95}}
-            placeholder="Select cuisine"
+            placeholder="Select Cuisine *"
             selectedValue={placeInfo.cuisine}
             onValueChange={(value) =>
               setPlaceInfo({...placeInfo, cuisine: value})
@@ -262,7 +271,7 @@ const NewListing = () => {
             mode="dropdown"
             iosIcon={<Icon name="arrow-down" />}
             style={{width: windowWidth * 0.95}}
-            placeholder="Select start time"
+            placeholder="Select start time *"
             selectedValue={placeInfo.start}
             onValueChange={(value) =>
               setPlaceInfo({...placeInfo, start: value})
@@ -278,7 +287,7 @@ const NewListing = () => {
               mode="dropdown"
               iosIcon={<Icon name="arrow-down" />}
               style={{width: windowWidth * 0.95}}
-              placeholder="Select end time"
+              placeholder="Select end time *"
               selectedValue={placeInfo.end}
               onValueChange={(value) =>
                 setPlaceInfo({...placeInfo, end: value})
@@ -291,21 +300,21 @@ const NewListing = () => {
         ) : null}
         <Item regular style={[styles.input]}>
           <Input
-            placeholder="Address"
+            placeholder="Address *"
             value={placeInfo.address}
             onChangeText={(text) => setPlaceInfo({...placeInfo, address: text})}
           />
         </Item>
         <Item regular style={[styles.input]}>
           <Input
-            placeholder="City"
+            placeholder="City *"
             value={placeInfo.city}
             onChangeText={(text) => setPlaceInfo({...placeInfo, city: text})}
           />
         </Item>
         <Item regular style={[styles.input]}>
           <Input
-            placeholder="Postcode"
+            placeholder="Postcode *"
             value={placeInfo.postcode}
             onChangeText={(text) =>
               setPlaceInfo({...placeInfo, postcode: text})
@@ -317,7 +326,7 @@ const NewListing = () => {
             mode="dropdown"
             iosIcon={<Icon name="arrow-down" />}
             style={{width: windowWidth * 0.95}}
-            placeholder="Select country"
+            placeholder="Select country *"
             selectedValue={placeInfo.country}
             onValueChange={(value) =>
               setPlaceInfo({...placeInfo, country: value})
@@ -340,15 +349,18 @@ const NewListing = () => {
             }
           />
         </Item>
-        <Item regular style={[styles.input]}>
-          <Input
-            placeholder="Website(must start with http:// or https://)"
-            value={placeInfo.web}
-            onChangeText={(text) => setPlaceInfo({...placeInfo, web: text})}
-          />
-        </Item>
         <View style={[styles.input]}>
-          <Label>Social Media(full address including https://)</Label>
+          <Item regular>
+            <Input
+              placeholder="Website address"
+              value={placeInfo.web}
+              onChangeText={(text) => setPlaceInfo({...placeInfo, web: text})}
+            />
+          </Item>
+          <Text>(link nust include http:// or https://)</Text>
+        </View>
+        <View style={[styles.input]}>
+          <Label>Social Media</Label>
           <Item regular style={[styles.input]}>
             <Icon
               style={styles.facebookIcon}
@@ -356,7 +368,7 @@ const NewListing = () => {
               name="sc-facebook"
             />
             <Input
-              placeholder="Facebook"
+              placeholder="Facebook link"
               value={placeInfo.soc_med.facebook}
               onChangeText={(text) =>
                 setPlaceInfo({
@@ -374,7 +386,7 @@ const NewListing = () => {
               name="instagram"
             />
             <Input
-              placeholder="Instagram"
+              placeholder="Instagram link"
               value={placeInfo.soc_med.instagram}
               onChangeText={(text) =>
                 setPlaceInfo({
@@ -387,7 +399,7 @@ const NewListing = () => {
           <Item regular style={[styles.input]}>
             <Icon style={styles.twitterIcon} type="AntDesign" name="twitter" />
             <Input
-              placeholder="Twitter"
+              placeholder="Twitter link"
               value={placeInfo.soc_med.twitter}
               onChangeText={(text) =>
                 setPlaceInfo({

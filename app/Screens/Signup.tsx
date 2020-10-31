@@ -100,6 +100,7 @@ const Signup = () => {
           <Item inlineLabel last>
             <Label>Password Confirmation</Label>
             <Input
+              secureTextEntry={true}
               value={confirmation}
               onChangeText={(text) => {
                 text === credential.password ? setBtn(false) : setBtn(true);
