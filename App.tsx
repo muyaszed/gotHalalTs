@@ -23,6 +23,7 @@ import {Icon} from '@codler/native-base';
 import Modal from './app/Components/modal';
 import {closeErrorDialog, resetErrorFlags} from './app/Error/action';
 import Loading from './app/Components/loading';
+import {AppStyles} from './app/Styles';
 
 setJSExceptionHandler((error, isFatal) => {
   if (isFatal) {
@@ -54,16 +55,10 @@ setNativeExceptionHandler(() => {
 
 const styles = StyleSheet.create({
   addNewTab: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
+    ...AppStyles.addNewTab,
   },
   addNewTabIcon: {
-    fontSize: 50,
-    color: '#098E33',
+    ...AppStyles.addNewTabIcon,
   },
 });
 

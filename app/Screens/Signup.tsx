@@ -9,8 +9,6 @@ import {
   Button,
   Text,
 } from '@codler/native-base';
-// import {AuthContext} from '../Authentication/context';
-import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {signInWithFaceBook, userSignUp} from '../Authentication/action';
 import {StyleSheet} from 'react-native';
@@ -62,7 +60,6 @@ const fbLogin = (dispatch: Dispatch<any>) => {
 };
 
 const Signup = () => {
-  const navigation = useNavigation();
   const dispatch = useDispatch();
   // const {signUp} = React.useContext(AuthContext);
   const [credential, onChangeText] = React.useState({
@@ -119,12 +116,6 @@ const Signup = () => {
           <Button block bordered onPress={() => fbLogin(dispatch)}>
             <Text>SIGN UP WITH FACEBOOK</Text>
           </Button>
-          <Text style={styles.underBtnText}>
-            Already have an account?{' '}
-            <Text onPress={() => navigation.navigate('Sign In')}>
-              Sign in here
-            </Text>
-          </Text>
         </Form>
       </Content>
     </Container>
