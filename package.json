@@ -8,7 +8,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "typescript": "tsc"
+    "typescript": "tsc",
+    "testflight:ios": "cd ios && fastlane beta"
   },
   "dependencies": {
     "@codler/native-base": "^2.14.2",
