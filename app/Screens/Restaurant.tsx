@@ -113,8 +113,14 @@ const styles = StyleSheet.create({
   reviewSubmitBtn: {
     borderColor: '#098E33',
   },
+  reviewSubmitBtnDisable: {
+    color: '#737974',
+  },
   reviewSubmitBtnText: {
     color: '#098E33',
+  },
+  reviewSubmitBtnTextDIsable: {
+    color: '#737974',
   },
   mapContainer: {
     flex: 1,
@@ -224,6 +230,13 @@ const styles = StyleSheet.create({
     paddingLeft: 80,
     paddingBottom: 10,
   },
+  reviewImagePreview: {
+    height: 250,
+    paddingBottom: 5,
+  },
+  reviewImage: {
+    height: '100%',
+  },
   imageLogo: {
     resizeMode: 'center',
   },
@@ -277,6 +290,8 @@ const renderAboveReviews = (
   setVerifyModalVisible: React.Dispatch<React.SetStateAction<boolean>>,
   showReviewForm: boolean,
   setShowReviewForm: React.Dispatch<React.SetStateAction<boolean>>,
+  reviewCancelModalVisible: boolean,
+  setReviewCancelModalVisible: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   return (
     <View>
@@ -541,7 +556,9 @@ const renderAboveReviews = (
             <Form style={styles.reviewForm}>
               <View style={styles.reviewFormCancelIcon}>
                 <Icon
-                  onPress={() => setShowReviewForm(false)}
+                  onPress={() => {
+                    setReviewCancelModalVisible(true);
+                  }}
                   type="AntDesign"
                   name="close"
                 />
@@ -555,6 +572,17 @@ const renderAboveReviews = (
                 onChangeText={(text) => setCurrentReview(text)}
                 value={currentReview}
               />
+              {selectedReviewImage ? (
+                <View style={styles.reviewImagePreview}>
+                  <Image
+                    resizeMode="cover"
+                    source={{
+                      uri: selectedReviewImage ? selectedReviewImage : '',
+                    }}
+                    style={styles.reviewImage}
+                  />
+                </View>
+              ) : null}
               <Button
                 block
                 disabled={disableReviewSubmit}
@@ -613,7 +641,14 @@ const renderAboveReviews = (
                     );
                   }
                 }}>
-                <Text style={styles.reviewSubmitBtnText}>Submit</Text>
+                <Text
+                  style={
+                    disableReviewSubmit
+                      ? styles.reviewSubmitBtnTextDIsable
+                      : styles.reviewSubmitBtnText
+                  }>
+                  Submit
+                </Text>
               </Button>
             </Form>
           ) : null}
@@ -709,6 +744,20 @@ const renderAboveReviews = (
             </Body>
           </ListItem>
         </Modal>
+        <Modal
+          title="Are you sure you want to cancel?"
+          leftButtonName="OK"
+          rightButtonName="Cancel"
+          modalVisible={reviewCancelModalVisible}
+          handleLeftButton={() => {
+            setReviewImage(null);
+            setCurrentReview('');
+            setShowReviewForm(false);
+            setReviewCancelModalVisible(false);
+          }}
+          handleRightButton={() => setReviewCancelModalVisible(false)}>
+          <Text>You will lose all your current review.</Text>
+        </Modal>
       </View>
     </View>
   );
@@ -741,6 +790,10 @@ const Restaurant = () => {
 
   const [refreshing, setRefreshing] = React.useState(false);
   const [mapModalVisible, setMapModalVisible] = React.useState(false);
+  const [
+    reviewCancelModalVisible,
+    setReviewCancelModalVisible,
+  ] = React.useState(false);
   const [useGoogleMap, setUseGoogleMap] = React.useState(true);
   const [selectedReviewImage, setReviewImage] = React.useState<string | null>(
     null,
@@ -813,6 +866,8 @@ const Restaurant = () => {
         setVerifyModalVisible,
         showReviewForm,
         setShowReviewForm,
+        reviewCancelModalVisible,
+        setReviewCancelModalVisible,
       )}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
