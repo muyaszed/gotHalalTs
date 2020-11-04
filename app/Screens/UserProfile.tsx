@@ -94,8 +94,8 @@ const Profile = () => {
   const profile = useSelector((state: RootState) => state.profile);
   const [photoModal, setPhotoModal] = React.useState(false);
   const [fullName, setFullName] = React.useState({
-    firstName: '',
-    lastName: '',
+    firstName: profile.firstName,
+    lastName: profile.lastName,
   });
   const dispatch = useDispatch();
   const navigation = useNavigation();
