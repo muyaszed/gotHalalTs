@@ -5,6 +5,7 @@ import Api from '../Services/api';
 import {RootState} from '../Store/reducers';
 import {ThunkDispatch} from 'redux-thunk';
 import {saveErrorMessage, showErrorDialog} from '../Error/action';
+import {setLoadingState} from '../Authentication/action';
 
 export type ProfileAction = ReturnType<typeof saveProfile>;
 
@@ -50,10 +51,13 @@ export const updateUserProfile = (
   userData: any,
   cuurentUserId: number,
 ) => async (dispatch: ThunkDispatch<RootState, void, Action>) => {
+  dispatch(setLoadingState(true));
   try {
     await Api.Put.profile(userData, cuurentUserId);
     dispatch(updateCurrentProfile());
+    dispatch(setLoadingState(false));
   } catch (error) {
+    dispatch(setLoadingState(false));
     const errorMessage = error.response
       ? error.response.data.message
       : error.message;

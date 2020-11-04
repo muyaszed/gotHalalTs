@@ -126,47 +126,41 @@ const Profile = () => {
             <Icon type="Entypo" name="bowl" style={styles.avatarIcon} />
           </View>
         )}
-        <TouchableOpacity
-          style={styles.uploadAvatar}
-          onPress={() => {
-            const options = {
-              title: 'Select Avatar',
-              customButtons: [
-                {name: 'fb', title: 'Choose Photo from Facebook'},
-              ],
-              storageOptions: {
-                skipBackup: true,
-                path: 'images',
-              },
-            };
-            ImagePicker.showImagePicker(options, (response) => {
-              console.log('Response = ', response);
+        {profile.settings.facebook_avatar && profile.fbAvatarUri ? null : (
+          <TouchableOpacity
+            style={styles.uploadAvatar}
+            onPress={() => {
+              const options = {
+                title: 'Select Avatar',
+                storageOptions: {
+                  skipBackup: true,
+                  path: 'images',
+                },
+              };
+              ImagePicker.showImagePicker(options, (response) => {
+                console.log('Response = ', response);
 
-              if (response.didCancel) {
-                console.log('User cancelled image picker');
-              } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-              } else if (response.customButton) {
-                console.log(
-                  'User tapped custom button: ',
-                  response.customButton,
-                );
-              } else {
-                const form = new FormData();
+                if (response.didCancel) {
+                  console.log('User cancelled image picker');
+                } else if (response.error) {
+                  console.log('ImagePicker Error: ', response.error);
+                } else {
+                  const form = new FormData();
 
-                form.append('avatar', {
-                  name: response.fileName ? response.fileName : 'avatar.jpeg',
-                  type: response.type,
-                  uri: response.uri.replace('file://', ''),
-                });
-                if (profile.userId) {
-                  dispatch(updateUserProfile(form, profile.userId));
+                  form.append('avatar', {
+                    name: response.fileName ? response.fileName : 'avatar.jpeg',
+                    type: response.type,
+                    uri: response.uri.replace('file://', ''),
+                  });
+                  if (profile.userId) {
+                    dispatch(updateUserProfile(form, profile.userId));
+                  }
                 }
-              }
-            });
-          }}>
-          <Icon type="Entypo" name="camera" style={styles.cameraIcon} />
-        </TouchableOpacity>
+              });
+            }}>
+            <Icon type="Entypo" name="camera" style={styles.cameraIcon} />
+          </TouchableOpacity>
+        )}
       </View>
       <View style={styles.informationContainer}>
         <List>
