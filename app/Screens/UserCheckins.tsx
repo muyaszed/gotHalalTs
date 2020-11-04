@@ -28,7 +28,7 @@ const UserCheckins = () => {
         <Content padder>
           <ListCard
             name={item.detail.name}
-            description={item.detail.desc}
+            description={item.detail.sub_header}
             mainImage={false}
             avatarUri={item.detail.cover_uri}
             footer={false}
