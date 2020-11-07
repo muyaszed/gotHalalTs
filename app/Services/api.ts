@@ -18,14 +18,6 @@ export default {
         withCredentials: true,
       });
     },
-    userSignout: () => {
-      return axios({
-        method: 'post',
-        url: `${Config.API_ADDRESS}/auth/logout`,
-        headers: {'Content-Type': 'application/json'},
-        withCredentials: true,
-      });
-    },
     userSignup: (credential: Credential) => {
       return axios({
         method: 'post',
@@ -41,116 +33,120 @@ export default {
         url: `${Config.API_ADDRESS}/auth/fb_login`,
         headers: {'Content-Type': 'application/json'},
         data: JSON.stringify(token),
-        withCredentials: true,
       });
     },
-    reviews: (reviewInfo: FormData, id: number) => {
+    reviews: (token: string, reviewInfo: FormData, id: number) => {
       return axios({
         method: 'post',
         url: `${Config.API_ADDRESS}/restaurants/${id}/reviews`,
         headers: {
           Accept: 'application/vnd.halaldir.v1+json',
+          Authorization: token,
         },
         data: reviewInfo,
-        withCredentials: true,
       });
     },
-    bookmark: (restaurantId: number, userId: number) =>
+    bookmark: (token: string, restaurantId: number, userId: number) =>
       axios({
         method: 'POST',
         url: `${Config.API_ADDRESS}/restaurants/${restaurantId}/${userId}/bookmark_restaurant`,
         headers: {
           Accept: 'application/vnd.halaldir.v1+json',
           'Content-Type': 'application/json',
+          Authorization: token,
         },
-        withCredentials: true,
       }),
-    unbookmark: (restaurantId: number, userId: number) =>
+    unbookmark: (token: string, restaurantId: number, userId: number) =>
       axios({
         method: 'POST',
         url: `${Config.API_ADDRESS}/restaurants/${restaurantId}/${userId}/unbookmark_restaurant`,
         headers: {
           Accept: 'application/vnd.halaldir.v1+json',
           'Content-Type': 'application/json',
+          Authorization: token,
         },
-        withCredentials: true,
       }),
-    checkin: (restaurantId: number, userId: number) =>
+    checkin: (token: string, restaurantId: number, userId: number) =>
       axios({
         method: 'POST',
         url: `${Config.API_ADDRESS}/restaurants/${restaurantId}/${userId}/checkin_restaurant`,
         headers: {
           Accept: 'application/vnd.halaldir.v1+json',
           'Content-Type': 'application/json',
+          Authorization: token,
         },
-        withCredentials: true,
       }),
-    restaurant: (data: FormData) =>
+    restaurant: (data: FormData, token: string) =>
       axios({
         method: 'POST',
         url: `${Config.API_ADDRESS}/restaurants`,
         headers: {
           Accept: 'application/vnd.halaldir.v1+json',
+          Authorization: token,
         },
         data: data,
-        withCredentials: true,
       }),
-    verification: (restaurantId: number, userId: number, data: FormData) =>
+    verification: (
+      token: string,
+      restaurantId: number,
+      userId: number,
+      data: FormData,
+    ) =>
       axios({
         method: 'POST',
         url: `${Config.API_ADDRESS}/restaurants/${restaurantId}/${userId}/halal_verification`,
         headers: {
           Accept: 'application/vnd.halaldir.v1+json',
           'Content-Type': 'application/json',
+          Authorization: token,
         },
         data,
-        withCredentials: true,
       }),
   },
   Get: {
-    restaurants: () => {
+    restaurants: (userToken: string) => {
       return axios({
         method: 'get',
         url: `${Config.API_ADDRESS}/restaurants`,
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/vnd.halaldir.v1+json',
+          Authorization: userToken,
         },
-        withCredentials: true,
       });
     },
-    reviews: (id: number) => {
+    reviews: (userToken: string, id: number) => {
       return axios({
         method: 'get',
         url: `${Config.API_ADDRESS}/restaurants/${id}/reviews`,
         headers: {
           Accept: 'application/vnd.halaldir.v1+json',
           'Content-Type': 'application/json',
+          Authorization: userToken,
         },
-        withCredentials: true,
       });
     },
-    user: (id: number) =>
+    user: (token: string, id: number) =>
       axios({
         method: 'GET',
         url: `${Config.API_ADDRESS}/users/${id}`,
         headers: {
           Accept: 'application/vnd.halaldir.v1+json',
           'Content-Type': 'application/json',
+          Authorization: token,
         },
-        withCredentials: true,
       }),
   },
   Put: {
-    profile: (data: FormData, currentUserId: number) => {
+    profile: (token: string, data: FormData, currentUserId: number) => {
       return axios({
         method: 'PUT',
         url: `${Config.API_ADDRESS}/profiles/${currentUserId}`,
         headers: {
           Accept: 'application/vnd.halaldir.v1+json',
+          Authorization: token,
         },
         data: data,
-        withCredentials: true,
       });
     },
   },

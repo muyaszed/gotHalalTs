@@ -14,10 +14,12 @@ export const userCheckin = () => async (
   const currentUserCheckinList = getState().profile.checkIns;
   const currentUserId = getState().profile.userId;
 
+  const userToken = getState().auth.userToken;
   const currentRestaurantId = getState().restaurants.selectedRestaurantId;
   if (
     currentUserId &&
     currentRestaurantId &&
+    userToken &&
     currentUserCheckinList.find(
       (item) => item.checkin.restaurant_id === currentRestaurantId,
     )
@@ -32,9 +34,9 @@ export const userCheckin = () => async (
     const oneDayInSeconds = 24 * 60 * 60;
     if (currentTime - lastCheckinTime > oneDayInSeconds) {
       try {
-        await Api.Post.checkin(currentRestaurantId, currentUserId);
-        dispatch(updateCurrentProfile());
-        dispatch(getAllRestaurants());
+        await Api.Post.checkin(userToken, currentRestaurantId, currentUserId);
+        dispatch(updateCurrentProfile(userToken));
+        dispatch(getAllRestaurants(userToken));
         showToast('You have successfully check-in to this place.');
       } catch (error) {
         const errorMessage = error.response
@@ -50,10 +52,10 @@ export const userCheckin = () => async (
     }
   } else {
     try {
-      if (currentRestaurantId && currentUserId) {
-        await Api.Post.checkin(currentRestaurantId, currentUserId);
-        dispatch(updateCurrentProfile());
-        dispatch(getAllRestaurants());
+      if (userToken && currentRestaurantId && currentUserId) {
+        await Api.Post.checkin(userToken, currentRestaurantId, currentUserId);
+        dispatch(updateCurrentProfile(userToken));
+        dispatch(getAllRestaurants(userToken));
         showToast('You have successfully check-in to this place.');
       }
     } catch (error) {

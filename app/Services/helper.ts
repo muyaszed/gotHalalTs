@@ -15,7 +15,7 @@ export const distanceBetweenLocation = (
   lon2: number,
   unit: 'M' | 'N' | 'K',
 ) => {
-  if (lat1 === lat2 && lon1 === lon2) {
+  if (lat1 == lat2 && lon1 == lon2) {
     return 0;
   } else {
     var radlat1 = (Math.PI * lat1) / 180;

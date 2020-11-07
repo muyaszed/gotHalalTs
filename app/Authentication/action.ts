@@ -1,3 +1,4 @@
+import SInfo from 'react-native-sensitive-info';
 import types from '../Store/actions';
 import Api, {Credential} from '../Services/api';
 import {Dispatch} from 'redux';
@@ -35,7 +36,8 @@ export const signOut = () => async (
   getState: () => RootState,
 ) => {
   const needLogOut = getState().error.needLogOut;
-  await Api.Post.userSignout();
+  await SInfo.deleteItem('token', {});
+
   dispatch(userSignOut());
   if (needLogOut) {
     dispatch(resetErrorFlags());
@@ -54,7 +56,7 @@ export const userSignUp = (credential: Credential) => async (
     dispatch(setLoadingState(true));
     const apiCall = await Api.Post.userSignup(credential);
     const token = apiCall.data.auth_token;
-    // await SInfo.setItem('token', token, {});
+    await SInfo.setItem('token', token, {});
     dispatch(signIn(token));
     dispatch(
       saveProfile({
@@ -93,7 +95,7 @@ export const userSignIn = (credential: Credential) => async (
     dispatch(setLoadingState(true));
     const apiCall = await Api.Post.userLogin(credential);
     const token = apiCall.data.auth_token;
-    // await SInfo.setItem('token', token, {});
+    await SInfo.setItem('token', token, {});
     dispatch(signIn(token));
     dispatch(
       saveProfile({
@@ -132,7 +134,7 @@ export const signInWithFaceBook = (fbToken: FBToken) => async (
     dispatch(setLoadingState(true));
     const apiCall = await Api.Post.fbAuthentication(fbToken);
     const token = apiCall.data.auth_token;
-    // await SInfo.setItem('token', token, {});
+    await SInfo.setItem('token', token, {});
     dispatch(signIn(token));
     dispatch(
       saveProfile({
