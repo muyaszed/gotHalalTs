@@ -28,9 +28,11 @@ const gettingAllRestaurantsFailed = (error: string) => ({
   payload: error,
 });
 
-export const getAllRestaurants = () => async (dispatch: Dispatch) => {
+export const getAllRestaurants = (userToken: string) => async (
+  dispatch: Dispatch,
+) => {
   try {
-    const data = await (await Api.Get.restaurants()).data;
+    const data = await (await Api.Get.restaurants(userToken)).data;
     dispatch(gettingAllRestaurantsSuccess(data));
   } catch (error) {
     const errorMessage = error.response
@@ -49,12 +51,12 @@ export const setSelectedRestaurant = (restaurantId: number) => {
   };
 };
 
-export const setNewListing = (newData: FormData) => async (
+export const setNewListing = (newData: FormData, token: string) => async (
   dispatch: ThunkDispatch<RootState, void, Action>,
 ) => {
   try {
-    await Api.Post.restaurant(newData);
-    dispatch(getAllRestaurants());
+    await Api.Post.restaurant(newData, token);
+    dispatch(getAllRestaurants(token));
     showToast('You have successfully added a new place.');
     return true;
   } catch (error) {

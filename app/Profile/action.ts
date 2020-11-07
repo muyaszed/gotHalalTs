@@ -14,14 +14,14 @@ export const saveProfile = (profile: UserProfile) => ({
   payload: profile,
 });
 
-export const updateCurrentProfile = () => async (
+export const updateCurrentProfile = (userToken: string) => async (
   dispatch: ThunkDispatch<RootState, void, Action>,
   getState: () => RootState,
 ) => {
   const userId = getState().profile.userId;
 
   try {
-    const apiCall = await Api.Get.user(userId!);
+    const apiCall = await Api.Get.user(userToken, userId!);
 
     dispatch(
       saveProfile({
@@ -48,13 +48,14 @@ export const updateCurrentProfile = () => async (
 };
 
 export const updateUserProfile = (
+  userToken: string,
   userData: any,
   cuurentUserId: number,
 ) => async (dispatch: ThunkDispatch<RootState, void, Action>) => {
   dispatch(setLoadingState(true));
   try {
-    await Api.Put.profile(userData, cuurentUserId);
-    dispatch(updateCurrentProfile());
+    await Api.Put.profile(userToken, userData, cuurentUserId);
+    dispatch(updateCurrentProfile(userToken));
     dispatch(setLoadingState(false));
   } catch (error) {
     dispatch(setLoadingState(false));

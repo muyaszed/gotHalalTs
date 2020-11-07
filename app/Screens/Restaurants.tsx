@@ -87,6 +87,7 @@ const Restaurants = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [currentData, setCurrentData] = React.useState(3);
   const userProfile = useSelector((state: RootState) => state.profile);
+  const userToken = useSelector((state: RootState) => state.auth.userToken);
   const userSettings = useSelector(
     (state: RootState) => state.profile.settings,
   );
@@ -125,12 +126,14 @@ const Restaurants = () => {
         })),
       );
 
-      dispatch(getAllRestaurants());
-      setCurrentData(3);
+      if (userToken) {
+        dispatch(getAllRestaurants(userToken));
+        setCurrentData(3);
+      }
 
       return unsubscribe;
     });
-  }, [navigation, dispatch]);
+  }, [navigation, dispatch, userToken]);
 
   useEffect(() => {
     if (
@@ -150,9 +153,11 @@ const Restaurants = () => {
     setRefreshing(true);
 
     wait(2000).then(() => {
-      dispatch(getAllRestaurants());
-      setRefreshing(false);
-      setCurrentData(3);
+      if (userToken) {
+        dispatch(getAllRestaurants(userToken));
+        setRefreshing(false);
+        setCurrentData(3);
+      }
     });
   }, []);
 

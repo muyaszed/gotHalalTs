@@ -6,7 +6,7 @@ import {ThunkDispatch} from 'redux-thunk';
 import {getAllRestaurants} from '../Restaurant/action';
 import {saveErrorMessage, showErrorDialog} from '../Error/action';
 
-export const userVerify = (data: FormData) => async (
+export const userVerify = (userToken: string, data: FormData) => async (
   dispatch: ThunkDispatch<RootState, void, Action>,
   getState: () => RootState,
 ) => {
@@ -15,9 +15,9 @@ export const userVerify = (data: FormData) => async (
 
   if (userId && restaurantId) {
     try {
-      await Api.Post.verification(restaurantId, userId, data);
+      await Api.Post.verification(userToken, restaurantId, userId, data);
       showToast('You have successfully submit a verification');
-      dispatch(getAllRestaurants());
+      dispatch(getAllRestaurants(userToken));
     } catch (error) {
       const errorMessage = error.response
         ? error.response.data.message

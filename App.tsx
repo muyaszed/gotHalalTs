@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import 'react-native-gesture-handler';
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
@@ -9,6 +10,7 @@ import {
   setNativeExceptionHandler,
 } from 'react-native-exception-handler';
 import SplashScreen from 'react-native-splash-screen';
+import SInfo from 'react-native-sensitive-info';
 
 import SignInScreen from './app/Screens/SignIn';
 import SignUpScreen from './app/Screens/Signup';
@@ -17,7 +19,7 @@ import HomeScreen from './app/Screens/Home';
 import Profile from './app/Screens/Profile';
 import AddListing from './app/Screens/AddListing';
 import {RootState} from './app/Store/reducers';
-import {signOut} from './app/Authentication/action';
+import {restoreToken, signOut} from './app/Authentication/action';
 import {View, StyleSheet, Text, DevSettings, Alert} from 'react-native';
 import {Icon} from '@codler/native-base';
 import Modal from './app/Components/modal';
@@ -74,6 +76,19 @@ const App = () => {
 
   React.useEffect(() => {
     SplashScreen.hide();
+    const bootstrapAsync = async () => {
+      let userTokenStorage = null;
+      try {
+        userTokenStorage = await SInfo.getItem('token', {});
+        if (userTokenStorage) {
+          dispatch(restoreToken(userTokenStorage));
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    bootstrapAsync();
   }, []);
 
   const Stack = createStackNavigator();
@@ -81,7 +96,7 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      {authState.isSignout ? (
+      {authState.userToken == null ? (
         <Stack.Navigator>
           <Stack.Screen name="Welcome" component={LandingScreen} />
           <Stack.Screen name="Sign In" component={SignInScreen} />

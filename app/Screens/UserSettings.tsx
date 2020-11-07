@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
 
 const UserSettings: React.FC<Props> = ({navigation}) => {
   const dispatch = useDispatch();
+  const userToken = useSelector((state: RootState) => state.auth.userToken);
   const userId = useSelector((state: RootState) => state.profile.userId);
   const currentSettings = useSelector(
     (state: RootState) => state.profile.settings,
@@ -62,7 +63,7 @@ const UserSettings: React.FC<Props> = ({navigation}) => {
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('blur', () => {
       console.log('enable status', enableSave);
-      if (enableSave && userId) {
+      if (enableSave && userToken && userId) {
         console.log('Saving settings');
         const userData = new FormData();
         userData.append(
@@ -72,7 +73,7 @@ const UserSettings: React.FC<Props> = ({navigation}) => {
             distance_unit: newSettingsValue.distance_unit,
           }),
         );
-        dispatch(updateUserProfile(userData, userId));
+        dispatch(updateUserProfile(userToken, userData, userId));
       }
     });
 

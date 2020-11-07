@@ -13,7 +13,7 @@ import {
 } from '@codler/native-base';
 import {categories, cuisines, countries, time} from '../Services/constant';
 import ImagePicker from 'react-native-image-picker';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {setNewListing} from '../Restaurant/action';
 import {RootState} from '../Store/reducers';
 import {ThunkDispatch} from 'redux-thunk';
@@ -98,6 +98,7 @@ const NewListing = () => {
   const navigation = useNavigation();
   const [hasEndTime, setHasEndTime] = React.useState(true);
   const [submitBtnStatus, setSubmitBtnStatus] = React.useState(true);
+  const token = useSelector((state: RootState) => state.auth.userToken);
   const [placeInfo, setPlaceInfo] = React.useState<NewPlaceInfo>({
     name: '',
     sub_header: '',
@@ -464,37 +465,39 @@ const NewListing = () => {
                   newData.append(key, value);
                 }
               });
-              dispatch(setNewListing(newData)).then((res) => {
-                if (res) {
-                  setPlaceInfo({
-                    name: '',
-                    sub_header: '',
-                    cover: false,
-                    desc: '',
-                    address: '',
-                    city: '',
-                    postcode: '',
-                    country: '',
-                    category: '',
-                    cuisine: '',
-                    start: '',
-                    end: '',
-                    contact_number: '',
-                    web: '',
-                    soc_med: {
-                      facebook: '',
-                      instagram: '',
-                      twitter: '',
-                    },
-                    surau: false,
-                    family_friendly: false,
-                    disabled_accessibility: false,
-                  });
-                  setDisplayImageUri(null);
-                  navigation.navigate('Listing');
-                  dispatch(setLoadingState(false));
-                }
-              });
+              if (token) {
+                dispatch(setNewListing(newData, token)).then((res) => {
+                  if (res) {
+                    setPlaceInfo({
+                      name: '',
+                      sub_header: '',
+                      cover: false,
+                      desc: '',
+                      address: '',
+                      city: '',
+                      postcode: '',
+                      country: '',
+                      category: '',
+                      cuisine: '',
+                      start: '',
+                      end: '',
+                      contact_number: '',
+                      web: '',
+                      soc_med: {
+                        facebook: '',
+                        instagram: '',
+                        twitter: '',
+                      },
+                      surau: false,
+                      family_friendly: false,
+                      disabled_accessibility: false,
+                    });
+                    setDisplayImageUri(null);
+                    navigation.navigate('Listing');
+                    dispatch(setLoadingState(false));
+                  }
+                });
+              }
             }}>
             <Text>Submit</Text>
           </Button>
