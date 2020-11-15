@@ -16,8 +16,10 @@ jobs:
       - run: echo "Running all test"
       - run: npm run test
 workflows:
-  jobs:
-    - build
-    - test
+  version: 2.1
+  build_and_test:
+    jobs:
+      - build
+      - test
       
 
