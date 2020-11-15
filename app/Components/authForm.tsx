@@ -8,6 +8,8 @@ interface Props {
   buttonSecondaryText: string;
   handleOnPressButtonPrimary: () => void;
   handleOnPressButtonSecondary: () => void;
+  buttonPrimaryDisabled?: boolean;
+  buttonSecondaryDisabled?: boolean;
 }
 
 const AuthForm: React.FC<Props> = ({
@@ -16,6 +18,8 @@ const AuthForm: React.FC<Props> = ({
   buttonSecondaryText,
   handleOnPressButtonPrimary,
   handleOnPressButtonSecondary,
+  buttonPrimaryDisabled = false,
+  buttonSecondaryDisabled = false,
 }) => {
   return (
     <Container>
@@ -25,10 +29,15 @@ const AuthForm: React.FC<Props> = ({
           <Button
             style={styles.signInBtn}
             block
-            onPress={handleOnPressButtonPrimary}>
+            onPress={handleOnPressButtonPrimary}
+            disabled={buttonPrimaryDisabled}>
             <Text>{buttonPrimaryText}</Text>
           </Button>
-          <Button block bordered onPress={handleOnPressButtonSecondary}>
+          <Button
+            block
+            bordered
+            onPress={handleOnPressButtonSecondary}
+            disabled={buttonSecondaryDisabled}>
             <Text>{buttonSecondaryText}</Text>
           </Button>
         </Form>
