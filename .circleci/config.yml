@@ -6,6 +6,7 @@ jobs:
     steps:
       - checkout
       - run: echo "Running all test"
+      - run: npm install
       - run: npm test
 workflows:
   version: 2.1
