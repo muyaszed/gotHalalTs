@@ -1,17 +1,23 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {render, fireEvent} from '@testing-library/react-native';
-import MockedNaviator from '../Helper/MockedNavigator';
+import {render} from '@testing-library/react-native';
+import {Landing} from '../../app/Screens';
 
-import LandingScreen from '../../app/Screens/Landing';
+jest.mock('@react-navigation/native');
 
-jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper');
+beforeAll(() => {
+  jest.clearAllMocks();
+});
 
-describe('Testing navigation', () => {
-  test('screen conatain the correct title', async () => {
-    const component = <MockedNaviator component={LandingScreen} />;
-    const {findByText} = render(component);
-    const header = await findByText('Welcome');
-    expect(header).toBeTruthy();
+describe('Landing screen', () => {
+  test('display the correct button titles', async () => {
+    const {getByTestId} = render(<Landing />);
+    const createAccountBtn = getByTestId('createAccountScreenBtn');
+    const signInBtn = getByTestId('signInScreenBtn');
+    const createAccountBtnText =
+      createAccountBtn.props.children[0].props.children;
+    const signInBtnText = signInBtn.props.children[0].props.children;
+
+    expect(createAccountBtnText).toBe('Create free account');
+    expect(signInBtnText).toBe('Sign in');
   });
 });

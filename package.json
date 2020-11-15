@@ -6,7 +6,8 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest",
+    "test": "run-p test:jest lint typescript",
+    "test:jest": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "typescript": "tsc",
     "testflight:ios": "cd ios && fastlane beta"
@@ -66,6 +67,7 @@
     "eslint": "^6.5.1",
     "jest": "^24.9.0",
     "metro-react-native-babel-preset": "^0.58.0",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.0.4",
     "react-test-renderer": "16.11.0",
     "typescript": "^3.8.3"

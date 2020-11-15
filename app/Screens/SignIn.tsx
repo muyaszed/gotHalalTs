@@ -27,6 +27,7 @@ const SignIn = () => {
         <Item inlineLabel>
           <Label>Email</Label>
           <Input
+            testID="signInEmail"
             value={credential.email}
             onChangeText={(text) => onChangeText({...credential, email: text})}
           />
@@ -34,6 +35,7 @@ const SignIn = () => {
         <Item inlineLabel>
           <Label>Password</Label>
           <Input
+            testID="signInPassword"
             value={credential.password}
             secureTextEntry={true}
             onChangeText={(text) =>

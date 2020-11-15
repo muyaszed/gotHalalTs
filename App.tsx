@@ -11,10 +11,7 @@ import {
 } from 'react-native-exception-handler';
 import SplashScreen from 'react-native-splash-screen';
 import SInfo from 'react-native-sensitive-info';
-
-import SignInScreen from './app/Screens/SignIn';
-import SignUpScreen from './app/Screens/Signup';
-import LandingScreen from './app/Screens/Landing';
+import {Landing, SignIn, SignUp} from './app/Screens';
 import HomeScreen from './app/Screens/Home';
 import Profile from './app/Screens/Profile';
 import AddListing from './app/Screens/AddListing';
@@ -98,9 +95,9 @@ const App = () => {
     <NavigationContainer>
       {authState.userToken == null ? (
         <Stack.Navigator>
-          <Stack.Screen name="Welcome" component={LandingScreen} />
-          <Stack.Screen name="Sign In" component={SignInScreen} />
-          <Stack.Screen name="Sign Up" component={SignUpScreen} />
+          <Stack.Screen name="Welcome" component={Landing} />
+          <Stack.Screen name="Sign In" component={SignIn} />
+          <Stack.Screen name="Sign Up" component={SignUp} />
         </Stack.Navigator>
       ) : (
         <Tab.Navigator

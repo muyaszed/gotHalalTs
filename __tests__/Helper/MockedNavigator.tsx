@@ -13,7 +13,7 @@ const MockedNavigator: React.FC<Props> = ({component, params = {}}) => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="MockedScreen"
+          name="Welcome"
           component={component}
           initialParams={params}
         />

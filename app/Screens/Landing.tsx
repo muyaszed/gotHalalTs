@@ -18,6 +18,7 @@ const Landing = () => {
           />
         </View>
         <Button
+          testID="createAccountScreenBtn"
           style={styles.createAccBtn}
           block
           light
@@ -25,6 +26,7 @@ const Landing = () => {
           <Text>Create free account</Text>
         </Button>
         <Button
+          testID="signInScreenBtn"
           style={styles.createAccBtn}
           block
           light
