@@ -1,0 +1,17 @@
+version: 2.1
+jobs:
+  test:
+    docker:
+      - image: circleci/node:8.9
+    steps:
+      - checkout
+      - run: echo "Running all test"
+      - run: npm install
+      - run: npm test
+workflows:
+  version: 2.1
+  run_all_test:
+    jobs:
+      - test
+      
+
