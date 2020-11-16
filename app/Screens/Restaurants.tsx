@@ -4,6 +4,9 @@ import {Text, Icon, Content} from '@codler/native-base';
 import Geolocation from '@react-native-community/geolocation';
 import {FlatList, View, StyleSheet, RefreshControl} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
+import {ThunkDispatch} from 'redux-thunk';
+import {Action} from 'redux';
+
 import {RootState} from '../Store/reducers';
 import {useNavigation} from '@react-navigation/native';
 import ListCard from '../Components/listCard';
@@ -12,76 +15,11 @@ import {RestaurantModel} from '../Restaurant/reducer';
 import {distanceBetweenLocation} from '../Services/helper';
 import {getAllRestaurants} from '../Restaurant/action';
 import {saveErrorMessage, showErrorDialog} from '../Error/action';
-import {ThunkDispatch} from 'redux-thunk';
-import {Action} from 'redux';
-
-const styles = StyleSheet.create({
-  noListing: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  listingFooter: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    padding: 10,
-  },
-  footerItem: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-  },
-  footerItemIcon: {
-    color: '#098E33',
-    fontSize: 20,
-  },
-});
+import {RestaurantsStyles} from '../Styles';
 
 interface RestaurantViewModel extends RestaurantModel {
   distance: number;
 }
-
-const footerChildComponent = (item: RestaurantViewModel) => {
-  return (
-    <View style={styles.listingFooter}>
-      <View style={styles.footerItem}>
-        <Icon
-          style={styles.footerItemIcon}
-          active
-          type="Foundation"
-          name="book-bookmark"
-        />
-        <Text>{`${item.bookmarking_user.length} ${
-          item.bookmarking_user.length > 1 ? 'bookmarks' : 'bookmark'
-        }`}</Text>
-      </View>
-      <View style={styles.footerItem}>
-        <Icon style={styles.footerItemIcon} active name="chatbubbles" />
-        <Text>{`${item.reviews.length} ${
-          item.reviews.length > 1 ? 'reviews' : 'review'
-        }`}</Text>
-      </View>
-      <View style={styles.footerItem}>
-        <Icon
-          style={styles.footerItemIcon}
-          active
-          type="FontAwesome5"
-          name="calendar-check"
-        />
-        <Text>{`${item.checking_ins.length} ${
-          item.checking_ins.length > 1 ? 'check-ins' : 'check-in'
-        }`}</Text>
-      </View>
-    </View>
-  );
-};
-
-const wait = (timeout: number) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, timeout);
-  });
-};
 
 const Restaurants = () => {
   const [refreshing, setRefreshing] = React.useState(false);
@@ -149,6 +87,12 @@ const Restaurants = () => {
     }
   }, []);
 
+  const wait = (timeout: number) => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, timeout);
+    });
+  };
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
 
@@ -160,6 +104,41 @@ const Restaurants = () => {
       }
     });
   }, []);
+
+  const footerChildComponent = (item: RestaurantViewModel) => {
+    return (
+      <View style={styles.listingFooter}>
+        <View style={styles.footerItem}>
+          <Icon
+            style={styles.footerItemIcon}
+            active
+            type="Foundation"
+            name="book-bookmark"
+          />
+          <Text>{`${item.bookmarking_user.length} ${
+            item.bookmarking_user.length > 1 ? 'bookmarks' : 'bookmark'
+          }`}</Text>
+        </View>
+        <View style={styles.footerItem}>
+          <Icon style={styles.footerItemIcon} active name="chatbubbles" />
+          <Text>{`${item.reviews.length} ${
+            item.reviews.length > 1 ? 'reviews' : 'review'
+          }`}</Text>
+        </View>
+        <View style={styles.footerItem}>
+          <Icon
+            style={styles.footerItemIcon}
+            active
+            type="FontAwesome5"
+            name="calendar-check"
+          />
+          <Text>{`${item.checking_ins.length} ${
+            item.checking_ins.length > 1 ? 'check-ins' : 'check-in'
+          }`}</Text>
+        </View>
+      </View>
+    );
+  };
 
   return restaurants.length > 0 ? (
     <FlatList
@@ -200,3 +179,18 @@ const Restaurants = () => {
 };
 
 export default Restaurants;
+
+const styles = StyleSheet.create({
+  noListing: {
+    ...RestaurantsStyles.noListing,
+  },
+  listingFooter: {
+    ...RestaurantsStyles.listingFooter,
+  },
+  footerItem: {
+    ...RestaurantsStyles.footerItem,
+  },
+  footerItemIcon: {
+    ...RestaurantsStyles.footerItemIcon,
+  },
+});
