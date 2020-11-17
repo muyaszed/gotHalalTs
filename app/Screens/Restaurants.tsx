@@ -144,22 +144,24 @@ const Restaurants = () => {
     <FlatList
       data={restaurants}
       renderItem={({item}) => (
-        <Content padder>
-          <ListCard
-            name={item.name}
-            description={item.sub_header}
-            mainImageUri={item.cover_uri}
-            avatar={false}
-            footerChild={footerChildComponent(item)}
-            topRightInfoContent={`${Math.round(item.distance).toString()}${
-              userSettings.distance_unit === 'kilometer' ? ' km' : ' miles'
-            }`}
-            onPress={() => {
-              dispatch(setSelectedRestaurant(item.id));
-              navigation.navigate('The Place');
-            }}
-          />
-        </Content>
+        <View testID="restaurantItem">
+          <Content padder>
+            <ListCard
+              name={item.name}
+              description={item.sub_header}
+              mainImageUri={item.cover_uri}
+              avatar={false}
+              footerChild={footerChildComponent(item)}
+              topRightInfoContent={`${Math.round(item.distance).toString()}${
+                userSettings.distance_unit === 'kilometer' ? ' km' : ' miles'
+              }`}
+              onPress={() => {
+                dispatch(setSelectedRestaurant(item.id));
+                navigation.navigate('The Place');
+              }}
+            />
+          </Content>
+        </View>
       )}
       keyExtractor={(item) => item.id.toString()}
       refreshControl={

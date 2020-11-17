@@ -8,13 +8,14 @@
     "start": "react-native start",
     "test": "run-p test:jest lint typescript",
     "test:jest": "jest",
+    "test:coverage": "jest --coverage",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "typescript": "tsc",
     "testflight:ios": "cd ios && fastlane beta"
   },
   "dependencies": {
     "@codler/native-base": "^2.14.2",
-    "@react-native-community/async-storage": "^1.11.0",
+    "@react-native-async-storage/async-storage": "^1.13.2",
     "@react-native-community/cameraroll": "^4.0.0",
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/masked-view": "^0.1.10",
@@ -61,6 +62,7 @@
     "@types/react-native": "^0.62.0",
     "@types/react-redux": "^7.1.9",
     "@types/react-test-renderer": "16.9.2",
+    "@types/redux-mock-store": "^1.0.2",
     "@typescript-eslint/eslint-plugin": "^2.27.0",
     "@typescript-eslint/parser": "^2.27.0",
     "babel-jest": "^24.9.0",
@@ -70,6 +72,7 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.4",
     "react-test-renderer": "16.11.0",
+    "redux-mock-store": "^1.5.4",
     "typescript": "^3.8.3"
   }
 }
