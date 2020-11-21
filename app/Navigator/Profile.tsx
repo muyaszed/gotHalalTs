@@ -1,11 +1,11 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import UserProfile from './UserProfile';
-import UserListing from './UserListing';
-import UserReviews from './UserReviews';
-import UserBookmarks from './UserBookmarks';
-import UserCheckins from './UserCheckins';
-import UserSettings from './UserSettings';
+import UserProfile from '../Screens/UserProfile';
+import UserListing from '../Screens/UserListing';
+import UserReviews from '../Screens/UserReviews';
+import UserBookmarks from '../Screens/UserBookmarks';
+import UserCheckins from '../Screens/UserCheckins';
+import UserSettings from '../Screens/UserSettings';
 
 export type RootStackParamList = {
   'My Profile': undefined;

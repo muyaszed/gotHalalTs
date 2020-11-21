@@ -1,7 +1,7 @@
 import React from 'react';
 import {Item, View, Input, Label} from '@codler/native-base';
 import {useDispatch} from 'react-redux';
-import {userSignUp} from '../Authentication/action';
+import {userSignUp} from '../Store/Authentication/action';
 import {AuthForm} from '../Components';
 import {fbLogin} from '../Services/AuthenticationService';
 

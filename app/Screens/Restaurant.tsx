@@ -22,17 +22,17 @@ import {KeyboardAwareFlatList} from 'react-native-keyboard-aware-scroll-view';
 import MapView, {Marker, Callout} from 'react-native-maps';
 import openMap from 'react-native-open-maps';
 import {RootState} from '../Store/reducers';
-import {loadReviews, setNewReview} from '../Review/action';
-import ListCard from '../Components/listCard';
-import {RestaurantModel} from '../Restaurant/reducer';
-import {userBookmark, userUnbookmark} from '../Bookmark/action';
-import {getAllRestaurants} from '../Restaurant/action';
-import {userCheckin} from '../CheckIn/action';
-import Modal from '../Components/modal';
+import {loadReviews, setNewReview} from '../Store/Review/action';
+import ListCard from '../Components/Generic/listCard';
+import {RestaurantModel} from '../Store/Restaurant/reducer';
+import {userBookmark, userUnbookmark} from '../Store/Bookmark/action';
+import {getAllRestaurants} from '../Store/Restaurant/action';
+import {userCheckin} from '../Store/CheckIn/action';
+import Modal from '../Components/Generic/modal';
 import ImagePicker from 'react-native-image-picker';
 import {ThunkDispatch} from 'redux-thunk';
 import {showToast} from '../Services/helper';
-import {userVerify} from '../HalalVerification/action';
+import {userVerify} from '../Store/HalalVerification/action';
 
 const styles = StyleSheet.create({
   mainContainer: {

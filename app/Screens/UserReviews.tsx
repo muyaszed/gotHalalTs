@@ -3,7 +3,7 @@ import {Content} from '@codler/native-base';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../Store/reducers';
-import ListCard from '../Components/listCard';
+import ListCard from '../Components/Generic/listCard';
 
 const styles = StyleSheet.create({
   emptyText: {

@@ -1,6 +1,6 @@
 import {RestaurantModel} from '../Restaurant/reducer';
 import {ReviewModel} from '../Review/reducer';
-import types, {Actions} from '../Store/actions';
+import types, {Actions} from '../actions';
 
 interface UserReview extends ReviewModel {
   restaurant_name: string;

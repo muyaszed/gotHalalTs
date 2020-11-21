@@ -1,5 +1,5 @@
 import React from 'react';
-import NewLsiting from './NewListing';
+import NewLsiting from '../Screens/NewListing';
 import {createStackNavigator} from '@react-navigation/stack';
 
 const AddListing = () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import Restaurants from './Restaurants';
-import Restaurant from './Restaurant';
+import Restaurants from '../Screens/Restaurants';
+import Restaurant from '../Screens/Restaurant';
 
 const Home = () => {
   const Stack = createStackNavigator();

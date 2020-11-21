@@ -1,7 +1,7 @@
 import {Dispatch, Action} from 'redux';
-import Api from '../Services/api';
+import Api from '../../Services/api';
 import {RootState} from 'app/Store/reducers';
-import types from '../Store/actions';
+import types from '../actions';
 import {updateCurrentProfile} from '../Profile/action';
 import {getAllRestaurants} from '../Restaurant/action';
 import {ThunkDispatch} from 'redux-thunk';

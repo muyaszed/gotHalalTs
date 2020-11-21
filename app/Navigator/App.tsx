@@ -11,18 +11,18 @@ import {
 } from 'react-native-exception-handler';
 import SplashScreen from 'react-native-splash-screen';
 import SInfo from 'react-native-sensitive-info';
-import {Landing, SignIn, SignUp} from './app/Screens';
-import HomeScreen from './app/Screens/Home';
-import Profile from './app/Screens/Profile';
-import AddListing from './app/Screens/AddListing';
-import {RootState} from './app/Store/reducers';
-import {restoreToken, signOut} from './app/Authentication/action';
+import {Landing, SignIn, SignUp} from '../Screens';
+import HomeNavigator from './Home';
+import ProfileNavigator from './Profile';
+import AddListingNavigator from './AddListing';
+import {RootState} from '../Store/reducers';
+import {restoreToken, signOut} from '../Store/Authentication/action';
 import {View, StyleSheet, Text, DevSettings, Alert} from 'react-native';
 import {Icon} from '@codler/native-base';
-import Modal from './app/Components/modal';
-import {closeErrorDialog, resetErrorFlags} from './app/Error/action';
-import Loading from './app/Components/loading';
-import {AppStyles} from './app/Styles';
+import Modal from '../Components/Generic/modal';
+import {closeErrorDialog, resetErrorFlags} from '../Store/Error/action';
+import Loading from '../Components/Generic/loading';
+import {AppStyles} from '../Styles';
 
 setJSExceptionHandler((error, isFatal) => {
   if (isFatal) {
@@ -106,7 +106,7 @@ const App = () => {
           }}>
           <Tab.Screen
             name="Home"
-            component={HomeScreen}
+            component={HomeNavigator}
             options={{
               tabBarLabel: 'Home',
               tabBarIcon: () => <Icon type="Entypo" name="home" />,
@@ -114,7 +114,7 @@ const App = () => {
           />
           <Tab.Screen
             name="NewListing"
-            component={AddListing}
+            component={AddListingNavigator}
             options={{
               title: '',
               tabBarLabel: undefined,
@@ -131,7 +131,7 @@ const App = () => {
           />
           <Tab.Screen
             name="Profile"
-            component={Profile}
+            component={ProfileNavigator}
             options={{
               tabBarLabel: 'Profile',
               tabBarIcon: () => <Icon type="Octicons" name="person" />,

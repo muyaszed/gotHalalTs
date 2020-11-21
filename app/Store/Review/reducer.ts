@@ -1,4 +1,4 @@
-import types, {Actions} from '../Store/actions';
+import types, {Actions} from '../actions';
 
 interface ReviewUser {
   id: number;

@@ -1,10 +1,10 @@
 import {Action} from 'redux';
 import {ThunkDispatch} from 'redux-thunk';
-import {RootState} from '../Store/reducers';
+import {RootState} from '../reducers';
 import {updateCurrentProfile} from '../Profile/action';
 import {getAllRestaurants} from '../Restaurant/action';
-import {showToast} from '../Services/helper';
-import Api from '../Services/api';
+import {showToast} from '../../Services/helper';
+import Api from '../../Services/api';
 import {saveErrorMessage, showErrorDialog} from '../Error/action';
 
 export const userCheckin = () => async (

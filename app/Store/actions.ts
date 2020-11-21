@@ -1,8 +1,8 @@
-import {AuthAction} from '../Authentication/action';
-import {RestaurantAction} from '../Restaurant/action';
-import {ReviewAction} from '../Review/action';
-import {ProfileAction} from '../Profile/action';
-import {ErrorAction} from '../Error/action';
+import {AuthAction} from './Authentication/action';
+import {RestaurantAction} from './Restaurant/action';
+import {ReviewAction} from './Review/action';
+import {ProfileAction} from './Profile/action';
+import {ErrorAction} from './Error/action';
 
 export type Actions =
   | AuthAction
