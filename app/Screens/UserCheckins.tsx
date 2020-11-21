@@ -4,8 +4,8 @@ import {FlatList, Text, View, StyleSheet} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../Store/reducers';
 import {useNavigation} from '@react-navigation/native';
-import ListCard from '../Components/listCard';
-import {setSelectedRestaurant} from '../Restaurant/action';
+import ListCard from '../Components/Generic/listCard';
+import {setSelectedRestaurant} from '../Store/Restaurant/action';
 
 const styles = StyleSheet.create({
   emptyText: {

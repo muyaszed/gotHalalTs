@@ -1,10 +1,10 @@
 import {Dispatch, Action} from 'redux';
-import Api from '../Services/api';
-import types from '../Store/actions';
+import Api from '../../Services/api';
+import types from '../actions';
 import {RestaurantModel} from './reducer';
 import {ThunkDispatch} from 'redux-thunk';
-import {RootState} from '../Store/reducers';
-import {showToast} from '../Services/helper';
+import {RootState} from '../reducers';
+import {showToast} from '../../Services/helper';
 import {saveErrorMessage, showErrorDialog} from '../Error/action';
 import {setLoadingState} from '../Authentication/action';
 

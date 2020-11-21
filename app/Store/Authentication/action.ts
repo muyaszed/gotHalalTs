@@ -1,15 +1,15 @@
 import SInfo from 'react-native-sensitive-info';
-import types from '../Store/actions';
-import Api, {Credential} from '../Services/api';
+import types from '../actions';
+import Api, {Credential} from '../../Services/api';
 import {Dispatch} from 'redux';
 import {saveProfile} from '../Profile/action';
-import {FBToken} from '../Screens/SignIn';
+import {FBToken} from '../../Screens/SignIn';
 import {
   saveErrorMessage,
   showErrorDialog,
   resetErrorFlags,
 } from '../Error/action';
-import {RootState} from '../Store/reducers';
+import {RootState} from '../reducers';
 
 export type AuthAction =
   | ReturnType<typeof signIn>

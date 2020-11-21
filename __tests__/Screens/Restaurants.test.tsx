@@ -54,4 +54,35 @@ describe('Restaurant screen', () => {
     const restaurants = getAllByTestId('restaurantItem');
     expect(restaurants.length).toBe(2);
   });
+
+  test('Show correct message when no restaurant listed', () => {
+    const mockedState = {
+      restaurants: {
+        list: [],
+      },
+      auth: {
+        userToken: '',
+      },
+      profile: {
+        firstName: '',
+        lastName: '',
+        settings: {
+          distance_unit: '',
+        },
+      },
+    };
+
+    const mockStore = configureStore([]);
+    const store = mockStore(mockedState);
+    const {queryAllByTestId, getByLabelText} = render(
+      <Provider store={store}>
+        <MockedNavigator component={Restaurants} />
+      </Provider>,
+    );
+    const restaurants = queryAllByTestId('restaurantItem');
+    expect(restaurants.length).toBe(0);
+
+    const message = getByLabelText('no-listing-message');
+    expect(message).toBeTruthy();
+  });
 });

@@ -9,12 +9,12 @@ import {Action} from 'redux';
 
 import {RootState} from '../Store/reducers';
 import {useNavigation} from '@react-navigation/native';
-import ListCard from '../Components/listCard';
-import {setSelectedRestaurant} from '../Restaurant/action';
-import {RestaurantModel} from '../Restaurant/reducer';
+import ListCard from '../Components/Generic/listCard';
+import {setSelectedRestaurant} from '../Store/Restaurant/action';
+import {RestaurantModel} from '../Store/Restaurant/reducer';
 import {distanceBetweenLocation} from '../Services/helper';
-import {getAllRestaurants} from '../Restaurant/action';
-import {saveErrorMessage, showErrorDialog} from '../Error/action';
+import {getAllRestaurants} from '../Store/Restaurant/action';
+import {saveErrorMessage, showErrorDialog} from '../Store/Error/action';
 import {RestaurantsStyles} from '../Styles';
 
 interface RestaurantViewModel extends RestaurantModel {
@@ -37,8 +37,8 @@ const Restaurants = () => {
   const navigation = useNavigation();
   const restaurants = useSelector((state: RootState) => {
     const sortedList = state.restaurants.list
-      .filter((allPlace) => allPlace.approved === true)
-      .map((place) => {
+      .filter((allPlace: RestaurantModel) => allPlace.approved === true)
+      .map((place: RestaurantModel) => {
         const distance = distanceBetweenLocation(
           currentPosition.lat,
           currentPosition.long,
@@ -49,7 +49,10 @@ const Restaurants = () => {
         const newPlace = {...place, distance};
         return newPlace;
       })
-      .sort((a, b) => a.distance - b.distance);
+      .sort(
+        (a: RestaurantViewModel, b: RestaurantViewModel) =>
+          a.distance - b.distance,
+      );
 
     return sortedList;
   }).slice(0, currentData);
@@ -175,7 +178,9 @@ const Restaurants = () => {
     />
   ) : (
     <View style={styles.noListing}>
-      <Text>Sorry, there is no listing yet.</Text>
+      <Text accessibilityLabel="no-listing-message">
+        Sorry, there is no listing yet.
+      </Text>
     </View>
   );
 };

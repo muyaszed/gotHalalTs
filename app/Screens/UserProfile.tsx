@@ -18,10 +18,10 @@ import {
   Button,
   Input,
 } from '@codler/native-base';
-import {signOut} from '../Authentication/action';
+import {signOut} from '../Store/Authentication/action';
 import {useNavigation} from '@react-navigation/native';
-import Modal from '../Components/modal';
-import {updateUserProfile} from '../Profile/action';
+import Modal from '../Components/Generic/modal';
+import {updateUserProfile} from '../Store/Profile/action';
 
 import ImagePicker from 'react-native-image-picker';
 import {Dispatch} from 'redux';

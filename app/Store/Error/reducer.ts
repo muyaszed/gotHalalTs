@@ -1,5 +1,5 @@
-import {Actions} from '../Store/actions';
-import types from '../Store/actions';
+import {Actions} from '../actions';
+import types from '../actions';
 
 export interface ErrorState {
   showModal: boolean;

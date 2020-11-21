@@ -3,10 +3,10 @@ import {SafeAreaView, View, Text, StyleSheet, Switch} from 'react-native';
 import {List, ListItem, Left, Picker, Icon} from '@codler/native-base';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../Store/reducers';
-import {updateUserProfile} from '../Profile/action';
+import {updateUserProfile} from '../Store/Profile/action';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../Screens/Profile';
-import {UserSettingItems} from 'app/Profile/reducer';
+import {RootStackParamList} from '../Navigator/Profile';
+import {UserSettingItems} from 'app/Store/Profile/reducer';
 
 type ProfileScreenNavigationProp = StackNavigationProp<
   RootStackParamList,

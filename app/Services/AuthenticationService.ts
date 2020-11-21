@@ -1,7 +1,7 @@
 import {LoginManager, AccessToken} from 'react-native-fbsdk';
 import {Dispatch} from 'redux';
 
-import {signInWithFaceBook} from '../Authentication/action';
+import {signInWithFaceBook} from '../Store/Authentication/action';
 import {FBToken} from '../Screens/SignIn';
 
 export const fbLogin = (dispatch: Dispatch<any>) => {

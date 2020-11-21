@@ -1,7 +1,7 @@
 import {Action} from 'redux';
-import Api from '../Services/api';
-import {RootState} from '../Store/reducers';
-import {showToast} from '../Services/helper';
+import Api from '../../Services/api';
+import {RootState} from '../reducers';
+import {showToast} from '../../Services/helper';
 import {ThunkDispatch} from 'redux-thunk';
 import {getAllRestaurants} from '../Restaurant/action';
 import {saveErrorMessage, showErrorDialog} from '../Error/action';

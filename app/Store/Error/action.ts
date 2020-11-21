@@ -1,4 +1,4 @@
-import types from '../Store/actions';
+import types from '../actions';
 
 export type ErrorAction =
   | ReturnType<typeof resetErrorFlags>

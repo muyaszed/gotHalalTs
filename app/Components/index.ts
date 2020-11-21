@@ -1,3 +1,5 @@
-import AuthForm from './authForm';
+import AuthForm from './Generic/authForm';
+import LandingLayout from './LandingLayout';
+import NewPlaceForm from './NewPlaceForm';
 
-export {AuthForm};
+export {AuthForm, LandingLayout, NewPlaceForm};

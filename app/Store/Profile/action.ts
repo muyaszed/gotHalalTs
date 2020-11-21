@@ -1,8 +1,8 @@
 import {Action} from 'redux';
-import types from '../Store/actions';
+import types from '../actions';
 import {UserProfile} from './reducer';
-import Api from '../Services/api';
-import {RootState} from '../Store/reducers';
+import Api from '../../Services/api';
+import {RootState} from '../reducers';
 import {ThunkDispatch} from 'redux-thunk';
 import {saveErrorMessage, showErrorDialog} from '../Error/action';
 import {setLoadingState} from '../Authentication/action';

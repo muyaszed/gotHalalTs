@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Container, Content, Form, Button, Text} from '@codler/native-base';
-import {AuthFormStyles} from '../Styles';
+import {AuthFormStyles} from '../../Styles';
 
 interface Props {
   buttonPrimaryText: string;
