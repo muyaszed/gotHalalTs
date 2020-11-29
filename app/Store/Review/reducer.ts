@@ -23,16 +23,25 @@ export const reviewInitialState = {
   currentReview: '',
 };
 
-const saveReviewList = (data: any) => {
+const saveReviewList = (state: ReviewState, data: any) => {
   return data.map((item: any) => {
     return {
       id: item.id,
       comment: item.comment,
       user: {
         id: item.user.id,
-        firtName: item.user.profile.first_name,
-        lastName: item.user.profile.last_name,
-        avatar: item.user.profile.avatar_uri,
+        firtName:
+          item.user.profile.first_name && item.user.profile.last_name
+            ? item.user.profile.first_name
+            : 'Anonymous',
+        lastName:
+          item.user.profile.first_name && item.user.profile.last_name
+            ? item.user.profile.last_name
+            : '',
+        avatar:
+          item.user.facebook_auth && item.user.settings.facebook_avatar
+            ? item.user.facebook_auth.fb_avatar
+            : item.user.profile.avatar_uri,
       },
       photo: item.photo_uri,
     };
@@ -44,7 +53,7 @@ export const reviewReducer = (state = reviewInitialState, action: Actions) => {
     case types.GETTING_ALL_REVIEWS_SUCCESS:
       return {
         ...state,
-        list: saveReviewList(action.payload),
+        list: saveReviewList(state, action.payload),
       };
     default:
       return state;

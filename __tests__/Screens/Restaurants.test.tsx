@@ -21,6 +21,7 @@ describe('Restaurant screen', () => {
             checking_ins: [],
             reviews: [],
             approved: true,
+            distance: 300,
           },
           {
             id: 2,
@@ -29,6 +30,7 @@ describe('Restaurant screen', () => {
             checking_ins: [],
             reviews: [],
             approved: true,
+            distance: 200,
           },
         ],
       },

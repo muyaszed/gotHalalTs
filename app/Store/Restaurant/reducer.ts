@@ -1,4 +1,8 @@
+import {distanceBetweenLocation} from '../../Services/helper';
 import types, {Actions} from '../actions';
+// import createStore from '../store';
+
+// const {store} = createStore();
 interface OnlyIds {
   id: number;
 }
@@ -49,12 +53,31 @@ export interface RestaurantModel {
     user_id: number;
   }[];
   approved: boolean;
+  distance: number;
+}
+
+export interface VerificationData {
+  confirmation: boolean;
+  certification: boolean;
+  logo: boolean;
+}
+
+export interface RestaurantInfo {
+  mapModalVisible: boolean;
+  useGoogleMap: boolean;
+  selectedReviewImage: string | null;
+  disableReviewSubmit: boolean;
+  verificationData: VerificationData;
+  verifyModalVisible: boolean;
+  showReviewForm: boolean;
+  reviewCancelModalVisible: boolean;
 }
 
 export interface RestaurantState {
   list: RestaurantModel[];
   isLoading: boolean;
   selectedRestaurantId: number | null;
+  restaurantInfo: RestaurantInfo;
   error: string;
 }
 
@@ -62,7 +85,72 @@ export const restaurantInitialState: RestaurantState = {
   list: [],
   isLoading: false,
   selectedRestaurantId: null,
+  restaurantInfo: {
+    mapModalVisible: false,
+    useGoogleMap: false,
+    selectedReviewImage: null,
+    disableReviewSubmit: false,
+    verificationData: {
+      confirmation: false,
+      certification: false,
+      logo: false,
+    },
+    verifyModalVisible: false,
+    showReviewForm: false,
+    reviewCancelModalVisible: false,
+  },
   error: '',
+};
+
+const updateVerificationData = (
+  currentState: RestaurantState,
+  data: VerificationData,
+) => {
+  if (data.confirmation) {
+    return {
+      ...currentState.restaurantInfo.verificationData,
+      confirmation: !currentState.restaurantInfo.verificationData.confirmation,
+    };
+  }
+
+  if (data.certification) {
+    return {
+      ...currentState.restaurantInfo.verificationData,
+      certification: !currentState.restaurantInfo.verificationData
+        .certification,
+    };
+  }
+
+  if (data.logo) {
+    return {
+      ...currentState.restaurantInfo.verificationData,
+      logo: !currentState.restaurantInfo.verificationData.logo,
+    };
+  }
+
+  return {
+    ...currentState.restaurantInfo.verificationData,
+  };
+};
+
+const populateList = (
+  data: RestaurantModel[],
+  userLocation: {
+    lat: number;
+    long: number;
+  },
+  userDistanceSetting: string,
+) => {
+  return data.map((item) => ({
+    ...item,
+    distance: distanceBetweenLocation(
+      userLocation.lat,
+      userLocation.long,
+      item.latitude,
+      item.longitude,
+      userDistanceSetting === 'mile' ? 'M' : 'K',
+    ),
+  }));
 };
 
 export const restaurantReducer = (
@@ -79,7 +167,11 @@ export const restaurantReducer = (
       return {
         ...state,
         isLoading: false,
-        list: action.payload,
+        list: populateList(
+          action.payload,
+          action.userLocation,
+          action.userDistanceSetting,
+        ),
       };
     case types.GETTING_ALL_RESTAURANTS_FAILED:
       return {
@@ -90,6 +182,70 @@ export const restaurantReducer = (
       return {
         ...state,
         selectedRestaurantId: action.payload,
+      };
+    case types.SET_RESTAURANT_MAP_MODAL_VISIBLE:
+      return {
+        ...state,
+        restaurantInfo: {
+          ...state.restaurantInfo,
+          mapModalVisible: action.payload,
+        },
+      };
+    case types.SET_USE_GOOGLE_MAP:
+      return {
+        ...state,
+        restaurantInfo: {
+          ...state.restaurantInfo,
+          useGoogleMap: action.payload,
+        },
+      };
+    case types.SET_REVIEW_IMAGE:
+      return {
+        ...state,
+        restaurantInfo: {
+          ...state.restaurantInfo,
+          selectedReviewImage: action.payload,
+        },
+      };
+    case types.SET_REVIEW_SUBMIT_BUTTON_STATUS:
+      return {
+        ...state,
+        restaurantInfo: {
+          ...state.restaurantInfo,
+          disableReviewSubmit: action.payload,
+        },
+      };
+    case types.SET_VERIFICATION_DATA:
+      return {
+        ...state,
+        restaurantInfo: {
+          ...state.restaurantInfo,
+          verificationData: updateVerificationData(state, action.payload),
+        },
+      };
+    case types.SET_RESTAURANT_VERIFICATION_MODAL_VISIBLE:
+      return {
+        ...state,
+        restaurantInfo: {
+          ...state.restaurantInfo,
+          verifyModalVisible: action.payload,
+        },
+      };
+    case types.SET_SHOW_REVIEW_FORM:
+      return {
+        ...state,
+        restaurantInfo: {
+          ...state.restaurantInfo,
+          showReviewForm: action.payload,
+        },
+      };
+    case types.SET_REVIEW_CANCEL_MODAL_VISIBLE:
+      return {
+        ...state,
+        restaurantInfo: {
+          ...state.restaurantInfo,
+          reviewCancelModalVisible: action.payload,
+        },
       };
     default:
       return state;
