@@ -70,6 +70,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Got Halal would like to use your camera for the first time</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This is a directory app, so it will need to know the updated user location in order to provide the best information</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This is a directory app, so it will need to know the updated user location in order to provide the best information</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -95,6 +97,10 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Octicons.ttf</string>
 		<string>Zocial.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

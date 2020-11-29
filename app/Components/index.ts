@@ -1,5 +1,17 @@
 import AuthForm from './Generic/authForm';
 import LandingLayout from './LandingLayout';
 import NewPlaceForm from './NewPlaceForm';
+import RestaurantMainInformation from './Restaurant/RestaurantMainInformation';
+import RestaurantReviewList from './Restaurant/RestaurantReviewList';
+import RestaurantList from './Restaurant/RestaurantList';
+import ListCard from './Generic/listCard';
 
-export {AuthForm, LandingLayout, NewPlaceForm};
+export {
+  AuthForm,
+  LandingLayout,
+  NewPlaceForm,
+  RestaurantMainInformation,
+  RestaurantReviewList,
+  RestaurantList,
+  ListCard,
+};
