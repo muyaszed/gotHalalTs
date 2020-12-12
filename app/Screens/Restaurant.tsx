@@ -14,6 +14,7 @@ import {RestaurantMainInformation, RestaurantReviewList} from '../Components';
 const Restaurant = () => {
   const [currentReview, setCurrentReview] = React.useState('');
   const [refreshing, setRefreshing] = React.useState(false);
+  const [currentRating, setCurrentRating] = React.useState(0);
 
   const selectedPlaceId = useSelector(
     (state: RootState) => state.restaurants.selectedRestaurantId,
@@ -109,6 +110,8 @@ const Restaurant = () => {
           verificationData={verificationData}
           reviewCancelModalVisible={reviewCancelModalVisible}
           userDistanceSetting={userDistanceSetting}
+          currentRating={currentRating}
+          handleCurrentRating={handleCurrentRating}
           handleCurrentReview={handleCurrentReview}
         />
       );
@@ -119,6 +122,11 @@ const Restaurant = () => {
 
   const handleCurrentReview = (text: string) => {
     setCurrentReview(text);
+  };
+
+  const handleCurrentRating = (rating: number) => {
+    console.log(rating);
+    setCurrentRating(rating);
   };
 
   return (

@@ -19,6 +19,7 @@ import {ThunkDispatch} from 'redux-thunk';
 import {userVerify} from '../../Store/HalalVerification/action';
 import {
   RestaurantModel,
+  SelectedReviewImage,
   VerificationData,
 } from '../../Store/Restaurant/reducer';
 import RestaurantMainInformationHeader from './RestaurantMainInformationHeader';
@@ -35,7 +36,7 @@ export interface RestaurantProps {
   currentUserBookmarkList: RestaurantModel[];
   mapModalVisible: boolean;
   useGoogleMap: boolean;
-  selectedReviewImage: string | null;
+  selectedReviewImage: SelectedReviewImage | false;
   currentReview: string;
   disableReviewSubmit: boolean;
   selectedPlaceId: number | null;
@@ -44,6 +45,8 @@ export interface RestaurantProps {
   showReviewForm: boolean;
   reviewCancelModalVisible: boolean;
   userDistanceSetting: string;
+  currentRating: number;
+  handleCurrentRating: (rating: number) => void;
   handleCurrentReview: (text: string) => void;
 }
 
@@ -69,6 +72,8 @@ const RestaurantMainInformation: React.FC<RestaurantProps> = ({
   verificationData,
   reviewCancelModalVisible,
   userDistanceSetting,
+  currentRating,
+  handleCurrentRating,
   handleCurrentReview,
 }) => {
   const dispatch: ThunkDispatch<RootState, void, Action> = useDispatch();
@@ -115,6 +120,8 @@ const RestaurantMainInformation: React.FC<RestaurantProps> = ({
           currentReview={currentReview}
           disableReviewSubmit={disableReviewSubmit}
           selectedPlaceId={selectedPlaceId}
+          currentRating={currentRating}
+          handleCurrentRating={handleCurrentRating}
           handleCurrentReview={handleCurrentReview}
         />
         <Modal
@@ -231,8 +238,9 @@ const RestaurantMainInformation: React.FC<RestaurantProps> = ({
           rightButtonName="Cancel"
           modalVisible={reviewCancelModalVisible}
           handleLeftButton={() => {
-            dispatch(setReviewImage(null));
+            dispatch(setReviewImage(false));
             handleCurrentReview('');
+            handleCurrentRating(0);
             dispatch(setShowReviewForm(false));
             dispatch(setReviewCancelModalVisible(false));
           }}
