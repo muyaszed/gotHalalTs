@@ -62,10 +62,16 @@ export interface VerificationData {
   logo: boolean;
 }
 
+export interface SelectedReviewImage {
+  name: string;
+  type: string;
+  uri: string;
+}
+
 export interface RestaurantInfo {
   mapModalVisible: boolean;
   useGoogleMap: boolean;
-  selectedReviewImage: string | null;
+  selectedReviewImage: SelectedReviewImage | false;
   disableReviewSubmit: boolean;
   verificationData: VerificationData;
   verifyModalVisible: boolean;
@@ -88,7 +94,7 @@ export const restaurantInitialState: RestaurantState = {
   restaurantInfo: {
     mapModalVisible: false,
     useGoogleMap: false,
-    selectedReviewImage: null,
+    selectedReviewImage: false,
     disableReviewSubmit: false,
     verificationData: {
       confirmation: false,

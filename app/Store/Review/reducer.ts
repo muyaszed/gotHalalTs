@@ -12,6 +12,7 @@ export interface ReviewModel {
   comment: string;
   user: ReviewUser;
   photo: string;
+  rating: number;
 }
 
 export interface ReviewState {
@@ -28,6 +29,7 @@ const saveReviewList = (state: ReviewState, data: any) => {
     return {
       id: item.id,
       comment: item.comment,
+      rating: item.rating,
       user: {
         id: item.user.id,
         firtName:

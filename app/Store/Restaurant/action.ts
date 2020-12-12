@@ -2,7 +2,11 @@ import {Dispatch, Action} from 'redux';
 import Geolocation from '@react-native-community/geolocation';
 import Api from '../../Services/api';
 import types from '../actions';
-import {RestaurantModel, VerificationData} from './reducer';
+import {
+  RestaurantModel,
+  SelectedReviewImage,
+  VerificationData,
+} from './reducer';
 import {ThunkDispatch} from 'redux-thunk';
 import {RootState} from '../reducers';
 import {showToast} from '../../Services/helper';
@@ -71,9 +75,9 @@ export const setReviewSubmitButtonStatus = (status: boolean) => ({
   payload: status,
 });
 
-export const setReviewImage = (uri: string | null) => ({
+export const setReviewImage = (image: SelectedReviewImage | false) => ({
   type: types.SET_REVIEW_IMAGE,
-  payload: uri,
+  payload: image,
 });
 
 export const setUseGoogleMap = (status: boolean) => ({

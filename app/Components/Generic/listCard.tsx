@@ -49,6 +49,7 @@ interface Props {
   avatarUri?: string | null;
   footer?: boolean;
   footerChild?: ReactChild;
+  footerStyle?: ViewStyle;
   topRightInfo?: boolean;
   topRightInfoContent?: string;
 }
@@ -65,6 +66,7 @@ const ListCard: React.SFC<Props> = ({
   avatarUri,
   footer = true,
   footerChild,
+  footerStyle,
   topRightInfo = true,
   topRightInfoContent,
 }) => {
@@ -127,7 +129,7 @@ const ListCard: React.SFC<Props> = ({
             </Content>
           )}
         </CardItem>
-        {footer ? footerChild : null}
+        <View style={[footerStyle]}>{footer ? footerChild : null}</View>
       </Card>
     </TouchableOpacity>
   );

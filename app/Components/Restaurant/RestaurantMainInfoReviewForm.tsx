@@ -13,6 +13,7 @@ import {Image, StyleSheet} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {Action} from 'redux';
 import {ThunkDispatch} from 'redux-thunk';
+import {AirbnbRating} from 'react-native-ratings';
 import {RootState} from '../../Store/reducers';
 import {
   setReviewCancelModalVisible,
@@ -21,14 +22,25 @@ import {
 } from '../../Store/Restaurant/action';
 import {setNewReview} from '../../Store/Review/action';
 import {showToast} from '../../Services/helper';
+import {SelectedReviewImage} from '../../Store/Restaurant/reducer';
+
+export const reviewRatings = [
+  'Not satisfied',
+  'Ok',
+  'Not Bad',
+  'Good',
+  'Excellent',
+];
 
 interface Props {
   userToken: string;
   showReviewForm: boolean;
-  selectedReviewImage: string | null;
+  selectedReviewImage: SelectedReviewImage | false;
   currentReview: string;
   disableReviewSubmit: boolean;
   selectedPlaceId: number | null;
+  currentRating: number;
+  handleCurrentRating: (rating: number) => void;
   handleCurrentReview: (text: string) => void;
 }
 
@@ -39,6 +51,8 @@ const RestaurantMainInformationActionButtons: React.FC<Props> = ({
   currentReview,
   disableReviewSubmit,
   selectedPlaceId,
+  currentRating,
+  handleCurrentRating,
   handleCurrentReview,
 }) => {
   const dispatch: ThunkDispatch<RootState, void, Action> = useDispatch();
@@ -87,12 +101,19 @@ const RestaurantMainInformationActionButtons: React.FC<Props> = ({
               <Image
                 resizeMode="cover"
                 source={{
-                  uri: selectedReviewImage ? selectedReviewImage : '',
+                  uri: selectedReviewImage ? selectedReviewImage.uri : '',
                 }}
                 style={styles.reviewImage}
               />
             </View>
           ) : null}
+          <AirbnbRating
+            count={5}
+            reviews={reviewRatings}
+            defaultRating={0}
+            size={25}
+            onFinishRating={handleCurrentRating}
+          />
           <Button
             block
             disabled={disableReviewSubmit}
@@ -119,7 +140,15 @@ const RestaurantMainInformationActionButtons: React.FC<Props> = ({
                     response.customButton,
                   );
                 } else {
-                  dispatch(setReviewImage(response.uri));
+                  if (response.type) {
+                    dispatch(
+                      setReviewImage({
+                        name: 'review-photo.jpg',
+                        type: response.type,
+                        uri: response.uri.replace('file://', ''),
+                      }),
+                    );
+                  }
                 }
               });
             }}>
@@ -133,12 +162,9 @@ const RestaurantMainInformationActionButtons: React.FC<Props> = ({
             onPress={() => {
               const reviewInfo = new FormData();
               reviewInfo.append('comment', currentReview);
+              reviewInfo.append('rating', currentRating);
               if (selectedReviewImage) {
-                reviewInfo.append('photo', {
-                  name: 'review-photo.jpg',
-                  type: 'image/jpeg',
-                  uri: selectedReviewImage.replace('file://', ''),
-                });
+                reviewInfo.append('photo', selectedReviewImage);
               }
               if (selectedPlaceId && userToken) {
                 dispatch(
@@ -146,6 +172,9 @@ const RestaurantMainInformationActionButtons: React.FC<Props> = ({
                 ).then((res) => {
                   if (res) {
                     handleCurrentReview('');
+                    handleCurrentRating(0);
+                    dispatch(setShowReviewForm(false));
+                    dispatch(setReviewImage(false));
                     showToast('Review successfully added');
                   }
                 });
