@@ -23,6 +23,7 @@ const RestaurantReviewList: React.FC<Props> = ({
   const renderReviewFooter = (rating: number) => {
     return (
       <AirbnbRating
+        isDisabled
         count={5}
         defaultRating={rating}
         size={25}

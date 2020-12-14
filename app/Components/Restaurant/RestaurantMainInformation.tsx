@@ -46,6 +46,7 @@ export interface RestaurantProps {
   reviewCancelModalVisible: boolean;
   userDistanceSetting: string;
   currentRating: number;
+  averageRating: number | null;
   handleCurrentRating: (rating: number) => void;
   handleCurrentReview: (text: string) => void;
 }
@@ -73,6 +74,7 @@ const RestaurantMainInformation: React.FC<RestaurantProps> = ({
   reviewCancelModalVisible,
   userDistanceSetting,
   currentRating,
+  averageRating,
   handleCurrentRating,
   handleCurrentReview,
 }) => {
@@ -100,6 +102,7 @@ const RestaurantMainInformation: React.FC<RestaurantProps> = ({
           restaurantSubHeader={restaurant.sub_header}
           restaurantCoverUri={restaurant.cover_uri}
           restaurantDescription={restaurant.desc}
+          averageRating={averageRating}
         />
         <RestaurantMainInformationVerification
           restaurant={restaurant}

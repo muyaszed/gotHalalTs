@@ -27,6 +27,13 @@ const Restaurant = () => {
   const dispatch: ThunkDispatch<RootState, void, Action> = useDispatch();
   const reviews = useSelector((state: RootState) => state.reviews.list);
   const userId = useSelector((state: RootState) => state.profile.userId);
+  const calculateAverageRating = () => {
+    const totalRating = reviews.reduce((acc, review) => {
+      return acc + review.rating;
+    }, 0);
+
+    return reviews.length !== 0 ? totalRating / reviews.length : null;
+  };
   const currentUserBookmarkList = useSelector(
     (state: RootState) => state.profile.bookmark,
   );
@@ -113,6 +120,7 @@ const Restaurant = () => {
           currentRating={currentRating}
           handleCurrentRating={handleCurrentRating}
           handleCurrentReview={handleCurrentReview}
+          averageRating={calculateAverageRating()}
         />
       );
     }

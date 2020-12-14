@@ -1,12 +1,14 @@
 import {H1, H3} from '@codler/native-base';
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
+import {AirbnbRating} from 'react-native-ratings';
 
 interface Props {
   restaurantName: string;
   restaurantSubHeader: string;
   restaurantCoverUri: string | null;
   restaurantDescription: string;
+  averageRating: number | null;
 }
 
 const RestaurantMainInformationHeader: React.FC<Props> = ({
@@ -14,11 +16,24 @@ const RestaurantMainInformationHeader: React.FC<Props> = ({
   restaurantSubHeader,
   restaurantCoverUri,
   restaurantDescription,
+  averageRating,
 }) => {
   return (
     <View>
       <H1 style={styles.title}>{restaurantName.toUpperCase()}</H1>
       <H3 style={styles.subHeader}>{restaurantSubHeader}</H3>
+      <View style={styles.rating}>
+        {averageRating ? (
+          <AirbnbRating
+            isDisabled
+            count={5}
+            defaultRating={averageRating}
+            size={25}
+          />
+        ) : (
+          <AirbnbRating isDisabled count={5} defaultRating={0} size={25} />
+        )}
+      </View>
 
       <View style={styles.mainImage}>
         <Image
@@ -65,5 +80,8 @@ const styles = StyleSheet.create({
   },
   imageLogo: {
     resizeMode: 'center',
+  },
+  rating: {
+    paddingBottom: 10,
   },
 });
