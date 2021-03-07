@@ -43,7 +43,7 @@ const UserBookmarks = () => {
     />
   ) : (
     <View style={styles.emptyText}>
-      <Text>You do not have any check-in</Text>
+      <Text>You do not have any bookmark</Text>
     </View>
   );
 };

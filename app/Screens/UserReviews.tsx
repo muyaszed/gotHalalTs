@@ -33,7 +33,7 @@ const UserReviews = () => {
     />
   ) : (
     <View style={styles.emptyText}>
-      <Text>You do not have any check-in</Text>
+      <Text>You do not have any review</Text>
     </View>
   );
 };
