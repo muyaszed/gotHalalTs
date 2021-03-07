@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {ThunkDispatch} from 'redux-thunk';
 import {Action} from 'redux';
@@ -28,17 +28,18 @@ const Restaurants = () => {
 
     return sortedList;
   }).slice(0, currentData);
+  const stableDispatch = useCallback(dispatch, []);
 
   useEffect(() => {
-    const unsubscribe: () => void = navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener('focus', () => {
       if (userToken) {
-        dispatch(getAllRestaurants(userToken));
+        stableDispatch(getAllRestaurants(userToken));
         setCurrentData(3);
       }
-
-      return unsubscribe;
     });
-  }, [navigation, dispatch, userToken]);
+
+    return unsubscribe;
+  }, [navigation, stableDispatch, userToken]);
 
   const wait = (timeout: number) => {
     return new Promise((resolve) => {
