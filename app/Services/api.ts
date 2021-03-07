@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Config from 'react-native-config';
 import {FBToken} from 'app/Screens/SignIn';
+import {AppleRequestResponse} from '@invertase/react-native-apple-authentication';
 
 export interface Credential {
   email: string;
@@ -33,6 +34,14 @@ export default {
         url: `${Config.API_ADDRESS}/auth/fb_login`,
         headers: {'Content-Type': 'application/json'},
         data: JSON.stringify(token),
+      });
+    },
+    appleAuthentication: (appleResponse: AppleRequestResponse) => {
+      return axios({
+        method: 'post',
+        url: `${Config.API_ADDRESS}/auth/apple_login`,
+        headers: {'Content-Type': 'application/json'},
+        data: JSON.stringify(appleResponse),
       });
     },
     reviews: (token: string, reviewInfo: FormData, id: number) => {

@@ -13,3 +13,9 @@ export const signInBtn = {
   marginBottom: 20,
   backgroundColor: '#098E33',
 };
+
+export const appleBtn = {
+  width: '100%',
+  height: 45,
+  marginTop: 5,
+};

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
   SafeAreaView,
   View,
@@ -25,6 +25,7 @@ import {updateUserProfile} from '../Store/Profile/action';
 
 import ImagePicker from 'react-native-image-picker';
 import {Dispatch} from 'redux';
+import {saveErrorMessage, showErrorDialog} from '../Store/Error/action';
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -102,6 +103,20 @@ const Profile = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [enableSetName, setEnableSetNameStatus] = React.useState(false);
+  const stableDispatch = useCallback(dispatch, []);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (profile.firstName.length === 0 && profile.lastName.length === 0) {
+        stableDispatch(
+          saveErrorMessage(
+            'Looks like you have not set you name properly. Please go to your profile and set your full name(long press the first or last name)',
+          ),
+        );
+        stableDispatch(showErrorDialog());
+      }
+    });
+    return unsubscribe;
+  }, [navigation, profile, stableDispatch]);
 
   return (
     <SafeAreaView style={styles.mainContainer}>
