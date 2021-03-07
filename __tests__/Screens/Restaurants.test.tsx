@@ -48,13 +48,14 @@ describe('Restaurant screen', () => {
 
     const mockStore = configureStore([]);
     const store = mockStore(mockedState);
-    const {getAllByTestId} = render(
+    const wrapper = render(
       <Provider store={store}>
         <MockedNavigator component={Restaurants} />
       </Provider>,
     );
-    const restaurants = getAllByTestId('restaurantItem');
+    const restaurants = wrapper.getAllByTestId('restaurantItem');
     expect(restaurants.length).toBe(2);
+    wrapper.unmount();
   });
 
   test('Show correct message when no restaurant listed', () => {
@@ -76,15 +77,17 @@ describe('Restaurant screen', () => {
 
     const mockStore = configureStore([]);
     const store = mockStore(mockedState);
-    const {queryAllByTestId, getByLabelText} = render(
+    const wrapper = render(
       <Provider store={store}>
         <MockedNavigator component={Restaurants} />
       </Provider>,
     );
-    const restaurants = queryAllByTestId('restaurantItem');
+    const restaurants = wrapper.queryAllByTestId('restaurantItem');
     expect(restaurants.length).toBe(0);
 
-    const message = getByLabelText('no-listing-message');
+    const message = wrapper.getByLabelText('no-listing-message');
     expect(message).toBeTruthy();
+
+    wrapper.unmount();
   });
 });

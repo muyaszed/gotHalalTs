@@ -1,7 +1,13 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {Container, Content, Form, Button, Text} from '@codler/native-base';
+import {
+  AppleButton,
+  appleAuth,
+} from '@invertase/react-native-apple-authentication';
 import {AuthFormStyles} from '../../Styles';
+import {useDispatch} from 'react-redux';
+import {signInWithApple} from '../../Store/Authentication/action';
 
 interface Props {
   buttonPrimaryText: string;
@@ -10,6 +16,7 @@ interface Props {
   handleOnPressButtonSecondary: () => void;
   buttonPrimaryDisabled?: boolean;
   buttonSecondaryDisabled?: boolean;
+  signIn: boolean;
 }
 
 const AuthForm: React.FC<Props> = ({
@@ -20,7 +27,21 @@ const AuthForm: React.FC<Props> = ({
   handleOnPressButtonSecondary,
   buttonPrimaryDisabled = false,
   buttonSecondaryDisabled = false,
+  signIn,
 }) => {
+  const dispatch = useDispatch();
+  const onAppleButtonPress = async () => {
+    try {
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      });
+      dispatch(signInWithApple(appleAuthRequestResponse));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Container>
       <Content padder contentContainerStyle={styles.mainContent}>
@@ -40,6 +61,16 @@ const AuthForm: React.FC<Props> = ({
             disabled={buttonSecondaryDisabled}>
             <Text>{buttonSecondaryText}</Text>
           </Button>
+          {Platform.OS === 'ios' && (
+            <AppleButton
+              buttonStyle={AppleButton.Style.WHITE_OUTLINE}
+              buttonType={
+                signIn ? AppleButton.Type.SIGN_IN : AppleButton.Type.SIGN_UP
+              }
+              style={styles.appleButton}
+              onPress={onAppleButtonPress}
+            />
+          )}
         </Form>
       </Content>
     </Container>
@@ -57,5 +88,8 @@ const styles = StyleSheet.create({
   },
   signInBtn: {
     ...AuthFormStyles.signInBtn,
+  },
+  appleButton: {
+    ...AuthFormStyles.appleBtn,
   },
 });

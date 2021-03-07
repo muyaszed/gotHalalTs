@@ -1,4 +1,6 @@
 import SInfo from 'react-native-sensitive-info';
+import {AppleRequestResponse} from '@invertase/react-native-apple-authentication';
+
 import types from '../actions';
 import Api, {Credential} from '../../Services/api';
 import {Dispatch} from 'redux';
@@ -133,6 +135,43 @@ export const signInWithFaceBook = (fbToken: FBToken) => async (
   try {
     dispatch(setLoadingState(true));
     const apiCall = await Api.Post.fbAuthentication(fbToken);
+    const token = apiCall.data.auth_token;
+    await SInfo.setItem('token', token, {});
+    dispatch(signIn(token));
+    dispatch(
+      saveProfile({
+        userId: apiCall.data.user.id,
+        email: apiCall.data.user.email,
+        firstName: apiCall.data.user.profile.first_name
+          ? apiCall.data.user.profile.first_name
+          : '',
+        lastName: apiCall.data.user.profile.last_name
+          ? apiCall.data.user.profile.last_name
+          : '',
+        avatarUri: apiCall.data.user.profile.avatar_uri,
+        fbAvatarUri: apiCall.data.user.facebook_auth
+          ? apiCall.data.user.facebook_auth.fb_avatar
+          : null,
+        restaurantPosted: apiCall.data.user.restaurants,
+        reviews: apiCall.data.user.reviews,
+        bookmark: apiCall.data.user.bookmarked_restaurant,
+        checkIns: apiCall.data.user.checkinlist,
+        settings: apiCall.data.user.settings,
+      }),
+    );
+    dispatch(setLoadingState(false));
+  } catch (error) {
+    dispatch(setLoadingState(false));
+    console.log(error);
+  }
+};
+
+export const signInWithApple = (
+  appleAuthResponse: AppleRequestResponse,
+) => async (dispatch: Dispatch) => {
+  try {
+    dispatch(setLoadingState(true));
+    const apiCall = await Api.Post.appleAuthentication(appleAuthResponse);
     const token = apiCall.data.auth_token;
     await SInfo.setItem('token', token, {});
     dispatch(signIn(token));

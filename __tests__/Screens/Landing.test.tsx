@@ -9,14 +9,17 @@ beforeAll(() => {
 
 describe('Landing screen', () => {
   test('display the correct button titles', async () => {
-    const {getByTestId} = render(<MockedNavigation component={Landing} />);
-    const createAccountBtn = getByTestId('createAccountScreenBtn');
-    const signInBtn = getByTestId('signInScreenBtn');
+    const wrapper = render(<MockedNavigation component={Landing} />);
+
+    const createAccountBtn = wrapper.getByTestId('createAccountScreenBtn');
+    const signInBtn = wrapper.getByTestId('signInScreenBtn');
     const createAccountBtnText =
       createAccountBtn.props.children[0].props.children;
     const signInBtnText = signInBtn.props.children[0].props.children;
 
     expect(createAccountBtnText).toBe('Create free account');
     expect(signInBtnText).toBe('Sign in');
+
+    wrapper.unmount();
   });
 });

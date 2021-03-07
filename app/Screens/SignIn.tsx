@@ -22,7 +22,8 @@ const SignIn = () => {
       buttonPrimaryText="SIGN IN"
       buttonSecondaryText="SIGN IN WITH FACEBOOK"
       handleOnPressButtonPrimary={() => dispatch(userSignIn(credential))}
-      handleOnPressButtonSecondary={() => fbLogin(dispatch)}>
+      handleOnPressButtonSecondary={() => fbLogin(dispatch)}
+      signIn>
       <View>
         <Item inlineLabel>
           <Label>Email</Label>
