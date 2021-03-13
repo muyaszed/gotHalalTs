@@ -16,7 +16,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   titleWrapper: {},
-  title: {},
+  title: {
+    textAlign: 'center',
+  },
   content: {
     padding: 20,
   },

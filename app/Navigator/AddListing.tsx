@@ -7,7 +7,7 @@ const AddListing = () => {
   return (
     <Stack.Navigator>
       <>
-        <Stack.Screen name={'New Listing'} component={NewLsiting} />
+        <Stack.Screen name={'ADD NEW PLACE'} component={NewLsiting} />
       </>
     </Stack.Navigator>
   );

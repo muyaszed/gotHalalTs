@@ -81,7 +81,7 @@ const RestaurantReviewList: React.FC<Props> = ({
               }`}
               onPress={() => {
                 dispatch(setSelectedRestaurant(item.id));
-                navigation.navigate('The Place');
+                navigation.navigate('THE PLACE');
               }}
             />
           </Content>

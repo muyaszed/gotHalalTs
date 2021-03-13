@@ -95,9 +95,9 @@ const App = () => {
     <NavigationContainer>
       {authState.userToken == null ? (
         <Stack.Navigator>
-          <Stack.Screen name="Welcome" component={Landing} />
-          <Stack.Screen name="Sign In" component={SignIn} />
-          <Stack.Screen name="Sign Up" component={SignUp} />
+          <Stack.Screen name="WELCOME" component={Landing} />
+          <Stack.Screen name="SIGN IN" component={SignIn} />
+          <Stack.Screen name="SIGN UP" component={SignUp} />
         </Stack.Navigator>
       ) : (
         <Tab.Navigator

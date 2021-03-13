@@ -11,7 +11,8 @@
     "test:coverage": "jest --coverage",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "typescript": "tsc",
-    "testflight:ios": "cd ios && fastlane beta"
+    "testflight:ios": "cd ios && fastlane beta",
+    "unlink": "react-native unlink"
   },
   "dependencies": {
     "@codler/native-base": "^2.14.2",

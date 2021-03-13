@@ -19,3 +19,8 @@ export const appleBtn = {
   height: 45,
   marginTop: 5,
 };
+
+export const authNote = {
+  fontSize: 12,
+  marginBottom: 5,
+};

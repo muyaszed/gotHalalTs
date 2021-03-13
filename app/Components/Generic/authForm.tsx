@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, StyleSheet} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import {Container, Content, Form, Button, Text} from '@codler/native-base';
 import {
   AppleButton,
@@ -54,6 +54,12 @@ const AuthForm: React.FC<Props> = ({
             disabled={buttonPrimaryDisabled}>
             <Text>{buttonPrimaryText}</Text>
           </Button>
+          <View>
+            <Text style={styles.authNote}>
+              If you are having a different email for the authentication methods
+              below, a separate account will be created
+            </Text>
+          </View>
           <Button
             block
             bordered
@@ -91,5 +97,8 @@ const styles = StyleSheet.create({
   },
   appleButton: {
     ...AuthFormStyles.appleBtn,
+  },
+  authNote: {
+    ...AuthFormStyles.authNote,
   },
 });

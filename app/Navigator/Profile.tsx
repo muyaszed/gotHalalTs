@@ -8,12 +8,12 @@ import UserCheckins from '../Screens/UserCheckins';
 import UserSettings from '../Screens/UserSettings';
 
 export type RootStackParamList = {
-  'My Profile': undefined;
-  'My Listing': undefined;
-  'My Reviews': undefined;
-  'My Bookmarks': undefined;
-  'My Check-ins': undefined;
-  'My Settings': undefined;
+  'MY PROFILE': undefined;
+  'MY PLACES': undefined;
+  'MY REVIEWS': undefined;
+  'MY BOOKMARKS': undefined;
+  'MY CHECK-INS': undefined;
+  'MY SETTINGS': undefined;
 };
 
 const Profile = () => {
@@ -22,12 +22,12 @@ const Profile = () => {
   return (
     <Stack.Navigator>
       <>
-        <Stack.Screen name={'My Profile'} component={UserProfile} />
-        <Stack.Screen name={'My Listing'} component={UserListing} />
-        <Stack.Screen name={'My Reviews'} component={UserReviews} />
-        <Stack.Screen name={'My Bookmarks'} component={UserBookmarks} />
-        <Stack.Screen name={'My Check-ins'} component={UserCheckins} />
-        <Stack.Screen name={'My Settings'} component={UserSettings} />
+        <Stack.Screen name={'MY PROFILE'} component={UserProfile} />
+        <Stack.Screen name={'MY PLACES'} component={UserListing} />
+        <Stack.Screen name={'MY REVIEWS'} component={UserReviews} />
+        <Stack.Screen name={'MY BOOKMARKS'} component={UserBookmarks} />
+        <Stack.Screen name={'MY CHECK-INS'} component={UserCheckins} />
+        <Stack.Screen name={'MY SETTINGS'} component={UserSettings} />
       </>
     </Stack.Navigator>
   );

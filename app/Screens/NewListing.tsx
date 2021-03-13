@@ -1,18 +1,4 @@
 import React from 'react';
-// import {View, Text, Dimensions, StyleSheet, Image} from 'react-native';
-// import {
-//   Form,
-//   Item,
-//   Input,
-//   Label,
-//   Textarea,
-//   Picker,
-//   Icon,
-//   Button,
-//   CheckBox,
-// } from '@codler/native-base';
-// import {categories, cuisines, countries, time} from '../Services/constant';
-// import ImagePicker from 'react-native-image-picker';
 import {useDispatch, useSelector} from 'react-redux';
 import {setNewListing} from '../Store/Restaurant/action';
 import {RootState} from '../Store/reducers';
@@ -22,49 +8,6 @@ import {useNavigation} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {setLoadingState} from '../Store/Authentication/action';
 import {NewPlaceForm} from '../Components/';
-
-// const styles = StyleSheet.create({
-//   form: {
-//     paddingLeft: 10,
-//     paddingRight: 10,
-//   },
-//   input: {
-//     marginTop: 10,
-//   },
-//   imageFrame: {
-//     marginTop: 10,
-//     height: 250,
-//     borderWidth: 1,
-//   },
-//   imageDisplay: {height: '100%'},
-//   checkBoxGroupContainer: {
-//     marginTop: 10,
-//     flexDirection: 'row',
-//     justifyContent: 'space-evenly',
-//   },
-//   checkBoxContainer: {
-//     flexDirection: 'row',
-//     justifyContent: 'space-around',
-//   },
-//   checkBoxLabel: {
-//     fontSize: 15,
-//     marginLeft: 12,
-//   },
-//   facebookIcon: {
-//     color: '#4267B2',
-//   },
-//   instagramIcon: {
-//     color: '#e95950',
-//   },
-//   twitterIcon: {
-//     color: '#1DA1F2',
-//   },
-//   submitBtn: {
-//     marginBottom: 50,
-//   },
-// });
-
-// const windowWidth = Dimensions.get('window').width;
 
 export interface NewPlaceInfo {
   name: string;
@@ -184,7 +127,7 @@ const NewListing = () => {
             disabled_accessibility: false,
           });
           setDisplayImageUri(null);
-          navigation.navigate('Listing');
+          navigation.navigate('EXPLORE PLACES');
           dispatch(setLoadingState(false));
         }
       });

@@ -9,8 +9,8 @@ const Home = () => {
   return (
     <Stack.Navigator>
       <>
-        <Stack.Screen name={'Listing'} component={Restaurants} />
-        <Stack.Screen name={'The Place'} component={Restaurant} />
+        <Stack.Screen name={'EXPLORE PLACES'} component={Restaurants} />
+        <Stack.Screen name={'THE PLACE'} component={Restaurant} />
       </>
     </Stack.Navigator>
   );

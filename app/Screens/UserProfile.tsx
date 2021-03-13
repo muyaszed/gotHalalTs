@@ -289,7 +289,7 @@ const Profile = () => {
               <Text>{profile.email}</Text>
             </View>
           </ListItem>
-          <ListItem onPress={() => navigation.navigate('My Listing')}>
+          <ListItem onPress={() => navigation.navigate('MY PLACES')}>
             <Left>
               <Text>My Listing</Text>
             </Left>
@@ -297,7 +297,7 @@ const Profile = () => {
               <Icon name="arrow-forward" />
             </Right>
           </ListItem>
-          <ListItem onPress={() => navigation.navigate('My Reviews')}>
+          <ListItem onPress={() => navigation.navigate('MY REVIEWS')}>
             <Left>
               <Text>My Reviews</Text>
             </Left>
@@ -305,7 +305,7 @@ const Profile = () => {
               <Icon name="arrow-forward" />
             </Right>
           </ListItem>
-          <ListItem onPress={() => navigation.navigate('My Bookmarks')}>
+          <ListItem onPress={() => navigation.navigate('MY BOOKMARKS')}>
             <Left>
               <Text>My Bookmarks</Text>
             </Left>
@@ -313,7 +313,7 @@ const Profile = () => {
               <Icon name="arrow-forward" />
             </Right>
           </ListItem>
-          <ListItem onPress={() => navigation.navigate('My Check-ins')}>
+          <ListItem onPress={() => navigation.navigate('MY CHECK-INS')}>
             <Left>
               <Text>My Check-ins</Text>
             </Left>
@@ -321,7 +321,7 @@ const Profile = () => {
               <Icon name="arrow-forward" />
             </Right>
           </ListItem>
-          <ListItem onPress={() => navigation.navigate('My Settings')}>
+          <ListItem onPress={() => navigation.navigate('MY SETTINGS')}>
             <Left>
               <Text>My Settings</Text>
             </Left>

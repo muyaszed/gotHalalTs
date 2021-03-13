@@ -22,17 +22,15 @@ const LandingLayout: React.FC<Props> = ({handleNavigation}) => {
           testID="createAccountScreenBtn"
           style={styles.createAccBtn}
           block
-          light
-          onPress={() => handleNavigation('Sign Up')}>
-          <Text>Create free account</Text>
+          onPress={() => handleNavigation('SIGN UP')}>
+          <Text>CREATE FREE ACCOUNT</Text>
         </Button>
         <Button
           testID="signInScreenBtn"
           style={styles.createAccBtn}
           block
-          light
-          onPress={() => handleNavigation('Sign In')}>
-          <Text>Sign in</Text>
+          onPress={() => handleNavigation('SIGN IN')}>
+          <Text>SIGN IN</Text>
         </Button>
       </Content>
     </Container>
