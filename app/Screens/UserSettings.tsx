@@ -10,7 +10,7 @@ import {UserSettingItems} from 'app/Store/Profile/reducer';
 
 type ProfileScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  'My Settings'
+  'MY SETTINGS'
 >;
 
 type Props = {

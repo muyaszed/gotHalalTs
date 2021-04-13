@@ -17,8 +17,8 @@ describe('Landing screen', () => {
       createAccountBtn.props.children[0].props.children;
     const signInBtnText = signInBtn.props.children[0].props.children;
 
-    expect(createAccountBtnText).toBe('Create free account');
-    expect(signInBtnText).toBe('Sign in');
+    expect(createAccountBtnText).toBe('CREATE FREE ACCOUNT');
+    expect(signInBtnText).toBe('SIGN IN');
 
     wrapper.unmount();
   });
