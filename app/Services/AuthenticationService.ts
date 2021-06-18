@@ -1,10 +1,11 @@
-import {LoginManager, AccessToken} from 'react-native-fbsdk';
+import {LoginManager, AccessToken, Settings} from 'react-native-fbsdk-next';
 import {Dispatch} from 'redux';
 
 import {signInWithFaceBook} from '../Store/Authentication/action';
 import {FBToken} from '../Screens/SignIn';
 
 export const fbLogin = (dispatch: Dispatch<any>) => {
+  Settings.initializeSDK();
   LoginManager.logOut();
   LoginManager.logInWithPermissions(['email', 'public_profile']).then(
     (result) => {

@@ -33,6 +33,8 @@
 	<string>31</string>
 	<key>FacebookAppID</key>
 	<string>1099111866808395</string>
+	<key>FacebookClientToken</key>
+	<string>login</string>
 	<key>FacebookDisplayName</key>
 	<string>login</string>
 	<key>LSApplicationQueriesSchemes</key>
