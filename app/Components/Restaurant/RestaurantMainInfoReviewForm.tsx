@@ -23,6 +23,7 @@ import {
 import {setNewReview} from '../../Store/Review/action';
 import {showToast} from '../../Services/helper';
 import {SelectedReviewImage} from '../../Store/Restaurant/reducer';
+import {setLoadingState} from '../../Store/Authentication/action';
 
 export const reviewRatings = [
   'Not satisfied',
@@ -160,6 +161,7 @@ const RestaurantMainInformationActionButtons: React.FC<Props> = ({
             style={styles.reviewSubmitBtn}
             disabled={disableReviewSubmit}
             onPress={() => {
+              dispatch(setLoadingState(true));
               const reviewInfo = new FormData();
               reviewInfo.append('comment', currentReview);
               reviewInfo.append('rating', currentRating);
@@ -175,6 +177,7 @@ const RestaurantMainInformationActionButtons: React.FC<Props> = ({
                     handleCurrentRating(0);
                     dispatch(setShowReviewForm(false));
                     dispatch(setReviewImage(false));
+                    dispatch(setLoadingState(false));
                     showToast('Review successfully added');
                   }
                 });

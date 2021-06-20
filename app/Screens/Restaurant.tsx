@@ -10,6 +10,8 @@ import {
 } from '../Store/Restaurant/action';
 import {ThunkDispatch} from 'redux-thunk';
 import {RestaurantMainInformation, RestaurantReviewList} from '../Components';
+import {View} from 'react-native';
+import Loading from '../Components/Generic/loading';
 
 const Restaurant = () => {
   const [currentReview, setCurrentReview] = React.useState('');
@@ -23,6 +25,7 @@ const Restaurant = () => {
     (state: RootState) =>
       state.restaurants.list.filter((item) => item.id === selectedPlaceId)[0],
   );
+  const loadingStatus = useSelector((state: RootState) => state.auth.isLoading);
   const userToken = useSelector((state: RootState) => state.auth.userToken);
   const dispatch: ThunkDispatch<RootState, void, Action> = useDispatch();
   const reviews = useSelector((state: RootState) => state.reviews.list);
@@ -138,12 +141,15 @@ const Restaurant = () => {
   };
 
   return (
-    <RestaurantReviewList
-      reviews={reviews}
-      refreshing={refreshing}
-      renderRestaurantMainInformation={renderRestaurantMainInformation()}
-      onRefresh={onRefresh}
-    />
+    <View>
+      <RestaurantReviewList
+        reviews={reviews}
+        refreshing={refreshing}
+        renderRestaurantMainInformation={renderRestaurantMainInformation()}
+        onRefresh={onRefresh}
+      />
+      {loadingStatus ? <Loading /> : null}
+    </View>
   );
 };
 
