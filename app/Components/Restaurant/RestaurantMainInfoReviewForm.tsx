@@ -93,7 +93,7 @@ const RestaurantMainInformationActionButtons: React.FC<Props> = ({
             underline
             rowSpan={5}
             bordered
-            placeholder="........"
+            placeholder="Write your review here...."
             onChangeText={(text) => handleCurrentReview(text)}
             value={currentReview}
           />

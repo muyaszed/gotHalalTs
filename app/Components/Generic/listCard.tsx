@@ -18,6 +18,9 @@ import {
 } from '@codler/native-base';
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    borderRadius: 10,
+  },
   mainImageIcon: {
     fontSize: 150,
     width: '100%',
@@ -32,7 +35,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  mainText: {
+  mainTextContainer: {
     padding: 10,
   },
 });
@@ -77,8 +80,8 @@ const ListCard: React.SFC<Props> = ({
           onPress();
         }
       }}>
-      <Card>
-        <CardItem>
+      <Card style={styles.mainContainer}>
+        <CardItem style={styles.mainContainer}>
           <Left>
             {avatar ? (
               avatarUri ? (
@@ -116,7 +119,7 @@ const ListCard: React.SFC<Props> = ({
               <Icon type="Entypo" name="bowl" style={styles.mainImageIcon} />
             )
           ) : (
-            <Content style={mainTextStyle ? mainTextStyle : styles.mainText}>
+            <Content style={styles.mainTextContainer}>
               {mainImageUri ? (
                 <Image
                   source={{

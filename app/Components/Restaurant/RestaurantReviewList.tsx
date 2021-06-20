@@ -40,7 +40,7 @@ const RestaurantReviewList: React.FC<Props> = ({
           <ListCard
             name={`${item.user.firtName} ${item.user.lastName}`}
             avatarUri={item.user.avatar}
-            mainImage={item.photo ? true : false}
+            mainImage={false}
             mainImageUri={item.photo}
             mainText={item.comment}
             mainTextStyle={styles.reviewContent}
@@ -63,7 +63,6 @@ export default RestaurantReviewList;
 
 const styles = StyleSheet.create({
   reviewContent: {
-    paddingLeft: 80,
     paddingBottom: 10,
   },
   starStyle: {
