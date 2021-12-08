@@ -3,12 +3,66 @@ import React, {useCallback, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {ThunkDispatch} from 'redux-thunk';
 import {Action} from 'redux';
-
+import {Text, View} from 'react-native';
 import {RootState} from '../Store/reducers';
 import {useNavigation} from '@react-navigation/native';
-import {RestaurantList} from '../Components';
+import {RestaurantList, FoodNotes} from '../Components';
 import {RestaurantModel} from '../Store/Restaurant/reducer';
 import {getAllRestaurants} from '../Store/Restaurant/action';
+import FoodNoteModal from '../Components/FoodNote/FoodNoteModal';
+
+//Temp foodnote data
+
+const foodNotesItem = [
+  {
+    id: 1,
+    avatar: 'https://lorempixel.com/400/200/people/1',
+    note: 'This is the first note',
+    foodImage: 'https://lorempixel.com/400/200/food/1',
+  },
+  {
+    id: 2,
+    avatar: 'https://lorempixel.com/400/200/people/2',
+    note: 'This is the second note',
+    foodImage: 'https://lorempixel.com/400/200/food/2',
+  },
+  {
+    id: 3,
+    avatar: 'https://lorempixel.com/400/200/people/3',
+    note: 'This is the third note',
+    foodImage: 'https://lorempixel.com/400/200/food/3',
+  },
+  {
+    id: 4,
+    avatar: 'https://lorempixel.com/400/200/people/4',
+    note: 'This is the fourth note',
+    foodImage: 'https://lorempixel.com/400/200/food/4',
+  },
+  {
+    id: 5,
+    avatar: 'https://lorempixel.com/400/200/people/5',
+    note: 'This is the fifth note',
+    foodImage: 'https://lorempixel.com/400/200/food/5',
+  },
+  {
+    id: 6,
+    avatar: 'https://lorempixel.com/400/200/people/6',
+    note: 'This is the sixth note',
+    foodImage: 'https://lorempixel.com/400/200/food/6',
+  },
+  {
+    id: 7,
+    avatar: 'https://lorempixel.com/400/200/people/7',
+    note: 'This is the seventh note',
+    foodImage: 'https://lorempixel.com/400/200/food/7',
+  },
+  {
+    id: 8,
+    avatar: 'https://lorempixel.com/400/200/people/8',
+    note: 'This is the eighth note',
+    foodImage: 'https://lorempixel.com/400/200/food/8',
+  },
+];
 
 const Restaurants = () => {
   const [refreshing, setRefreshing] = React.useState(false);
@@ -60,13 +114,17 @@ const Restaurants = () => {
   }, []);
 
   return (
-    <RestaurantList
-      restaurants={restaurants}
-      userSettings={userSettings}
-      refreshing={refreshing}
-      onRefresh={onRefresh}
-      setCurrentData={setCurrentData}
-    />
+    <View>
+      <FoodNotes list={foodNotesItem} />
+      <RestaurantList
+        restaurants={restaurants}
+        userSettings={userSettings}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
+        setCurrentData={setCurrentData}
+      />
+      <FoodNoteModal modalVisible />
+    </View>
   );
 };
 

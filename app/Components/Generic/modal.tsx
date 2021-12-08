@@ -1,14 +1,9 @@
 import React from 'react';
-import {StyleSheet, View, Modal, ViewStyle} from 'react-native';
+import {StyleSheet, View, ViewStyle} from 'react-native';
 import {Text, Button} from '@codler/native-base';
+import Overlay from './overlay';
 
 const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(9, 142, 51, 0.678)',
-  },
   modalWrapper: {
     backgroundColor: 'white',
     minHeight: 150,
@@ -65,36 +60,34 @@ const GenericModal: React.FC<Props> = ({
   contentStyle,
 }) => {
   return (
-    <Modal animationType="slide" visible={modalVisible} transparent>
-      <View style={styles.overlay}>
-        <View style={styles.modalWrapper}>
-          <View style={styles.titleWrapper}>
-            <Text style={styles.title}>{title}</Text>
-          </View>
-          <View style={[styles.content, contentStyle]}>{children}</View>
-          <View style={styles.groupButtonWrapper}>
-            {leftButtonName ? (
-              <Button
-                style={styles.leftButton}
-                iconLeft
-                bordered
-                block
-                onPress={handleLeftButton}>
-                <Text style={styles.leftBtnText}>{leftButtonName}</Text>
-              </Button>
-            ) : null}
+    <Overlay modalVisible={modalVisible}>
+      <View style={styles.modalWrapper}>
+        <View style={styles.titleWrapper}>
+          <Text style={styles.title}>{title}</Text>
+        </View>
+        <View style={[styles.content, contentStyle]}>{children}</View>
+        <View style={styles.groupButtonWrapper}>
+          {leftButtonName ? (
             <Button
-              style={styles.rightButton}
+              style={styles.leftButton}
               iconLeft
               bordered
               block
-              onPress={handleRightButton}>
-              <Text style={styles.rightBtnText}>{rightButtonName}</Text>
+              onPress={handleLeftButton}>
+              <Text style={styles.leftBtnText}>{leftButtonName}</Text>
             </Button>
-          </View>
+          ) : null}
+          <Button
+            style={styles.rightButton}
+            iconLeft
+            bordered
+            block
+            onPress={handleRightButton}>
+            <Text style={styles.rightBtnText}>{rightButtonName}</Text>
+          </Button>
         </View>
       </View>
-    </Modal>
+    </Overlay>
   );
 };
 
